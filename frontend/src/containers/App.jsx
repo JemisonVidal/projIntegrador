@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'font-awesome/css/font-awesome.min.css'
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Switch,
   Route,
 } from 'react-router-dom';
@@ -13,7 +13,7 @@ import Pag2 from '../pages/Pagina2/Pag2';
 import Login from '../pages/Login/Login';
 
 const PagesRoot = () => (
-  <Router>
+  <BrowserRouter>
     <StoreProvider>
       <Switch>
         <Route path="/login" component={Login} />
@@ -22,7 +22,7 @@ const PagesRoot = () => (
 
       </Switch>
     </StoreProvider>
-  </Router>
+  </BrowserRouter>
 )
 
 
