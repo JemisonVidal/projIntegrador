@@ -28,4 +28,4 @@
  - Utilização dos frameworks Spring, (Framework, Boot, Data e Security)-
  - Caso utilize algum framework de frontend, como react, angular, etc, não garantimoso suporte técnico,  e é necessário o consenso de todos os integrantes do grupoquanto a essa escolha
  - A api deve ser documentada, você pode escolher qualquer ferramenta (ex: postman,swagger), mas deverá também estar no readme do seu github.
- - Erros devem ser tratados pelo back-end e não podem parar a execução do seuprojeto (O stacktrace de erro não pode ser exibido no frontend, em vez disso, exibauma mensagem amigável) .
+ - Erros devem ser tratados pelo back-end e não podem parar a execução do seuprojeto (O stacktrace de erro não pode ser exibido no frontend, em vez disso, exibauma mensagem amigável).
