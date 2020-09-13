@@ -8,7 +8,7 @@
 .container-box {
   height: 100vh;
   width: 100vw;
-  background-image: linear-gradient(#27187E, #758BFD);
+  background-image: linear-gradient(#27187e, #758bfd);
 }
 
 .form-box {
@@ -26,8 +26,8 @@
 #Cadastrar {
   margin-top: 5px;
   width: 100%;
-  border-color: #27187E;
-  background-color: #27187E;
+  border-color: #27187e;
+  background-color: #27187e;
   border-radius: 5px;
 }
 
@@ -42,9 +42,9 @@
   font-weight: bolder;
 }
 
-@media(min-width: 576px) {
+@media (min-width: 576px) {
   .titulo-registro {
-    color: #27187E;
+    color: #27187e;
     text-align: justify;
   }
   .form-box {
@@ -55,7 +55,9 @@
     box-shadow: 1px 5px 30px black;
     border-radius: 25px;
   }
-  .CheckBoxMin {
-    color: #27187E;
+  .CheckBoxMin,
+  #cadastro,
+  #login {
+    color: #27187e;
   }
 }
