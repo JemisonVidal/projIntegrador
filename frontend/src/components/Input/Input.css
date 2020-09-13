@@ -1,0 +1,16 @@
+.label {
+  color: white;
+  margin-bottom: 1px;
+}
+
+.Input {
+  margin-bottom: 1em;
+  border-radius: 5px;
+}
+
+@media(min-width: 576px) {
+  .label {
+    color: #27187E;
+    margin-bottom: 1px;
+  }
+}

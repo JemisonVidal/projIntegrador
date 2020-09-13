@@ -9,7 +9,7 @@ import {
 import StoreProvider from '../components/Store/Provider';
 import RoutesPrivate from '../Routes/PrivateRoute';
 import Home from '../pages/Home/Home';
-import Pag2 from '../pages/Pagina2/Pag2';
+import Register from '../pages/Register/Register';
 import Login from '../pages/Login/Login';
 
 const PagesRoot = () => (
@@ -17,7 +17,7 @@ const PagesRoot = () => (
     <StoreProvider>
       <Switch>
         <Route path="/login" component={Login} />
-        <Route path="/pag2" component={Pag2} />
+        <Route path="/register" component={Register} />
         <RoutesPrivate path="/" component={Home} />
 
       </Switch>
