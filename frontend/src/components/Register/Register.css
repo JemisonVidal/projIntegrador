@@ -31,6 +31,17 @@
   border-radius: 5px;
 }
 
+#cadastro {
+  text-align: center;
+  margin-top: 25px;
+  color: white;
+}
+
+#login {
+  color: white;
+  font-weight: bolder;
+}
+
 @media(min-width: 576px) {
   .titulo-registro {
     color: #27187E;
