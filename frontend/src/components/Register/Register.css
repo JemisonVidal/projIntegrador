@@ -1,0 +1,63 @@
+.titulo-registro {
+  margin: 0 0 5px 0;
+  color: white;
+  font-weight: bolder;
+  text-align: center;
+}
+
+.container-box {
+  height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(#27187e, #758bfd);
+}
+
+.form-box {
+  top: 50%;
+  transform: translate(0%, -50%);
+  max-width: 500px;
+  position: absolute;
+  padding: 30px;
+}
+
+.CheckBoxMin {
+  color: white;
+}
+
+#Cadastrar {
+  margin-top: 5px;
+  width: 100%;
+  border-color: #27187e;
+  background-color: #27187e;
+  border-radius: 5px;
+}
+
+#cadastro {
+  text-align: center;
+  margin-top: 25px;
+  color: white;
+}
+
+#login {
+  color: white;
+  font-weight: bolder;
+}
+
+@media (min-width: 576px) {
+  .titulo-registro {
+    color: #27187e;
+    text-align: justify;
+  }
+  .form-box {
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 1px 5px 30px black;
+    border-radius: 25px;
+  }
+  .CheckBoxMin,
+  #cadastro,
+  #login {
+    color: #27187e;
+  }
+}
