@@ -1,0 +1,56 @@
+.logo-login {
+  text-align: center;
+  margin: 64px 0;
+}
+
+.container-box-login {
+  height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(#27187e, #758bfd);
+}
+
+.form-box-login {
+  top: 50%;
+  transform: translate(0%, -50%);
+  max-width: 500px;
+  position: absolute;
+  padding: 30px;
+}
+
+#btnEntrar {
+  margin-top: 5px;
+  width: 100%;
+  border-color: #27187e;
+  background-color: #27187e;
+  border-radius: 5px;
+}
+
+#links-login {
+  margin: 15px 0;
+  text-align: center;
+  color: white;
+  bottom: 0;
+}
+
+#esqueci-senha,
+#cadastro-login {
+  color: white;
+  font-weight: bold;
+}
+
+@media (min-width: 576px) {
+  .form-box-login {
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 1px 5px 30px black;
+    border-radius: 25px;
+  }
+
+  #links-login,
+  #esqueci-senha,
+  #cadastro-login {
+    color: #27187e;
+  }
+}
