@@ -1,86 +1,98 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import StoreContext from '../../components/Store/Context';
-import Button from '../../components/Button/Button';
+import { Form, Button, Spinner } from 'react-bootstrap';
+import Input from '../Input/Input';
+import Checkbox from '../Checkbox/Checkbox';
+import useFetch from '../../Hooks/useFetch';
+import useForm from '../../Hooks/useForm';
+import Error from '../Helper/Error';
+import { USER_LOGIN } from '../../APIs/APIs';
 
 import './Login.css';
 
-function initialState() {
-  return { user: '', password: '' };
-}
-
-function login({ user, password }) {
-  if (user === '1' && password === '1') {
-    return { apptoken: '1234' };
-  }
-  return { error: 'Usuário ou senha inválido' };
-}
-
 const UserLogin = () => {
-  const [values, setValues] = useState(initialState);
-  const [error, setError] = useState(null);
+  const email = useForm('email');
+  const senha = useForm();
+  const [erroLogin, setErroLogin] = useState(null);
   const { setToken } = useContext(StoreContext);
   const history = useHistory();
+  const { loading, request } = useFetch();
 
-  function onChange(event) {
-    const { value, name } = event.target;
-
-    setValues({
-      ...values,
-      [name]: value
-    });
+  async function login(email, senha) {
+    // const { url, options } = USER_LOGIN({ email, senha });
+    // await request(url, options);
+    if (email.value === '1@gmail.com' && senha.value === '1') {
+      return { apptoken: '1234' };
+    }
+    return { error: 'Usuário ou senha inválido' };
   }
 
-  function onSubmit(event) {
-    event.preventDefault();
+  async function onSubmit(e) {
+    e.preventDefault();
 
-    const { apptoken, error } = login(values);
-
-    if (apptoken) {
-      setToken(apptoken);
-      return history.push('/');
+    if (email.validate() && senha.validate()) {
+      const { apptoken, error } = await login(email, senha);
+      if (apptoken) {
+        setToken(apptoken);
+        return history.push('/');
+      }
+      setErroLogin(error);
     }
-
-    setError(error);
-    setValues(initialState);
   }
 
   return (
-    <div className="user-login">
-      <h1 className="user-login__title">Acessar o Sistema</h1>
-      <form onSubmit={onSubmit}>
-        <div className="user-login__form-control">
-          <label htmlFor="user">Usuário</label>
-          <input
-            id="user"
-            type="text"
-            name="user"
-            onChange={onChange}
-            value={values.user}
-          />
-        </div>
-        <div className="user-login__form-control">
-          <label htmlFor="password">Senha</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            onChange={onChange}
-            value={values.password}
-          />
-        </div>
-        {error && (
-          <div className="user-login__error">{error}</div>
+    <div className="container-box-login">
+      <Form className="container form-box-login" onSubmit={onSubmit}>
+        <h1 className="logo-login">LOGO</h1>
+        <Input
+          namelabel="Email"
+          type="text"
+          placeholder="Email"
+          required
+          {...email}
+        />
+        <Input
+          namelabel="Senha"
+          type="text"
+          placeholder="Senha"
+          required
+          {...senha}
+        />
+        <Checkbox
+          className="CheckBoxMin"
+          type="checkbox"
+          label="Lembrar minha senha"
+        />
+        {loading ? (
+          <Button id="Entrar" variant="primary" disabled>
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+            <span className="sr-only">Carregando...</span>
+          </Button>
+        ) : (
+          <Button id="btnEntrar" variant="primary" type="submit">
+            Entrar
+          </Button>
         )}
-        <Button
-          type="submit"
-          theme="contained-green"
-          className="user-login__submit-button"
-          rounded
-        >
-          Entrar
-        </Button>
-      </form>
+        <Error error={erroLogin} />
+        <p id="links-login">
+          <Link id="esqueci-senha" to="/login">
+            Esqueci minha senha
+          </Link>
+        </p>
+        <p id="links-login">
+          Não tem uma conta ?{' '}
+          <Link id="cadastro-login" to="/register">
+            Cadastre-se
+          </Link>
+        </p>
+      </Form>
     </div>
   );
 };
