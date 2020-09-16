@@ -1,0 +1,14 @@
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://localhost/recruit?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
+    username: root
+    password: root
+    platform: mysql
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  error:
+    include-stacktrace: never
