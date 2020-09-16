@@ -4,16 +4,15 @@
 }
 
 .container-box-login {
-  height: 100vh;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
   width: 100vw;
   background-image: linear-gradient(#27187e, #758bfd);
 }
 
 .form-box-login {
-  top: 50%;
-  transform: translate(0%, -50%);
   max-width: 500px;
-  position: absolute;
   padding: 30px;
 }
 
@@ -41,9 +40,6 @@
 @media (min-width: 576px) {
   .form-box-login {
     background-color: white;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     box-shadow: 1px 5px 30px black;
     border-radius: 25px;
   }
