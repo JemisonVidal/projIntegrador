@@ -1,6 +1,6 @@
-#Acordos Gerais
+# Acordos Gerais
 
-•	Tamanho da Sprint = 1 semana (Independente de feriado).
+•	Tamanho da Sprint = 1 semana (Independente de feriado). 
 
 •	A Reunião de Scrum, todas a quintas(Exceto feriados, nesse caso passa para o Sábado).
 
@@ -28,7 +28,7 @@
 
 •	Todos os desenvolvedores irão rotacionar entre frontend e backend.
 
-#DoR (Definition of Ready)
+# DoR (Definition of Ready)
 
 •	História (Story) no Kanbam(Git e Trello) com informações colocadas na Description.
 
@@ -38,7 +38,7 @@
 
 •	Após o commit e PR, comentar a issue com “Liberado para Review”, e remover o assigne.
 
-#DoD (Definition of Done)
+# DoD (Definition of Done)
 
 •	A review deve ser feito por outro integrante do time
 
