@@ -1,9 +1,11 @@
-.logo-login {
+.titulo-registro {
+  margin: 0 0 5px 0;
+  color: white;
+  font-weight: bolder;
   text-align: center;
-  margin: 64px 0;
 }
 
-.container-box-login {
+.container-box {
   display: flex;
   align-items: center;
   min-height: 100vh;
@@ -11,12 +13,16 @@
   background-image: linear-gradient(#27187e, #758bfd);
 }
 
-.form-box-login {
+.form-box {
   max-width: 500px;
   padding: 30px;
 }
 
-#btnEntrar {
+.CheckBoxMin {
+  color: white;
+}
+
+#Cadastrar {
   margin-top: 5px;
   width: 100%;
   border-color: #27187e;
@@ -24,29 +30,30 @@
   border-radius: 5px;
 }
 
-#links-login {
-  margin: 15px 0;
+#cadastro {
   text-align: center;
+  margin-top: 25px;
   color: white;
-  bottom: 0;
 }
 
-#esqueci-senha,
-#cadastro-login {
+#login {
   color: white;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 @media (min-width: 576px) {
-  .form-box-login {
+  .titulo-registro {
+    color: #27187e;
+    text-align: justify;
+  }
+  .form-box {
     background-color: white;
     box-shadow: 1px 5px 30px black;
     border-radius: 25px;
   }
-
-  #links-login,
-  #esqueci-senha,
-  #cadastro-login {
+  .CheckBoxMin,
+  #cadastro,
+  #login {
     color: #27187e;
   }
 }

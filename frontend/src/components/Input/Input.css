@@ -1,0 +1,24 @@
+.label {
+  color: white;
+  margin-bottom: 1px;
+}
+
+.Input {
+  margin-bottom: 1em;
+  border-radius: 5px;
+}
+
+.error {
+  color: #f31;
+  font-size: 0.875rem;
+  margin-top: -15px;
+  margin-bottom: 3px;
+  font-size: 15px;
+}
+
+@media(min-width: 576px) {
+  .label {
+    color: #27187E;
+    margin-bottom: 1px;
+  }
+}
