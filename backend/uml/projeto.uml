@@ -1,0 +1,133 @@
+@startuml
+note top of model : Getters e Setters simples não\nestão inclusos no diagrama de classes
+
+package "model" {
+
+    class User {
+        -uuid : UUID
+        -name : String
+        -email : String
+        -password : String
+        -type : TypeEnum
+    }
+
+    class UserDTO {
+        -name : String
+        -email : String
+        -password : String
+        -type : String
+        +toUser() : User
+    }
+
+    class JWTResponse {
+        -user : User
+        -token : String
+    }
+
+    class LoginInfo {
+        -email : String
+        -password : String
+    }
+
+    enum TypeEnum {
+        USER
+        COMPANY
+    }
+
+    User *-- JWTResponse
+    TypeEnum *-- User
+    User --- UserDTO
+
+}
+
+package "service" {
+
+    interface AuthenticationService {
+        +save(user : User) : User
+        +authenticate(loginInfo : LoginInfo) : JWTResponse
+    }
+
+    package "impl" {
+
+        class AuthenticationServiceImpl{
+            -userRepository : UserRepository
+            -authenticationManager : AuthenticationManager
+            -jwtTokenUtil : JWTTokenUtil
+            -userDetailsService : UserDetailsService
+            +save(user : User) : User
+            +authenticate(loginInfo : LoginInfo) : JWTResponse
+        }
+
+        class UserDetailsServiceImpl {
+            -userRepository : UserRepository
+            -passwordEncoder : PasswordEncoder
+            +loadUserByUsername(username : String) : UserDetails
+        }
+
+        AuthenticationServiceImpl --|> AuthenticationService
+    }
+
+}
+
+package "controller" {
+
+    class AuthenticationController {
+        +save(userDTO : UserDTO) : ResponseEntity<User>
+        +authenticate(loginInfo : LoginInfo) : ResponseEntity<JWTResponse>
+    }
+
+    UserDTO --- AuthenticationController
+    LoginInfo --- AuthenticationController
+    JWTResponse --- AuthenticationController
+
+}
+
+package "repository" {
+
+    interface UserRepository {
+        +findByEmail(email : String) : Optional<User>
+        +existsByEmail(email : String) : boolean
+    }
+
+    User --- UserRepository
+}
+
+package "security" {
+
+    class JWTAuthenticationEntryPoint {
+        +commence(): void
+    }
+
+    class JWTRequestFilter {
+        -userDetailsServiceImpl : UserDetailsServiceImpl
+        -jwtTokenUtil : JWTTokenUtil
+        #doFilterInternal() : void
+    }
+
+    class JWTTokenUtil {
+        {static} +JWT_TOKEN_VALIDITY : Long
+        {static} -key : SecretKey
+        +getEmailFromToken(token : String) : String
+        +getExpirationDateFromToken(token : String) : Date
+        -isTokenExpired(token : String) : Boolean
+        +generateToken(userDetails : UserDetails) : String
+        -getClaimFromToken(token : String, claimsResolver : Function<Claims, T>) : T
+        -getAllClaimsFromToken(token : String) : Claims
+        -doGenerateToken(claims : Map<String, Object>, subject : String) : String
+        +validateToken(String token, UserDetails userDetails) : Boolean
+    }
+
+    class WebSecurityConfig {
+        -jwtAuthenticationEntryPoint : JWTAuthenticationEntryPoint
+        -jwtUserDetailsService : UserDetailsService
+        -jwtRequestFilter : JWTRequestFilter
+        +passwordEncoder() : PasswordEncoder
+        +authenticationManagerBean() : AuthenticationManager
+        #configure(httpSecurity : HttpSecurity): void
+    }
+
+    JWTRequestFilter --* JWTTokenUtil
+    WebSecurityConfig --* JWTAuthenticationEntryPoint
+    WebSecurityConfig --* JWTRequestFilter
+}
+@enduml
