@@ -1,9 +1,9 @@
 package br.com.house.digital.projetointegrador.controller;
 
+import br.com.house.digital.projetointegrador.dto.UserDTO;
 import br.com.house.digital.projetointegrador.model.JWTResponse;
 import br.com.house.digital.projetointegrador.model.LoginInfo;
 import br.com.house.digital.projetointegrador.model.User;
-import br.com.house.digital.projetointegrador.model.UserDTO;
 import br.com.house.digital.projetointegrador.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
