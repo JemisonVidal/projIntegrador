@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.house.digital.projetointegrador.dto.ProfileDTO;
+import br.com.house.digital.projetointegrador.dto.ProfileNewDTO;
 import br.com.house.digital.projetointegrador.model.Profile;
 import br.com.house.digital.projetointegrador.service.impl.ProfileService;
 
@@ -31,7 +32,7 @@ public class ProfileController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> create(@Valid @RequestBody ProfileDTO profileDTO) {
+	public ResponseEntity<Void> create(@Valid @RequestBody ProfileNewDTO profileDTO) {
 		Profile profile = profileService.fromDTO(profileDTO);
 		profileService.create(profile);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(profile.getId())

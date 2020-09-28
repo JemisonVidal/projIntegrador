@@ -1,7 +1,5 @@
 package br.com.house.digital.projetointegrador.model;
 
-import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,12 +28,10 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
 
-    @Id
-    @Type(type="uuid-char")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonIgnore
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)	   
     @EqualsAndHashCode.Include
-    private UUID uuid;
+    private Integer id;
 
     private String name;
 
@@ -53,9 +47,9 @@ public class User {
 	@OneToOne(mappedBy = "user")
     private Profile profile;	
 
-	public User(UUID uuid, String name, String email, String password, TypeEnum type) {
+	public User(Integer id, String name, String email, String password, TypeEnum type) {
 		super();
-		this.uuid = uuid;
+		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
