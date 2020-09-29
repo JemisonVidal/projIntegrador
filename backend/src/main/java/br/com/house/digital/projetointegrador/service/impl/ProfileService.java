@@ -1,5 +1,6 @@
 package br.com.house.digital.projetointegrador.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Service;
 
 import br.com.house.digital.projetointegrador.dto.ProfileDTO;
 import br.com.house.digital.projetointegrador.dto.ProfileNewDTO;
+import br.com.house.digital.projetointegrador.model.Company;
+import br.com.house.digital.projetointegrador.model.Course;
 import br.com.house.digital.projetointegrador.model.Profile;
+import br.com.house.digital.projetointegrador.model.Skills;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.repository.CompanyRepository;
 import br.com.house.digital.projetointegrador.repository.CourseRepository;
@@ -95,9 +99,28 @@ public class ProfileService implements IService<Profile> {
 				profileNewDTO.getAddress(), profileNewDTO.getNumber(), profileNewDTO.getNeighborhood(),
 				profileNewDTO.getCity(), profileNewDTO.getState(), profileNewDTO.getLinkedin(),
 				profileNewDTO.getGithub(), profileNewDTO.getFreeText(), user);
-		profile.setSkills(profileNewDTO.getSkills());
-		profile.setCourses(profileNewDTO.getCourses());
-		profile.setCompanys(profileNewDTO.getCompanys());
+
+		List<Skills> listSkills = new ArrayList<>();
+		for (Skills skill : profileNewDTO.getSkills()) {
+			listSkills.add(
+					new Skills(null, skill.getName(), skill.getExperienceTime(), skill.getKnowledgeLevel(), profile));
+		}
+
+		List<Course> listCourse = new ArrayList<>();
+		for (Course course : profileNewDTO.getCourses()) {
+			listCourse.add(new Course(null, course.getInstitution(), course.getNameCourse(), course.getWorkLoad(),
+					course.getConclusionYear(), profile));
+		}
+
+		List<Company> listCompanys = new ArrayList<>();
+		for (Company company : profileNewDTO.getCompanys()) {
+			listCompanys.add(new Company(null, company.getCompanyName(), company.getPosition(), company.getActivities(),
+					company.getInitialDate(), company.getFinalDate(), company.isActing()));
+		}
+
+		profile.getSkills().addAll(listSkills);
+		profile.getCourses().addAll(listCourse);
+		profile.getCompanys().addAll(listCompanys);
 		return profile;
 	}
 

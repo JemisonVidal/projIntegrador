@@ -7,7 +7,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -43,16 +42,4 @@ public class User {
 
     @Enumerated(value = EnumType.STRING)
     private TypeEnum type;    
-    
-	@OneToOne(mappedBy = "user")
-    private Profile profile;	
-
-	public User(Integer id, String name, String email, String password, TypeEnum type) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.type = type;		
-	}
 }

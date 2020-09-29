@@ -12,15 +12,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Profile implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -40,8 +43,9 @@ public class Profile implements Serializable {
 	private String state;
 	private String linkedin;
 	private String github;
-	private String freeText;
+	private String freeText;	
 	
+	@JsonBackReference
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
