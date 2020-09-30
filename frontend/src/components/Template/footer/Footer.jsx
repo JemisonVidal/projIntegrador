@@ -3,7 +3,7 @@ import './Footer.css'
 
 export default props =>
     <footer className="footer">
-        <span>
+        {/* <span>
             Developed by <strong>Santander Coders</strong>
-        </span>
+        </span> */}
     </footer>
