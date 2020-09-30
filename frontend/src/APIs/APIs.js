@@ -15,29 +15,18 @@ const requestOptions = ({url, method = 'GET', body, jwt}) => {
 }
 
 export function USER_CREATE(body) {
-  return {
-    url: baseURL + '/v1/api/register',
-    options: {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    },
-  };
+  return requestOptions({
+    url: '/v1/api/register',
+    method: 'POST',
+    body
+  })
 }
 
 export function USER_LOGIN(body) {
-  return {
-    url: baseURL + '/v1/api/login',
-    options: {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    },
-  };
+  return requestOptions({
+    url: '/v1/api/login',
+    body
+  })
 }
 
 export function GET_PROFILE(type, id, jwt) {
