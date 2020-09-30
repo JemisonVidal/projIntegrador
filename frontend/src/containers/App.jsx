@@ -20,7 +20,7 @@ const PagesRoot = () => (
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <RoutesPrivate path="/" component={Home} exact />
-        <RoutesPrivate path="/profile" component={Profile} />
+        <RoutesPrivate path="/profile/:type/:id" component={Profile} />
       </Switch>
     </StoreProvider>
   </BrowserRouter>
