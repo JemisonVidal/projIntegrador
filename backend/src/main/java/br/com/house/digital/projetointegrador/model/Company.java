@@ -26,7 +26,7 @@ public class Company implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String companyName;
+	private String name;
 	private String position;
 	private String activities;
 	private LocalDate initialDate;
@@ -41,11 +41,11 @@ public class Company implements Serializable {
 	public Company() {
 	}
 
-	public Company(Integer id, String companyName, String position, String activities, LocalDate initialDate,
+	public Company(Integer id, String name, String position, String activities, LocalDate initialDate,
 			LocalDate finalDate, boolean acting) {
 		super();
 		this.id = id;
-		this.companyName = companyName;
+		this.name = name;
 		this.position = position;
 		this.activities = activities;
 		this.initialDate = initialDate;

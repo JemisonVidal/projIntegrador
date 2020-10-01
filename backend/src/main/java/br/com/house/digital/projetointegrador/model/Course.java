@@ -26,7 +26,7 @@ public class Course implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String institution;
-	private String nameCourse;
+	private String name;
 	private String workLoad;
 	private Integer conclusionYear;
 
@@ -38,12 +38,12 @@ public class Course implements Serializable {
 	public Course() {
 	}
 
-	public Course(Integer id, String institution, String nameCourse, String workLoad, Integer conclusionYear,
+	public Course(Integer id, String institution, String name, String workLoad, Integer conclusionYear,
 			Profile profile) {
 		super();
 		this.id = id;
 		this.institution = institution;
-		this.nameCourse = nameCourse;
+		this.name = name;
 		this.workLoad = workLoad;
 		this.conclusionYear = conclusionYear;
 		this.profile = profile;

@@ -108,13 +108,13 @@ public class ProfileService implements IService<Profile> {
 
 		List<Course> listCourse = new ArrayList<>();
 		for (Course course : profileNewDTO.getCourses()) {
-			listCourse.add(new Course(null, course.getInstitution(), course.getNameCourse(), course.getWorkLoad(),
+			listCourse.add(new Course(null, course.getInstitution(), course.getName(), course.getWorkLoad(),
 					course.getConclusionYear(), profile));
 		}
 
 		List<Company> listCompanys = new ArrayList<>();
 		for (Company company : profileNewDTO.getCompanys()) {
-			listCompanys.add(new Company(null, company.getCompanyName(), company.getPosition(), company.getActivities(),
+			listCompanys.add(new Company(null, company.getName(), company.getPosition(), company.getActivities(),
 					company.getInitialDate(), company.getFinalDate(), company.isActing()));
 		}
 
