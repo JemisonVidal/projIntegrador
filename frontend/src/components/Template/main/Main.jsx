@@ -8,13 +8,12 @@ import logo from '../../../assets/images/LogoRecruIT.png'
 
 export default props =>
     <React.Fragment>
-        <Logo />
-        <Nav />
-        <Header {...props} />
         <main className="content container-box-home">
-            {/* <img className="image-background" src={logo} /> */}
-            <div className="container form-box-home">
-                {props.children}
+            <Header {...props} />
+            <div className="container-image-background">
+                <div className="container form-box-home">
+                    {props.children}
+                </div>
             </div>
         </main>
         <Footer />
