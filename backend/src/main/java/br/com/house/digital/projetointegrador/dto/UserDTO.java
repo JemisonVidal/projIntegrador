@@ -35,6 +35,7 @@ public class UserDTO {
 
     public User toUser(PasswordEncoder passwordEncoder) {
         return User.builder()
+        		.name(this.name)
                 .email(this.email)
                 .password(passwordEncoder.encode(this.password))
                 .type(TypeEnum.valueOf(this.type))
