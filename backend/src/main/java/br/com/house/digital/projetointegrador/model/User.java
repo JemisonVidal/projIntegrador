@@ -28,18 +28,18 @@ import lombok.Setter;
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	   
-    @EqualsAndHashCode.Include
-    private Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@EqualsAndHashCode.Include
+	private Long id;
 
-    private String name;
+	private String name;
 
-    @Column(name = "email", unique = true)
-    private String email;
+	@Column(name = "email", unique = true)
+	private String email;
 
-    @JsonIgnore
-    private String password;
+	@JsonIgnore
+	private String password;
 
-    @Enumerated(value = EnumType.STRING)
-    private TypeEnum type;    
+	@Enumerated(value = EnumType.STRING)
+	private TypeEnum type;
 }

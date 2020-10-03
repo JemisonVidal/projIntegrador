@@ -44,7 +44,7 @@ public class ProfileNewDTO implements Serializable {
 	private List<Company> companys = new ArrayList<>();
 
 	@NotNull(message = "Mandatory Filling")	
-	private Integer userId;
+	private Long userId;
 
 	public ProfileNewDTO() {
 		
