@@ -13,8 +13,9 @@ export default props =>
             <div className="container-image-background">
                 <div className="container form-box-home">
                     {props.children}
+                    <Footer />
                 </div>
             </div>
         </main>
-        <Footer />
+
     </React.Fragment>

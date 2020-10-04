@@ -22,6 +22,10 @@
 }
 
 @media (min-width: 576px) {
+    .container-box-home {
+        padding: 20px 0;
+    }
+
     .form-box-home {
       background-color: white;
       box-shadow: 1px 5px 30px black;
