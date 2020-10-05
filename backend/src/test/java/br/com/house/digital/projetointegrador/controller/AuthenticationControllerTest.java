@@ -11,5 +11,5 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @WebMvcTest(controllers = AuthenticationController.class) // This annotation configures our class to test a controller
 @AutoConfigureMockMvc                                     // This annotation will configure an object where we can simulate requests
 public class AuthenticationControllerTest {
-    
+
 }
