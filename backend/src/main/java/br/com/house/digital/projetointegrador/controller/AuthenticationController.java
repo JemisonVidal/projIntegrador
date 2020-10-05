@@ -5,6 +5,7 @@ import br.com.house.digital.projetointegrador.model.LoginInfo;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.UserDTO;
 import br.com.house.digital.projetointegrador.service.AuthenticationService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,11 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/v1/api")
+@AllArgsConstructor
 public class AuthenticationController {
 
-    @Autowired
     private AuthenticationService authenticationService;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
