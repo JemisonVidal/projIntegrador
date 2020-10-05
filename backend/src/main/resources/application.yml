@@ -7,7 +7,7 @@ spring:
     platform: mysql
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
 server:
   error:
