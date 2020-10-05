@@ -45,7 +45,10 @@
 
 @media (min-width: 576px) {
     .form-box-home {
-      background-color: white;
+      /* background: url('../../../assets/images/Logo\ RecruIT.svg') no-repeat; */
+      background-position: 50% -20%;
+      background-size: 300vh;
+      background-color: #f1f2f6;
       box-shadow: 1px 5px 30px black;
       border-radius: 25px;
     }
@@ -55,7 +58,7 @@
         background: 
             url('../../../assets/images/LogoRecruIT.png') right/auto no-repeat,
             url('../../../assets/images/LogoRecruIT.png') left/auto no-repeat;
-        background-position: -38%, 138%;
+        background-position: -40%, 140%;
         background-size: 90vh;
     }
     
