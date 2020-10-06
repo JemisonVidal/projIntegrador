@@ -29,20 +29,24 @@ import br.com.house.digital.projetointegrador.service.exceptions.ObjectNotFoundE
 @Service
 public class ProfileService implements IService<Profile> {
 
-	@Autowired
-	private ProfileRepository profileRepository;
+	private final ProfileRepository profileRepository;
+
+	private final UserRepository userRepository;
+
+	private final SkillsRepository skillsRepository;
+
+	private final CourseRepository coursesRepository;
+
+	private final CompanyRepository companyRepository;
 
 	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private SkillsRepository skillsRepository;
-
-	@Autowired
-	private CourseRepository coursesRepository;
-
-	@Autowired
-	private CompanyRepository companyRepository;
+	public ProfileService(ProfileRepository profileRepository, UserRepository userRepository, SkillsRepository skillsRepository, CourseRepository coursesRepository, CompanyRepository companyRepository) {
+		this.profileRepository = profileRepository;
+		this.userRepository = userRepository;
+		this.skillsRepository = skillsRepository;
+		this.coursesRepository = coursesRepository;
+		this.companyRepository = companyRepository;
+	}
 
 	@Transactional
 	@Override
@@ -51,12 +55,12 @@ public class ProfileService implements IService<Profile> {
 		object = profileRepository.save(object);
 		skillsRepository.saveAll(object.getSkills());
 		coursesRepository.saveAll(object.getCourses());
-		companyRepository.saveAll(object.getCompanys());
+		companyRepository.saveAll(object.getCompanies());
 		return object;
 	}
 
 	@Override
-	public Profile findById(Integer id) {
+	public Profile findById(Long id) {
 		Optional<Profile> obj = profileRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Object not found! Id: " + id + ", type: " + Profile.class.getName()));
@@ -75,7 +79,7 @@ public class ProfileService implements IService<Profile> {
 	}
 
 	@Override
-	public void delete(Integer id) {
+	public void delete(Long id) {
 		this.findById(id);
 		try {
 			this.profileRepository.deleteById(id);
@@ -112,15 +116,15 @@ public class ProfileService implements IService<Profile> {
 					course.getConclusionYear(), profile));
 		}
 
-		List<Company> listCompanys = new ArrayList<>();
-		for (Company company : profileNewDTO.getCompanys()) {
-			listCompanys.add(new Company(null, company.getName(), company.getPosition(), company.getActivities(),
+		List<Company> listCompanies = new ArrayList<>();
+		for (Company company : profileNewDTO.getCompanies()) {
+			listCompanies.add(new Company(null, company.getName(), company.getPosition(), company.getActivities(),
 					company.getInitialDate(), company.getFinalDate(), company.isActing()));
 		}
 
 		profile.getSkills().addAll(listSkills);
 		profile.getCourses().addAll(listCourse);
-		profile.getCompanys().addAll(listCompanys);
+		profile.getCompanies().addAll(listCompanies);
 		return profile;
 	}
 
@@ -142,6 +146,6 @@ public class ProfileService implements IService<Profile> {
 		newObject.setUser(object.getUser());
 		newObject.setSkills(object.getSkills());
 		newObject.setCourses(object.getCourses());
-		newObject.setCompanys(object.getCompanys());
+		newObject.setCompanies(object.getCompanies());
 	}
 }

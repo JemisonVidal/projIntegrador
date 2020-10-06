@@ -16,17 +16,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final AuthenticationManager authenticationManager;
+
+    private final JWTTokenUtil jwtTokenUtil;
+
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JWTTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    public AuthenticationServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, JWTTokenUtil jwtTokenUtil, UserDetailsServiceImpl userDetailsService) {
+        this.userRepository = userRepository;
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     public JWTResponse authenticate(LoginInfo loginInfo) throws Exception {
