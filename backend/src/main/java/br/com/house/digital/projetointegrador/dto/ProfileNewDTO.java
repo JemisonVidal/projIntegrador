@@ -41,7 +41,7 @@ public class ProfileNewDTO implements Serializable {
 	private String freeText;
 	private List<Skills> skills = new ArrayList<>();
 	private List<Course> courses = new ArrayList<>();
-	private List<Company> companys = new ArrayList<>();
+	private List<Company> companies = new ArrayList<>();
 
 	@NotNull(message = "Mandatory Filling")	
 	private Long userId;

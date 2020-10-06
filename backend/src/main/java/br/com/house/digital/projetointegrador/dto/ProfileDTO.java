@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class ProfileDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
+	private Long id;
 
 	@NotBlank(message = "Mandatory Filling")
 	@Length(min = 5, max = 80, message = "Mandatory filling between 5 to 80 characters")
@@ -46,7 +46,7 @@ public class ProfileDTO implements Serializable {
 	private String freeText;
 	private List<Skills> skills = new ArrayList<>();
 	private List<Course> courses = new ArrayList<>();
-	private List<Company> companys = new ArrayList<>();
+	private List<Company> companies = new ArrayList<>();
 
 	@NotBlank(message = "Mandatory Filling")	
 	private User user;
@@ -69,6 +69,6 @@ public class ProfileDTO implements Serializable {
 		this.user = profile.getUser();
 		this.skills = profile.getSkills();
 		this.courses = profile.getCourses();
-		this.companys = profile.getCompanys();
+		this.companies = profile.getCompanies();
 	}
 }

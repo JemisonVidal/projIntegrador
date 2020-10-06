@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.com.house.digital.projetointegrador.model.Course;
 
 @Repository
-public interface CourseRepository extends JpaRepository<Course, Integer> {    
+public interface CourseRepository extends JpaRepository<Course, Long> {
 
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.com.house.digital.projetointegrador.model.Company;
 
 @Repository
-public interface CompanyRepository extends JpaRepository<Company, Integer> {    
+public interface CompanyRepository extends JpaRepository<Company, Long> {
 
 }
