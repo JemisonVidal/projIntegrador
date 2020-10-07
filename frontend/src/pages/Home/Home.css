@@ -15,15 +15,26 @@
     margin: 0;
 }
 
+.photoPerfil{
+    width: 60px;
+    border-radius: 100%;
+    border: var(--color-white) 3px solid;
+}
+
 .div-banner-home span {
     color: #FF8600;
 }
 
 .logo-banner-home{
     grid-column: 1;
-    grid-row: 5;
+    grid-row: 4;
     justify-self: center;
-    width: 80px;
+    width: 150px;
+}
+
+.div-banner-home h1 {
+    grid-column: 1;
+    grid-row: 5;
 }
 
 .div-banner-home p {
@@ -78,6 +89,12 @@
     transition: 0.5s;
 }
 
+.linkNavPhoto{
+    border: solid white 3px;
+    border-radius: 100%;
+    width: 60px;
+}
+
 @media (min-width: 576px) {
 
     .div-banner-home h1 {
@@ -85,7 +102,7 @@
     }
 
     .logo-banner-home{
-        width: 120px;
+        width: 200px;
     }
 
     .div-banner-home{
@@ -94,7 +111,6 @@
 
     .image-banner-home{
         height: 450px;
-        border-radius: 25px 25px 0 0;
     }
 
     .carousel{
@@ -129,5 +145,9 @@
 
     .titleCarousel:hover{
         color: white;
+    }
+
+    .linkNavPhoto{
+        width: 65px;
     }
 }

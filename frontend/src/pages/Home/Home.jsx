@@ -1,14 +1,24 @@
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
+import { useHistory, Link } from 'react-router-dom';
 import Main from '../../components/Template/main/Main';
 import imageMain from '../../assets/images/main-photo.jpg'
 import logo from '../../assets/images/Logo2RecruIT.png'
+import Nav from '../../components/Template/nav/Nav'
+
 
 import './Home.css';
 
 const PagesHome = () => {
+  var image = 'http://placekitten.com/300/300';
   return (
     <Main>
+      <Nav>
+        <Link className="link-nav" to={'/profile/tipo/id'}>
+          <img className="linkNavPhoto" src={image}></img>
+          <h4>Rebeca Souza</h4>
+        </Link>
+      </Nav>
       <div className="div-banner-home">
         <img className="image-banner-home" src={imageMain} />
         <img className="logo-banner-home" src={logo} />
