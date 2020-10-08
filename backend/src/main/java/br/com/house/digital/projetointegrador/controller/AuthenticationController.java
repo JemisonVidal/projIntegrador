@@ -1,8 +1,8 @@
 package br.com.house.digital.projetointegrador.controller;
 
+import br.com.house.digital.projetointegrador.dto.LoginDTO;
 import br.com.house.digital.projetointegrador.dto.UserDTO;
 import br.com.house.digital.projetointegrador.model.JWTResponse;
-import br.com.house.digital.projetointegrador.model.LoginInfo;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +34,14 @@ public class AuthenticationController {
 	@PostMapping("/register")
 	public ResponseEntity<Void> save(@RequestBody @Valid UserDTO userDTO) {
 		final User user = authenticationService.save(userDTO.toUser(passwordEncoder));
-		if (user == null) {
-			return ResponseEntity.badRequest().build();
-		}
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
 	@PostMapping("/authenticate")
-	public ResponseEntity<JWTResponse> authenticate(@RequestBody @Valid LoginInfo loginInfo) throws Exception {
-		final JWTResponse jwtResponse = authenticationService.authenticate(loginInfo);
+	public ResponseEntity<JWTResponse> authenticate(@RequestBody @Valid LoginDTO loginDTO) throws Exception {
+		final JWTResponse jwtResponse = authenticationService.authenticate(loginDTO);
 		return ResponseEntity.ok(jwtResponse);
 	}
 
