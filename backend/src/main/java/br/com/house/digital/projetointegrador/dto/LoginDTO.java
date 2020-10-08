@@ -1,4 +1,4 @@
-package br.com.house.digital.projetointegrador.model;
+package br.com.house.digital.projetointegrador.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginInfo {
+public class LoginDTO {
 
     @NotBlank
     private String email;

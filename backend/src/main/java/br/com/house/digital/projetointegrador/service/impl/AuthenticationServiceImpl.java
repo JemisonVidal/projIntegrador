@@ -1,5 +1,6 @@
 package br.com.house.digital.projetointegrador.service.impl;
 
+import br.com.house.digital.projetointegrador.dto.LoginDTO;
 import br.com.house.digital.projetointegrador.model.*;
 import br.com.house.digital.projetointegrador.repository.UserRepository;
 import br.com.house.digital.projetointegrador.security.JWTTokenUtil;
@@ -10,7 +11,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,12 +33,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public JWTResponse authenticate(LoginInfo loginInfo) throws Exception {
+    public JWTResponse authenticate(LoginDTO loginDTO) throws Exception {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginInfo.getEmail(), loginInfo.getPassword()));
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(loginInfo.getEmail());
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.getEmail());
             final String token = jwtTokenUtil.generateToken(userDetails);
-            final User user = userRepository.findByEmail(loginInfo.getEmail()).get();
+            final User user = userRepository.findByEmail(loginDTO.getEmail()).get();
             return new JWTResponse(user, token);
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
