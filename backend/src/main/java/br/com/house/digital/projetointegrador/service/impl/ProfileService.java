@@ -1,30 +1,20 @@
 package br.com.house.digital.projetointegrador.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
+import br.com.house.digital.projetointegrador.dto.ProfileDTO;
+import br.com.house.digital.projetointegrador.dto.ProfileNewDTO;
+import br.com.house.digital.projetointegrador.model.*;
+import br.com.house.digital.projetointegrador.repository.*;
+import br.com.house.digital.projetointegrador.service.IService;
+import br.com.house.digital.projetointegrador.service.exceptions.DataIntegrityException;
+import br.com.house.digital.projetointegrador.service.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import br.com.house.digital.projetointegrador.dto.ProfileDTO;
-import br.com.house.digital.projetointegrador.dto.ProfileNewDTO;
-import br.com.house.digital.projetointegrador.model.Company;
-import br.com.house.digital.projetointegrador.model.Course;
-import br.com.house.digital.projetointegrador.model.Profile;
-import br.com.house.digital.projetointegrador.model.Skills;
-import br.com.house.digital.projetointegrador.model.User;
-import br.com.house.digital.projetointegrador.repository.CompanyRepository;
-import br.com.house.digital.projetointegrador.repository.CourseRepository;
-import br.com.house.digital.projetointegrador.repository.ProfileRepository;
-import br.com.house.digital.projetointegrador.repository.SkillsRepository;
-import br.com.house.digital.projetointegrador.repository.UserRepository;
-import br.com.house.digital.projetointegrador.service.IService;
-import br.com.house.digital.projetointegrador.service.exceptions.DataIntegrityException;
-import br.com.house.digital.projetointegrador.service.exceptions.ObjectNotFoundException;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProfileService implements IService<Profile> {
@@ -33,19 +23,19 @@ public class ProfileService implements IService<Profile> {
 
 	private final UserRepository userRepository;
 
-	private final SkillsRepository skillsRepository;
+	private final SkillRepository skillRepository;
 
 	private final CourseRepository coursesRepository;
 
-	private final CompanyRepository companyRepository;
+	private final WorkExperienceRepository workExperienceRepository;
 
 	@Autowired
-	public ProfileService(ProfileRepository profileRepository, UserRepository userRepository, SkillsRepository skillsRepository, CourseRepository coursesRepository, CompanyRepository companyRepository) {
+	public ProfileService(ProfileRepository profileRepository, UserRepository userRepository, SkillRepository skillRepository, CourseRepository coursesRepository, WorkExperienceRepository workExperienceRepository) {
 		this.profileRepository = profileRepository;
 		this.userRepository = userRepository;
-		this.skillsRepository = skillsRepository;
+		this.skillRepository = skillRepository;
 		this.coursesRepository = coursesRepository;
-		this.companyRepository = companyRepository;
+		this.workExperienceRepository = workExperienceRepository;
 	}
 
 	@Transactional
@@ -53,9 +43,9 @@ public class ProfileService implements IService<Profile> {
 	public Profile create(Profile object) {
 		object.setId(null);
 		object = profileRepository.save(object);
-		skillsRepository.saveAll(object.getSkills());
+		skillRepository.saveAll(object.getSkills());
 		coursesRepository.saveAll(object.getCourses());
-		companyRepository.saveAll(object.getCompanies());
+		workExperienceRepository.saveAll(object.getWorkExperiences());
 		return object;
 	}
 
@@ -104,10 +94,10 @@ public class ProfileService implements IService<Profile> {
 				profileNewDTO.getCity(), profileNewDTO.getState(), profileNewDTO.getLinkedin(),
 				profileNewDTO.getGithub(), profileNewDTO.getFreeText(), user);
 
-		List<Skills> listSkills = new ArrayList<>();
-		for (Skills skill : profileNewDTO.getSkills()) {
+		List<Skill> listSkills = new ArrayList<>();
+		for (Skill skill : profileNewDTO.getSkills()) {
 			listSkills.add(
-					new Skills(null, skill.getName(), skill.getExperienceTime(), skill.getKnowledgeLevel(), profile));
+					new Skill(null, skill.getName(), skill.getExperienceTime(), skill.getKnowledgeLevel().getId(), profile));
 		}
 
 		List<Course> listCourse = new ArrayList<>();
@@ -116,15 +106,15 @@ public class ProfileService implements IService<Profile> {
 					course.getConclusionYear(), profile));
 		}
 
-		List<Company> listCompanies = new ArrayList<>();
-		for (Company company : profileNewDTO.getCompanies()) {
-			listCompanies.add(new Company(null, company.getName(), company.getPosition(), company.getActivities(),
+		List<WorkExperience> listExperiences = new ArrayList<>();
+		for (WorkExperience company : profileNewDTO.getCompanies()) {
+			listExperiences.add(new WorkExperience(null, company.getName(), company.getPosition(), company.getActivities(),
 					company.getInitialDate(), company.getFinalDate(), company.isActing()));
 		}
 
 		profile.getSkills().addAll(listSkills);
 		profile.getCourses().addAll(listCourse);
-		profile.getCompanies().addAll(listCompanies);
+		profile.getWorkExperiences().addAll(listExperiences);
 		return profile;
 	}
 
@@ -146,6 +136,6 @@ public class ProfileService implements IService<Profile> {
 		newObject.setUser(object.getUser());
 		newObject.setSkills(object.getSkills());
 		newObject.setCourses(object.getCourses());
-		newObject.setCompanies(object.getCompanies());
+		newObject.setWorkExperiences(object.getWorkExperiences());
 	}
 }

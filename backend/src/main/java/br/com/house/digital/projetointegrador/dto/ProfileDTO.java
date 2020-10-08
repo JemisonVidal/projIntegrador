@@ -1,22 +1,16 @@
 package br.com.house.digital.projetointegrador.dto;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
-import org.hibernate.validator.constraints.Length;
-
-import br.com.house.digital.projetointegrador.model.Company;
-import br.com.house.digital.projetointegrador.model.Course;
-import br.com.house.digital.projetointegrador.model.Profile;
-import br.com.house.digital.projetointegrador.model.Skills;
-import br.com.house.digital.projetointegrador.model.User;
+import br.com.house.digital.projetointegrador.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -44,18 +38,16 @@ public class ProfileDTO implements Serializable {
 	private String linkedin;
 	private String github;
 	private String freeText;
-	private List<Skills> skills = new ArrayList<>();
+	private List<Skill> skills = new ArrayList<>();
 	private List<Course> courses = new ArrayList<>();
-	private List<Company> companies = new ArrayList<>();
+	private List<WorkExperience> workExperiences = new ArrayList<>();
 
 	@NotBlank(message = "Mandatory Filling")	
 	private User user;
 
 	public ProfileDTO(Profile profile) {
 		this.id = profile.getId();
-		this.fullName = profile.getFullName();
 		this.mainFunction = profile.getMainFunction();
-		this.email = profile.getEmail();
 		this.salary = profile.getSalary();
 		this.telephone = profile.getTelephone();
 		this.address = profile.getAddress();
@@ -69,6 +61,6 @@ public class ProfileDTO implements Serializable {
 		this.user = profile.getUser();
 		this.skills = profile.getSkills();
 		this.courses = profile.getCourses();
-		this.companies = profile.getCompanies();
+		this.workExperiences = profile.getWorkExperiences();
 	}
 }
