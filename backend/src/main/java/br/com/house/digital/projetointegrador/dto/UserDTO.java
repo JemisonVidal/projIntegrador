@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.house.digital.projetointegrador.model.User;
-import br.com.house.digital.projetointegrador.model.enums.TypeEnum;
+import br.com.house.digital.projetointegrador.model.enums.UserType;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -38,7 +38,7 @@ public class UserDTO {
         		.name(this.name)
                 .email(this.email)
                 .password(passwordEncoder.encode(this.password))
-                .type(TypeEnum.valueOf(this.type))
+                .type(UserType.valueOf(this.type))
                 .build();
     }
 
