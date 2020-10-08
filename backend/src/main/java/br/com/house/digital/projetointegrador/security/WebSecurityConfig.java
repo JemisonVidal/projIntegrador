@@ -1,5 +1,6 @@
 package br.com.house.digital.projetointegrador.security;
 
+import br.com.house.digital.projetointegrador.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -23,11 +23,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    private final UserDetailsService jwtUserDetailsService;
+    private final UserDetailsServiceImpl jwtUserDetailsService;
 
     private final JWTRequestFilter jwtRequestFilter;
 
-    public WebSecurityConfig(JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint, @Qualifier("userDetailsServiceImpl") UserDetailsService jwtUserDetailsService, JWTRequestFilter jwtRequestFilter) {
+    public WebSecurityConfig(JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint, UserDetailsServiceImpl jwtUserDetailsService, JWTRequestFilter jwtRequestFilter) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable()
+        httpSecurity.csrf().disable().cors().disable()
                 // don't authenticate this particular request
                 .authorizeRequests()
                     .antMatchers(
