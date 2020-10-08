@@ -1,0 +1,32 @@
+.container-profile {
+    /* display: flex; */
+    /* align-items: center; */
+    min-height: 100vh;
+    width: 100vw;
+    background-image: linear-gradient(
+      var(--color-primary-dark),
+      var(--color-primary)
+    );
+  }
+  
+  .header {
+    /* width: 100%; */
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .profile {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  #logo {
+    width: 60px;
+    height: auto;
+  }
+  
+  #menu {
+    color: var(--color-white);
+    font-size: 2rem;
+  }

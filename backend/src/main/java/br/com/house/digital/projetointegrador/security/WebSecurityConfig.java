@@ -1,6 +1,7 @@
 package br.com.house.digital.projetointegrador.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,14 +21,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    @Autowired
-    private UserDetailsService jwtUserDetailsService;
+    private final UserDetailsService jwtUserDetailsService;
 
-    @Autowired
-    private JWTRequestFilter jwtRequestFilter;
+    private final JWTRequestFilter jwtRequestFilter;
+
+    public WebSecurityConfig(JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint, @Qualifier("userDetailsServiceImpl") UserDetailsService jwtUserDetailsService, JWTRequestFilter jwtRequestFilter) {
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -50,11 +54,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        // We don't need CSRF for this example
         httpSecurity.csrf().disable()
                 // don't authenticate this particular request
                 .authorizeRequests()
-                    .antMatchers("/", "/login", "/register", "/static/**", "/v1/api/authenticate", "/v1/api/register")
+                    .antMatchers(
+                        "/v1/api/authenticate", // API de autenticação
+                        "/v1/api/register", // API de registro
+                        "/webjars/**", // Swagger
+                        "/swagger-ui.html", // Swagger
+                        "/swagger-resources/**", // Swagger
+                        "/v2/api-docs" // Swagger
+                    )
                     .permitAll()
                 // all other requests need to be authenticated
                 .anyRequest()
