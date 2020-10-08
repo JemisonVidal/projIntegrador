@@ -1,6 +1,6 @@
 export const baseURL = 'http://localhost:8080/';
 
-export function USER_CREATE(body) {
+export function USER_REGISTER(body) {
   return {
     url: baseURL + '/v1/api/register',
     options: {
