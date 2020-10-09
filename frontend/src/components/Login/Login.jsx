@@ -21,12 +21,14 @@ const UserLogin = () => {
   const { loading, request } = useFetch();
 
   async function login(email, senha) {
-    // const { url, options } = USER_LOGIN({ email, senha });
-    // await request(url, options);
-    if (email.value === '1@gmail.com' && senha.value === '1') {
-      return { apptoken: '1234' };
-    }
-    return { error: 'Usuário ou senha inválido' };
+    const { url, options } = USER_LOGIN({ email, senha });
+    const {acessoToken, error} = await request (url, options);
+    return {acessoToken, error};
+    //await request(url, options);
+    //if (email.value === '1@gmail.com' && senha.value === '1') {
+     // return { apptoken: '1234' };
+    //}
+    //return { error: 'Usuário ou senha inválido' };
   }
 
   async function onSubmit(e) {

@@ -14,7 +14,7 @@ const requestOptions = ({url, method = 'GET', body, jwt}) => {
   }
 }
 
-export function USER_CREATE(body) {
+export function USER_REGISTER(body) {
   return requestOptions({
     url: '/v1/api/register',
     method: 'POST',
