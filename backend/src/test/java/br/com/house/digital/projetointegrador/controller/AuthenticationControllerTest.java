@@ -1,13 +1,17 @@
 package br.com.house.digital.projetointegrador.controller;
 
+import br.com.house.digital.projetointegrador.model.JWTResponse;
+import br.com.house.digital.projetointegrador.model.LoginInfo;
 import br.com.house.digital.projetointegrador.model.TypeEnum;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.UserDTO;
+import br.com.house.digital.projetointegrador.repository.UserRepository;
 import br.com.house.digital.projetointegrador.security.JWTAuthenticationEntryPoint;
 import br.com.house.digital.projetointegrador.security.JWTRequestFilter;
 import br.com.house.digital.projetointegrador.security.JWTTokenUtil;
 import br.com.house.digital.projetointegrador.security.WebSecurityConfig;
 import br.com.house.digital.projetointegrador.service.AuthenticationService;
+import br.com.house.digital.projetointegrador.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +21,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -43,7 +46,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         JWTAuthenticationEntryPoint.class,
         WebSecurityConfig.class,
         JWTRequestFilter.class,
-        JWTTokenUtil.class
+        JWTTokenUtil.class,
+        UserDetailsServiceImpl.class,
+        UserRepository.class
 })
 public class AuthenticationControllerTest {
 
@@ -52,9 +57,6 @@ public class AuthenticationControllerTest {
 
     @MockBean
     AuthenticationService authenticationService;
-
-    @MockBean
-    UserDetailsService userDetailsService;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -89,6 +91,42 @@ public class AuthenticationControllerTest {
                 .andExpect(jsonPath("type").value(TypeEnum.USER.toString()));
 
         verify(authenticationService, times(1)).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("Should authenticate a user and return a token with success status.")
+    public void authenticateUserTest() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        LoginInfo loginInfo = LoginInfo.builder()
+                .email("black_widow@shield.com.br")
+                .password("WidowShield2020")
+                .build();
+
+        User user = User.builder()
+                .uuid(UUID.randomUUID())
+                .name("Natasha Romanov")
+                .email("black_widow@shield.com.br")
+                .type(TypeEnum.USER)
+                .build();
+
+        JWTResponse jwtResponse = JWTResponse.builder()
+                .user(user)
+                .token(uuid.toString())
+                .build();
+
+        when(authenticationService.authenticate(any(LoginInfo.class))).thenReturn(jwtResponse);
+
+        RequestBuilder request = post("/v1/api/authenticate")
+                .header("Content-type", "application/json")
+                .content(objectMapper.writeValueAsString(loginInfo));
+
+        mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("user.name").value(user.getName()))
+                .andExpect(jsonPath("user.email").value(user.getEmail()))
+                .andExpect(jsonPath("user.type").value(user.getType().toString()))
+                .andExpect(jsonPath("token").value(jwtResponse.getToken()));
     }
 
 }
