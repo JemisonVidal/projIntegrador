@@ -3,6 +3,9 @@ import { Container } from 'react-bootstrap';
 import User from './User/User';
 import CompanyProfile from './CompanyProfile/CompanyProfile';
 import UserProfile from './UserProfile/UserProfile';
+import logo from '../../assets/images/Logo2RecruIT.png';
+import Nav from '../Template/nav/Nav';
+import { Link } from 'react-router-dom';
 
 import './Profile.css';
 // import useFetch from '../../Hooks/useFetch';
@@ -66,19 +69,20 @@ const Profile = ({ type, id }) => {
   // useEffect(() => {
   //   request(url, options)
   // }, [])
-
   return (
     <Container fluid className="container-profile p-0">
-      <Container className="py-2 d-flex justify-content-between align-items-center">
-        <i className="fas fa-bars" id="menu"></i>
-        <img src="/logo192.png" alt="logo" id="logo" />
-      </Container>
+      <Nav>
+        <Link className="link-nav" to={'/'}>
+          <img className="linkNavLogo" src={logo}></img>
+          <h4>Home</h4>
+        </Link>
+      </Nav>
       <User imgSrc={user.imgSrc} name={user.name} title={user.title} />
       {type === 'company' ? (
         <CompanyProfile data={userData} />
       ) : (
-        <UserProfile data={userData} />
-      )}
+          <UserProfile data={userData} />
+        )}
     </Container>
   );
 };

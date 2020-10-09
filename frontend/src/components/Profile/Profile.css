@@ -2,11 +2,6 @@
     /* display: flex; */
     /* align-items: center; */
     min-height: 100vh;
-    width: 100vw;
-    background-image: linear-gradient(
-      var(--color-primary-dark),
-      var(--color-primary)
-    );
   }
   
   .header {
@@ -22,11 +17,22 @@
   }
   
   #logo {
-    width: 60px;
+    width: 80px;
     height: auto;
   }
   
   #menu {
     color: var(--color-white);
     font-size: 2rem;
+  }
+
+  .linkNavLogo{
+    width: 90px;
+  }
+
+  @media (min-width: 576px) {
+    #menu {
+      color: var(--color-primary-dark);
+      font-size: 2rem;
+    }
   }
