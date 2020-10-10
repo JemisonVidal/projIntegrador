@@ -6,7 +6,7 @@ import Checkbox from '../../components/Checkbox/Checkbox';
 import Error from '../../components/Helper/Error';
 import useForm from '../../Hooks/useForm';
 import useFetch from '../../Hooks/useFetch';
-import { USER_CREATE } from '../../APIs/APIs';
+import { USER_REGISTER } from '../../APIs/APIs';
 import './Register.css';
 
 const UserRegister = () => {
@@ -26,7 +26,7 @@ const UserRegister = () => {
   ];
 
   async function registrar(nome, email, senha, tipo) {
-    const { url, options } = USER_CREATE({ nome, email, senha, tipo });
+    const { url, options } = USER_REGISTER({ nome, email, senha, tipo });
     await request(url, options);
   }
 
@@ -38,7 +38,8 @@ const UserRegister = () => {
       email.validate() &&
       senha.validate() &&
       confirmarSenha.validate() &&
-      tipo.validate()
+      tipo.validate() && 
+      senha === confirmarSenha
     ) {
       const { response } = await registrar(nome, email, senha, tipo);
       if (response.ok) return history.push('/login');
