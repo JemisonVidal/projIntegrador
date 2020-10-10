@@ -1,37 +1,73 @@
 package br.com.house.digital.projetointegrador.model;
 
+import br.com.house.digital.projetointegrador.model.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.Type;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class User {
+public class User implements UserDetails {
 
-    @Id
-    @Type(type="uuid-char")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonIgnore
-    @EqualsAndHashCode.Include
-    private UUID uuid;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@EqualsAndHashCode.Include
+	private Long id;
 
-    private String name;
+	@Column(nullable = false)
+	private String name;
 
-    @Column(name = "email", unique = true)
-    private String email;
+	@Column(unique = true, nullable = false)
+	private String email;
 
-    @JsonIgnore
-    private String password;
+	@JsonIgnore
+	@Column(nullable = false)
+	private String password;
 
-    @Enumerated(value = EnumType.STRING)
-    private TypeEnum type;
+	@Enumerated(value = EnumType.STRING)
+	@Column(nullable = false)
+	private UserType type;
 
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority(this.type.toString()));
+		return authorities;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }
