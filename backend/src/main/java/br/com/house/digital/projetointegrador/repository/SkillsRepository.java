@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.com.house.digital.projetointegrador.model.Skills;
 
 @Repository
-public interface SkillsRepository extends JpaRepository<Skills, Integer> {    
+public interface SkillsRepository extends JpaRepository<Skills, Long> {
 
 }

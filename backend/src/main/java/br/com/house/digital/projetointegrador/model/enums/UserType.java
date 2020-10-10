@@ -1,6 +1,6 @@
 package br.com.house.digital.projetointegrador.model.enums;
 
-public enum TypeEnum {
+public enum UserType {
     USER,
     COMPANY
 }

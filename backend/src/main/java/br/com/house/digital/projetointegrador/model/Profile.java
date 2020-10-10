@@ -1,24 +1,16 @@
 package br.com.house.digital.projetointegrador.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,7 +22,8 @@ public class Profile implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@EqualsAndHashCode.Include
+	private Long id;
 	private String fullName;
 	private String mainFunction;
 	private String email;
@@ -60,11 +53,11 @@ public class Profile implements Serializable {
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "profile")
-	private List<Company> companys = new ArrayList<>();
+	private List<Company> companies = new ArrayList<>();
 
-	public Profile(Integer id, String fullName, String mainFunction, String email, Double salary, String telephone,
-			String address, String number, String neighborhood, String city, String state, String linkedin,
-			String github, String freeText, User user) {
+	public Profile(Long id, String fullName, String mainFunction, String email, Double salary, String telephone,
+				   String address, String number, String neighborhood, String city, String state, String linkedin,
+				   String github, String freeText, User user) {
 		super();
 		this.id = id;
 		this.fullName = fullName;
