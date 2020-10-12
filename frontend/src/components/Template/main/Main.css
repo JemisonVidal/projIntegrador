@@ -1,0 +1,72 @@
+.container-box-home {
+    display: flex;
+    align-items: top;
+    min-height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(#27187e, #758bfd);
+}
+
+.container-image-background{
+    display: flex;
+    align-items: top;
+    width: 100vw;
+    background-image: url('../../../assets/images/Logo2\ RecruIT\ FullOpacity.png');
+    background-repeat: no-repeat;
+    background-position: -50% 80%;
+    background-size: 70vh;
+}
+
+.form-box-home {
+    max-width: 960px;
+    padding: 0;
+}
+
+@media (min-width: 576px) {
+    .container-box-home {
+        padding: 20px 0;
+    }
+
+    .form-box-home {
+      background-color: white;
+      box-shadow: 1px 5px 30px black;
+      border-radius: 25px;
+    }
+
+    .container-image-background{
+        background-image: none;
+        background: 
+            url('../../../assets/images/LogoRecruIT.png') right/auto no-repeat,
+            url('../../../assets/images/LogoRecruIT.png') left/auto no-repeat;
+        background-position: -38%, 138%;
+        background-size: 90vh;
+    }
+    
+}
+
+@media (min-width: 576px) {
+    .form-box-home {
+      /* background: url('../../../assets/images/Logo\ RecruIT.svg') no-repeat; */
+      background-position: 50% -20%;
+      background-size: 300vh;
+      background-color: #f1f2f6;
+      box-shadow: 1px 5px 30px black;
+      border-radius: 25px;
+    }
+
+    .container-image-background{
+        background-image: none;
+        background: 
+            url('../../../assets/images/LogoRecruIT.png') right/auto no-repeat,
+            url('../../../assets/images/LogoRecruIT.png') left/auto no-repeat;
+        background-position: -40%, 140%;
+        background-size: 90vh;
+    }
+    
+}
+
+@media (min-width: 2100px) {
+    .container-image-background{
+        background-position: -25%, 125%;
+        background-size: 90vh;
+    }
+}

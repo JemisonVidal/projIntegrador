@@ -6,7 +6,7 @@ import Checkbox from '../../components/Checkbox/Checkbox';
 import Error from '../../components/Helper/Error';
 import useForm from '../../Hooks/useForm';
 import useFetch from '../../Hooks/useFetch';
-import { USER_CREATE } from '../../APIs/APIs';
+import { USER_REGISTER } from '../../APIs/APIs';
 import './Register.css';
 
 const UserRegister = () => {
@@ -26,7 +26,7 @@ const UserRegister = () => {
   ];
 
   async function registrar(nome, email, senha, tipo) {
-    const { url, options } = USER_CREATE({ nome, email, senha, tipo });
+    const { url, options } = USER_REGISTER({ nome, email, senha, tipo });
     await request(url, options);
   }
 
@@ -38,7 +38,8 @@ const UserRegister = () => {
       email.validate() &&
       senha.validate() &&
       confirmarSenha.validate() &&
-      tipo.validate()
+      tipo.validate() && 
+      senha === confirmarSenha
     ) {
       const { response } = await registrar(nome, email, senha, tipo);
       if (response.ok) return history.push('/login');
@@ -47,73 +48,76 @@ const UserRegister = () => {
 
   return (
     <div className="container-box">
-      <Form className="container form-box" onSubmit={handleSubmit}>
-        <h1 className="titulo-registro">Cadastre-se</h1>
-        <Input
-          namelabel="Nome"
-          type="text"
-          placeholder="Nome"
-          required
-          {...nome}
-        />
-        <Input
-          namelabel="Email"
-          type="email"
-          placeholder="Email"
-          required
-          {...email}
-        />
-        <Input
-          namelabel="Senha"
-          type="password"
-          placeholder="Senha"
-          required
-          {...senha}
-        />
-        <Input
-          namelabel="Confirmar Senha"
-          type="password"
-          placeholder="Confirmar Senha"
-          required
-          {...confirmarSenha}
-        />
-        <Input
-          namelabel="Quero trabalhar/Quero recrutar"
-          as="select"
-          required
-          options={optionsComboBox}
-          {...tipo}
-        />
-        <Checkbox
-          className="CheckBoxMin"
-          type="checkbox"
-          required
-          label="Eu concordo com os termos de serviço e políticas de privacidade."
-        />
-        {loading ? (
-          <Button id="Cadastrar" variant="primary" disabled>
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-            />
-            <span className="sr-only">Carregando...</span>
-          </Button>
-        ) : (
-          <Button id="Cadastrar" variant="primary" type="submit">
-            Cadastrar
-          </Button>
-        )}
-        <Error error={error} />
-        <p id="cadastro">
-          Já tem cadastro ?{' '}
-          <Link id="login" to="/login">
-            Faça o Login
+      {/* className="container-image-background" está no Main.css */}
+      <div className="container-image-background">
+        <Form className="container form-box" onSubmit={handleSubmit}>
+          <h1 className="titulo-registro">Cadastre-se</h1>
+          <Input
+            namelabel="Nome"
+            type="text"
+            placeholder="Nome"
+            required
+            {...nome}
+          />
+          <Input
+            namelabel="Email"
+            type="email"
+            placeholder="Email"
+            required
+            {...email}
+          />
+          <Input
+            namelabel="Senha"
+            type="password"
+            placeholder="Senha"
+            required
+            {...senha}
+          />
+          <Input
+            namelabel="Confirmar Senha"
+            type="password"
+            placeholder="Confirmar Senha"
+            required
+            {...confirmarSenha}
+          />
+          <Input
+            namelabel="Quero trabalhar/Quero recrutar"
+            as="select"
+            required
+            options={optionsComboBox}
+            {...tipo}
+          />
+          <Checkbox
+            className="CheckBoxMin"
+            type="checkbox"
+            required
+            label="Eu concordo com os termos de serviço e políticas de privacidade."
+          />
+          {loading ? (
+            <Button id="Cadastrar" variant="primary" disabled>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              <span className="sr-only">Carregando...</span>
+            </Button>
+          ) : (
+              <Button id="Cadastrar" variant="primary" type="submit">
+                Cadastrar
+              </Button>
+            )}
+          <Error error={error} />
+          <p id="cadastro">
+            Já tem cadastro ?{' '}
+            <Link id="login" to="/login">
+              Faça o Login
           </Link>
-        </p>
-      </Form>
+          </p>
+        </Form>
+      </div>
     </div>
   );
 };
