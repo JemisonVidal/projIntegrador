@@ -107,7 +107,7 @@ public class ProfileService implements IService<Profile> {
 		List<Skills> listSkills = new ArrayList<>();
 		for (Skills skill : profileNewDTO.getSkills()) {
 			listSkills.add(
-					new Skills(null, skill.getName(), skill.getExperienceTime(), skill.getKnowledgeLevel(), profile));
+					new Skills(null, skill.getName(), skill.getExperienceTime(), skill.getKnowledgeLevel().getId(), profile));
 		}
 
 		List<Course> listCourse = new ArrayList<>();
