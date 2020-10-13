@@ -39,7 +39,7 @@ public class ProfileController {
 	}
 	
 	@PutMapping(value="/{id}")
-	public ResponseEntity<Void> update(@RequestBody Profile profile, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@RequestBody Profile profile, @PathVariable Long id) {
 		profile.setId(id);
 		profile = profileService.update(profile);
 		return ResponseEntity.noContent().build();
