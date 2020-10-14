@@ -1,15 +1,16 @@
 package br.com.house.digital.projetointegrador.controller;
 
+import br.com.house.digital.projetointegrador.dto.LoginDTO;
+import br.com.house.digital.projetointegrador.dto.UserDTO;
 import br.com.house.digital.projetointegrador.model.JWTResponse;
-import br.com.house.digital.projetointegrador.model.LoginInfo;
-import br.com.house.digital.projetointegrador.model.TypeEnum;
 import br.com.house.digital.projetointegrador.model.User;
-import br.com.house.digital.projetointegrador.model.UserDTO;
+import br.com.house.digital.projetointegrador.model.enums.UserType;
 import br.com.house.digital.projetointegrador.security.JWTAuthenticationEntryPoint;
 import br.com.house.digital.projetointegrador.security.JWTRequestFilter;
 import br.com.house.digital.projetointegrador.security.JWTTokenUtil;
 import br.com.house.digital.projetointegrador.security.WebSecurityConfig;
 import br.com.house.digital.projetointegrador.service.AuthenticationService;
+import br.com.house.digital.projetointegrador.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -29,6 +31,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -57,97 +60,97 @@ public class AuthenticationControllerTest {
     AuthenticationService authenticationService;
 
     @MockBean
-    UserDetailsService userDetailsService;
+    UserDetailsServiceImpl userDetailsServiceImpl;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    @DisplayName("Should register a user on database and return status 201.")
+    @DisplayName("Should register a user and return status 201")
     public void registerUserTest() throws Exception {
-        UserDTO dto = UserDTO.builder()
-                .name("Natasha Romanov")
-                .email("black_widow@shield.com.br")
-                .password("WidowShield2020")
-                .type(TypeEnum.USER)
-                .build();
+        UserDTO userDTO = new UserDTO("natasha_romanov@shield.com",
+                "Natasha Romanov",
+                "Shield2020",
+                UserType.USER);
 
-        User user = User.builder()
-                .uuid(UUID.randomUUID())
-                .name(dto.getName())
-                .email(dto.getEmail())
-                .password(dto.getPassword())
-                .type(dto.getType())
-                .build();
+        when(authenticationService.save(any(User.class)))
+                .thenReturn(User.builder()
+                        .id(1L)
+                        .build());
 
-        when(authenticationService.save(any(User.class))).thenReturn(user);
+        String json = objectMapper.writeValueAsString(userDTO);
 
         RequestBuilder request = post("/v1/api/register")
-                .header("Content-type", "application/json")
-                .content(objectMapper.writeValueAsString(dto));
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
 
-        mvc.perform(request)
+        MockHttpServletResponse response = mvc.perform(request)
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("name").value(dto.getName()))
-                .andExpect(jsonPath("email").value(dto.getEmail()))
-                .andExpect(jsonPath("type").value(TypeEnum.USER.toString()));
+                .andReturn()
+                .getResponse();
 
         verify(authenticationService, times(1)).save(any(User.class));
+
+        assertThat(response.getHeader("Location")).isEqualTo("http://localhost/v1/api/register/1");
     }
 
     @Test
-    @DisplayName("Should authenticate a user and return a token with success status.")
+    @DisplayName("Should authenticate a user and return a token")
     public void authenticateUserTest() throws Exception {
-        UUID uuid = UUID.randomUUID();
-
-        LoginInfo loginInfo = LoginInfo.builder()
-                .email("black_widow@shield.com.br")
-                .password("WidowShield2020")
-                .build();
+        LoginDTO loginDTO = new LoginDTO("natasha_romanov@shield.com", "Shield2020");
 
         User user = User.builder()
-                .uuid(UUID.randomUUID())
+                .id(1L)
+                .email(loginDTO.getEmail())
                 .name("Natasha Romanov")
-                .email("black_widow@shield.com.br")
-                .type(TypeEnum.USER)
+                .password(loginDTO.getPassword())
+                .type(UserType.USER)
                 .build();
 
-        JWTResponse jwtResponse = JWTResponse.builder()
-                .user(user)
-                .token(uuid.toString())
-                .build();
+        String token = UUID.randomUUID().toString();
 
-        when(authenticationService.authenticate(any(LoginInfo.class))).thenReturn(jwtResponse);
+        when(authenticationService.authenticate(any(LoginDTO.class)))
+                .thenReturn(new JWTResponse(user, token));
 
         RequestBuilder request = post("/v1/api/authenticate")
-                .header("Content-type", "application/json")
-                .content(objectMapper.writeValueAsString(loginInfo));
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(loginDTO));
 
         mvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("user.name").value(user.getName()))
-                .andExpect(jsonPath("user.email").value(user.getEmail()))
-                .andExpect(jsonPath("user.type").value(user.getType().toString()))
-                .andExpect(jsonPath("token").value(jwtResponse.getToken()));
+                .andExpect(jsonPath("token").value(token));
     }
 
     @Test
-    @DisplayName("Should authenticate a user and return 401 status")
-    public void authenticateUserWithBadCredentials() throws Exception {
-        LoginInfo loginInfo = LoginInfo.builder()
-                .email("black_widow@shield.com.br")
-                .password("WidowShield2020")
-                .build();
+    @DisplayName("Should throw an exception and return status unauthorized")
+    public void authenticateUserWithWrongCredentialsTest() throws Exception {
+        LoginDTO loginDTO = new LoginDTO("natasha_romanov@shield.com", "Shield2020");
 
-        Exception cause = new BadCredentialsException("Invalid user");
-
-        when(authenticationService.authenticate(loginInfo)).thenThrow(new Exception("INVALID_CREDENTIALS", cause));
+        when(authenticationService.authenticate(any(LoginDTO.class)))
+                .thenThrow(new Exception("INVALID_CREDENTIALS", new BadCredentialsException("Access denied")));
 
         RequestBuilder request = post("/v1/api/authenticate")
-                .header("Content-type", "application/json")
-                .content(objectMapper.writeValueAsString(loginInfo));
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(loginDTO));
 
         mvc.perform(request)
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("Should return status bad request")
+    public void sendEmptyLoginRequestTest() throws Exception {
+        LoginDTO loginDTO = new LoginDTO("", "");
+
+        RequestBuilder request = post("/v1/api/authenticate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(loginDTO));
+
+        mvc.perform(request)
+                .andExpect(status().isBadRequest());
     }
 
 }

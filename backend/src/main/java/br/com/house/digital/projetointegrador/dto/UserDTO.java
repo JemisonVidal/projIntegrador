@@ -1,6 +1,7 @@
 package br.com.house.digital.projetointegrador.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -14,6 +15,7 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @AllArgsConstructor
+@Builder
 public class UserDTO {
 
     @NotBlank
@@ -31,14 +33,14 @@ public class UserDTO {
     private final String password;
 
     @NotNull(message = "Mandatory Filling")
-    private final String type;
+    private final UserType type;
 
     public User toUser(PasswordEncoder passwordEncoder) {
         return User.builder()
         		.name(this.name)
                 .email(this.email)
                 .password(passwordEncoder.encode(this.password))
-                .type(UserType.valueOf(this.type))
+                .type(type)
                 .build();
     }
 
