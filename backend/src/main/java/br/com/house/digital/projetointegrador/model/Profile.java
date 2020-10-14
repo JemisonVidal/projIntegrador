@@ -45,7 +45,7 @@ public class Profile implements Serializable {
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "profile")
-	private List<Skills> skills = new ArrayList<>();
+	private List<Skill> skills = new ArrayList<>();
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "profile")
@@ -53,7 +53,7 @@ public class Profile implements Serializable {
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "profile")
-	private List<Company> companies = new ArrayList<>();
+	private List<WorkExperience> workExperiences = new ArrayList<>();
 
 	public Profile(Long id, String fullName, String mainFunction, String email, Double salary, String telephone,
 				   String address, String number, String neighborhood, String city, String state, String linkedin,

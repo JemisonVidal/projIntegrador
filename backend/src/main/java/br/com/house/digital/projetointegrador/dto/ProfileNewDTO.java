@@ -1,20 +1,18 @@
 package br.com.house.digital.projetointegrador.dto;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import br.com.house.digital.projetointegrador.model.Course;
+import br.com.house.digital.projetointegrador.model.Skill;
+import br.com.house.digital.projetointegrador.model.WorkExperience;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-
-import br.com.house.digital.projetointegrador.model.Company;
-import br.com.house.digital.projetointegrador.model.Course;
-import br.com.house.digital.projetointegrador.model.Skills;
-import lombok.Getter;
-import lombok.Setter;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,9 +37,9 @@ public class ProfileNewDTO implements Serializable {
 	private String linkedin;
 	private String github;
 	private String freeText;
-	private List<Skills> skills = new ArrayList<>();
+	private List<Skill> skills = new ArrayList<>();
 	private List<Course> courses = new ArrayList<>();
-	private List<Company> companies = new ArrayList<>();
+	private List<WorkExperience> companies = new ArrayList<>();
 
 	@NotNull(message = "Mandatory Filling")	
 	private Long userId;
