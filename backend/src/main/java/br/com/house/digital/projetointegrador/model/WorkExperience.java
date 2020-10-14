@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Company implements Serializable {
+public class WorkExperience implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class Company implements Serializable {
 	@JoinColumn(name = "profile_id")
 	private Profile profile;
 
-	public Company(Long id, String name, String position, String activities, LocalDate initialDate,
+	public WorkExperience(Long id, String name, String position, String activities, LocalDate initialDate,
 			LocalDate finalDate, boolean acting) {
 		super();
 		this.id = id;

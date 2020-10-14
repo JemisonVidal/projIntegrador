@@ -19,7 +19,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Skills implements Serializable {
+public class Skill implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
