@@ -95,6 +95,64 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Should return error 400 when try to register a user with empty email")
+    public void registerUserWithEmptyEmail() throws Exception {
+        UserDTO userDTO = new UserDTO("",
+                "Natasha Romanov",
+                "Shield2020",
+                UserType.USER);
+
+        String json = objectMapper.writeValueAsString(userDTO);
+
+        RequestBuilder request = post("/v1/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test
+    public void registerUserWithEmptyName() throws Exception {
+        UserDTO userDTO = new UserDTO("natasha_romanov@shield.com",
+                "",
+                "Shield2020",
+                UserType.USER);
+
+        String json = objectMapper.writeValueAsString(userDTO);
+
+        RequestBuilder request = post("/v1/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test
+    public void registerUserWithEmptyPassword() throws Exception {
+        UserDTO userDTO = new UserDTO("natasha_romanov@shield.com",
+                "Natasha Romanov",
+                "",
+                UserType.USER);
+
+        String json = objectMapper.writeValueAsString(userDTO);
+
+        RequestBuilder request = post("/v1/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test
     @DisplayName("Should authenticate a user and return a token")
     public void authenticateUserTest() throws Exception {
         LoginDTO loginDTO = new LoginDTO("natasha_romanov@shield.com", "Shield2020");
