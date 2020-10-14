@@ -3,7 +3,7 @@
 }
 
 .card-profile .btn {
-  background-color: var(--color-white);
+  background-color: white;
   color: var(--color-primary-dark);
   font-weight: bold;
   padding: 0;
@@ -11,11 +11,12 @@
 }
 
 .card-profile {
-  background: var(--color-white);
+  background: white;
   border: 2px solid var(--color-primary-dark);
   border-radius: 10px;
   box-shadow: 4px 8px 4px rgba(39, 24, 126, 0.25);
   color: var(--color-primary-dark);
+  margin-bottom: 10px ;
 }
 
 .card-profile .card-title {
@@ -27,8 +28,28 @@
   padding: 0.2rem 0;
 }
 
+.card-profile .profile-item .font-weight-bold{
+  color: var(--color-primary-dark);
+}
+
+.card-profile .profile-item span{
+  color: #FF8600;
+}
+
+.card-profile .profile-item span a{
+  color: var(--color-primary);
+}
+
+.card-profile .profile-item span a:hover{
+  text-decoration: none;
+  font-size: 16.5px;
+}
+
 @media (min-width: 576px) {
   .card-profile .btn {
     font-size: 1.75rem;
+  }
+  .card-profile{
+    margin-bottom: 15px ;
   }
 }
