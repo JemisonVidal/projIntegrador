@@ -1,3 +1,5 @@
+// export const baseURL = 'http://localhost:8080';
+// TODO arrumar o CORS no back, por enquanto ta usando o proxy no ambiente dev
 export const baseURL = '';
 
 const requestOptions = ({url, method = 'GET', body, jwt}) => {
