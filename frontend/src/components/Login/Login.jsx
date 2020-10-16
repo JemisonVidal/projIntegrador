@@ -22,25 +22,19 @@ const UserLogin = () => {
 
   async function login(email, senha) {
     const { url, options } = USER_LOGIN({ email: email.value, password: senha.value });
-    const {json} = await request (url, options);
-    return {acessoToken: json.token, error: null};
-    //await request(url, options);
-    //if (email.value === '1@gmail.com' && senha.value === '1') {
-     // return { apptoken: '1234' };
-    //}
-    //return { error: 'Usuário ou senha inválido' };
+    return await request (url, options);
   }
 
   async function onSubmit(e) {
     e.preventDefault();
 
     if (email.validate() && senha.validate()) {
-      const { acessoToken, error } = await login(email, senha);
-      if (acessoToken) {
-        setToken(acessoToken);
+      const response = await login(email, senha);
+      if (response.ok) {
+        setToken(response.json.token);
         return history.push('/');
       }
-      setErroLogin(error);
+      setErroLogin('Usuário ou senha inválido');
     }
   }
 
