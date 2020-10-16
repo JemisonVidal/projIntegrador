@@ -1,4 +1,4 @@
-export const baseURL = 'http://localhost:8080';
+export const baseURL = '';
 
 const requestOptions = ({url, method = 'GET', body, jwt}) => {
   return {
@@ -24,7 +24,8 @@ export function USER_REGISTER(body) {
 
 export function USER_LOGIN(body) {
   return requestOptions({
-    url: '/v1/api/login',
+    url: '/v1/api/authenticate',
+    method: 'POST',
     body
   })
 }

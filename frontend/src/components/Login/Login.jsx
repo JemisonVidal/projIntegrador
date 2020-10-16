@@ -21,9 +21,9 @@ const UserLogin = () => {
   const { loading, request } = useFetch();
 
   async function login(email, senha) {
-    const { url, options } = USER_LOGIN({ email, senha });
-    const {acessoToken, error} = await request (url, options);
-    return {acessoToken, error};
+    const { url, options } = USER_LOGIN({ email: email.value, password: senha.value });
+    const {json} = await request (url, options);
+    return {acessoToken: json.token, error: null};
     //await request(url, options);
     //if (email.value === '1@gmail.com' && senha.value === '1') {
      // return { apptoken: '1234' };
@@ -35,9 +35,9 @@ const UserLogin = () => {
     e.preventDefault();
 
     if (email.validate() && senha.validate()) {
-      const { apptoken, error } = await login(email, senha);
-      if (apptoken) {
-        setToken(apptoken);
+      const { acessoToken, error } = await login(email, senha);
+      if (acessoToken) {
+        setToken(acessoToken);
         return history.push('/');
       }
       setErroLogin(error);
@@ -60,7 +60,7 @@ const UserLogin = () => {
           />
           <Input
             namelabel="Senha"
-            type="text"
+            type="password"
             placeholder="Senha"
             required
             {...senha}
