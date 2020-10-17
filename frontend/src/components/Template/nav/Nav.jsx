@@ -1,14 +1,22 @@
 import React from 'react'
-import { NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
+import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
 import './Nav.css'
-import { Link } from 'react-router-dom'
 
-export default props =>
-    <aside className="menu-area">
-        <div className="navBar">
-            <i className="fas fa-bars" id="menuHamburger"></i>
-            <div className="photoNav">
-                {props.children}
-            </div>
-        </div>
-    </aside >
+const NavBar = (props) => {
+  return (
+    <>
+      <Navbar collapseOnSelect expand="lg" >
+        <Navbar.Brand href="#home">RecruIT</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="#Oportunidades">Oportunidades</Nav.Link>
+            <Nav.Link href="#Empresas">Empresas</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    </>
+  )
+}
+
+export default NavBar
