@@ -66,6 +66,36 @@ const Profile = ({ type, id }) => {
     }]
   };
 
+  const companyDataMock = {
+    imgSrc: `http://placekitten.com/300/300`,
+    name: "Flash System",
+    about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer mi massa, tincidunt in odio tincidunt, lobortis dignissim nisl. Quisque metus erat, bibendum eget fermentum at, tempus sit amet diam. Nunc vel tempor elit, vitae scelerisque massa. Cras semper velit fermentum magna placerat placerat. Phasellus at felis et lorem molestie luctus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed pulvinar massa ut mauris pharetra tempus. Phasellus facilisis, nisl at hendrerit sagittis, augue nisi mollis augue, eu fermentum lacus dolor eu nisi. Praesent felis enim, facilisis at lacinia eu, ornare ut ipsum. Nunc quis nunc ut nunc aliquam tempus. Integer ornare ut purus at vestibulum. Nulla massa nunc, elementum nec massa nec, efficitur laoreet ligula. Vivamus id felis placerat magna commodo gravida.",
+    main: "IT service and support",
+    address: "São Paulo, SP",
+    lifetime: "3 years",
+    branch: "system development and support",
+    site: "www.loremIpsum.com.br",
+    opportunitys: [
+      {
+        id: 1,
+        title: "Programadora Full Stack",
+        description: "Desenvolver novas features",
+        activities: "Lorem ipsum dolor sit amet"
+      },
+      {
+        id: 2,
+        title: "Programadora Full Stack",
+        description: "Desenvolver novas features",
+        activities: "Lorem ipsum dolor sit amet"
+      },
+      {
+        id: 3,
+        title: "Programadora Full Stack",
+        description: "Desenvolver novas features",
+        activities: "Lorem ipsum dolor sit amet"
+      }
+    ]
+  }
   // useEffect(() => {
   //   request(url, options)
   // }, [])
@@ -77,12 +107,15 @@ const Profile = ({ type, id }) => {
           <h4>Home</h4>
         </Link>
       </Nav>
-      <User imgSrc={user.imgSrc} name={user.name} title={user.title} />
-      {type === 'company' ? (
-        <CompanyProfile data={userData} />
-      ) : (
+      {type === 'company'
+        ? <>
+          <User imgSrc={companyDataMock.imgSrc} name={companyDataMock.name} title={companyDataMock.main} />
+          <CompanyProfile data={companyDataMock} />
+        </>
+        : <>
+          <User imgSrc={user.imgSrc} name={user.name} title={user.title} />
           <UserProfile data={userData} />
-        )}
+        </>}
     </Container>
   );
 };
