@@ -27,7 +27,7 @@ const Input = ({ namelabel, type, as, value, onChange, onBlur, options, error, r
           onBlur={onBlur}
           required={required}
         >
-          {options && options.map(op => <option key={op}>{op}</option>)}
+          {options && options.map(({value, text}) => <option value={value} key={value}>{text}</option>)}
         </Form.Control>
       }
       {error && <p className="error">{error}</p>}

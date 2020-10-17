@@ -20,14 +20,14 @@ const UserRegister = () => {
   const history = useHistory();
 
   const optionsComboBox = [
-    'Escolha uma opção',
-    'Quero trabalhar',
-    'Quero recrutar',
+    {value: '', text: 'Escolha uma opção'},
+    {value: 'USER', text: 'Quero trabalhar'},
+    {value: 'COMPANY', text: 'Quero recrutar'},
   ];
 
   async function registrar(nome, email, senha, tipo) {
-    const { url, options } = USER_REGISTER({ nome, email, senha, tipo });
-    await request(url, options);
+    const { url, options } = USER_REGISTER({ name: nome.value, email: email.value, password: senha.value, type: tipo.value });
+    return await request(url, options);
   }
 
   async function handleSubmit(e) {
@@ -39,7 +39,7 @@ const UserRegister = () => {
       senha.validate() &&
       confirmarSenha.validate() &&
       tipo.validate() && 
-      senha === confirmarSenha
+      senha.value === confirmarSenha.value
     ) {
       const { response } = await registrar(nome, email, senha, tipo);
       if (response.ok) return history.push('/login');

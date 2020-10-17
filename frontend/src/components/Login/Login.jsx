@@ -21,26 +21,20 @@ const UserLogin = () => {
   const { loading, request } = useFetch();
 
   async function login(email, senha) {
-    const { url, options } = USER_LOGIN({ email, senha });
-    const {acessoToken, error} = await request (url, options);
-    return {acessoToken, error};
-    //await request(url, options);
-    //if (email.value === '1@gmail.com' && senha.value === '1') {
-     // return { apptoken: '1234' };
-    //}
-    //return { error: 'Usuário ou senha inválido' };
+    const { url, options } = USER_LOGIN({ email: email.value, password: senha.value });
+    return await request (url, options);
   }
 
   async function onSubmit(e) {
     e.preventDefault();
 
     if (email.validate() && senha.validate()) {
-      const { apptoken, error } = await login(email, senha);
-      if (apptoken) {
-        setToken(apptoken);
+      const {json, response} = await login(email, senha);
+      if (response.ok) {
+        setToken(json.token);
         return history.push('/');
       }
-      setErroLogin(error);
+      setErroLogin('Usuário ou senha inválido');
     }
   }
 
@@ -60,7 +54,7 @@ const UserLogin = () => {
           />
           <Input
             namelabel="Senha"
-            type="text"
+            type="password"
             placeholder="Senha"
             required
             {...senha}
