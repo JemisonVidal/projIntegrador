@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -115,6 +116,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Should return error 400 when try to register a user with empty name")
     public void registerUserWithEmptyName() throws Exception {
         UserDTO userDTO = new UserDTO("natasha_romanov@shield.com",
                 "",
@@ -134,6 +136,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Should return an error 400 when try to register a user with empty password")
     public void registerUserWithEmptyPassword() throws Exception {
         UserDTO userDTO = new UserDTO("natasha_romanov@shield.com",
                 "Natasha Romanov",
@@ -198,8 +201,25 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Should throw an error when try to authenticate a user that does not exists")
+    public void authenticateUserWithUserNameNotFound() throws Exception {
+        LoginDTO loginDTO = new LoginDTO("natasha_romanov@shield.com", "Shield2020");
+
+        when(authenticationService.authenticate(any(LoginDTO.class)))
+                .thenThrow(new UsernameNotFoundException("Username not found with email " + loginDTO.getEmail()));
+
+        RequestBuilder request = post("/v1/api/authenticate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(loginDTO));
+
+        mvc.perform(request)
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     @DisplayName("Should return status bad request")
-    public void sendEmptyLoginRequestTest() throws Exception {
+    public void authenticateUserWithEmptyLoginRequestTest() throws Exception {
         LoginDTO loginDTO = new LoginDTO("", "");
 
         RequestBuilder request = post("/v1/api/authenticate")
