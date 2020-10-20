@@ -1,10 +1,16 @@
 import React from 'react';
-import { Card, Container } from 'react-bootstrap';
-
-import './ProfileCard.css';
+import { Card, Container, Button } from 'react-bootstrap';
+import ModalForm from '../../Modal/ModalForm';
 import ProfileCardItem from './ProfileCardItem/ProfileCardItem';
+import './ProfileCard.css';
 
 const ProfileCard = ({ title, data, canEdit }) => {
+  const [modalShow, setModalShow] = React.useState(false);
+
+  function handleClick(event) {
+    setModalShow(true);
+  }
+
   return (
     <Container fluid="md" className="py-2">
       <Card className="card-profile">
@@ -13,9 +19,9 @@ const ProfileCard = ({ title, data, canEdit }) => {
             <Card.Title className="d-flex justify-content-between align-items-center">
               {title}
               {canEdit && (
-                <button className="btn">
+                <Button className="btn-profile-edit" onClick={handleClick}>
                   <i className="far fa-edit"></i>
-                </button>
+                </Button>
               )}
             </Card.Title>
           )}
@@ -25,7 +31,15 @@ const ProfileCard = ({ title, data, canEdit }) => {
           ))}
         </Card.Body>
       </Card>
+      <ModalForm
+        title={title}
+        data={data}
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
     </Container>
+
+
   );
 };
 
