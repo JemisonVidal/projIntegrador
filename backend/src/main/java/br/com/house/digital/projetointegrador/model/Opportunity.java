@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -26,4 +29,7 @@ public class Opportunity {
 
     @ManyToOne
     private User user;
+    
+    @OneToMany
+    private List<User> appliedUsers = new ArrayList<>();
 }
