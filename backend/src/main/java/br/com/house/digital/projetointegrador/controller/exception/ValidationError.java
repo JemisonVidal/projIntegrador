@@ -9,13 +9,13 @@ import lombok.Getter;
 public class ValidationError extends StandardError {
 	private static final long serialVersionUID = 1L;
 
-	private List<FieldMessage> Errors = new ArrayList<>();
+	private final List<FieldMessage> errors = new ArrayList<>();
 
-	public ValidationError(Integer status, String msg, Long timeStamp) {
-		super(status, msg, timeStamp);
+	public ValidationError(Integer status, String msg) {
+		super(status, msg);
 	}
 
 	public void addError(String fieldName, String message) {
-		Errors.add(new FieldMessage(fieldName, message));
+		errors.add(new FieldMessage(fieldName, message));
 	}
 }
