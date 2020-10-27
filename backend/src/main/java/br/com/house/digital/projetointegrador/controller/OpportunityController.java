@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +42,14 @@ public class OpportunityController {
             .toUri();
         return ResponseEntity.created(uri).build();
     }
+    
+    @PostMapping("/{id}/apply")
+    public ResponseEntity<Void> apply(@PathVariable Long id ,@AuthenticationPrincipal User user){
+    	this.opportunityService.apply(id, user);
+    	return ResponseEntity.noContent().build();
+    }
+    
+    
 
     private Opportunity convertToEntity(OpportunityDTO opportunityDTO) {
         return modelMapper.map(opportunityDTO, Opportunity.class);
@@ -51,4 +60,6 @@ public class OpportunityController {
         opportunity.setUser(user);
         return opportunity;
     }
+    
+   
 }
