@@ -10,7 +10,7 @@ import br.com.house.digital.projetointegrador.service.exceptions.EmailExistsExce
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +25,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public TokenDTO authenticate(LoginDTO loginDTO) {
-        final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO
-            .getEmail(), loginDTO.getPassword()));
-        final User user = (User) authentication.getPrincipal();
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+        final User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         final String token = jwtUtil.generateToken(user);
         return new TokenDTO(token);
     }

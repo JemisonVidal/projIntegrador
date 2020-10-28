@@ -1,11 +1,13 @@
 package br.com.house.digital.projetointegrador.service;
 
-import br.com.house.digital.projetointegrador.dto.LoginDTO;
-import br.com.house.digital.projetointegrador.model.JWTResponse;
+import br.com.house.digital.projetointegrador.annotation.WithMockCustomUser;
+import br.com.house.digital.projetointegrador.dto.authentication.LoginDTO;
+import br.com.house.digital.projetointegrador.dto.authentication.TokenDTO;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.enums.UserType;
 import br.com.house.digital.projetointegrador.repository.UserRepository;
-import br.com.house.digital.projetointegrador.security.JWTTokenUtil;
+import br.com.house.digital.projetointegrador.security.JWTUtil;
+import br.com.house.digital.projetointegrador.service.exceptions.EmailExistsException;
 import br.com.house.digital.projetointegrador.service.impl.AuthenticationServiceImpl;
 import br.com.house.digital.projetointegrador.service.impl.UserDetailsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -25,12 +28,10 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {JWTTokenUtil.class, UserDetailsServiceImpl.class})
+@ContextConfiguration(classes = {JWTUtil.class, UserDetailsServiceImpl.class})
 @ActiveProfiles({"Test"})
 public class AuthenticationServiceTest {
 
@@ -42,8 +43,11 @@ public class AuthenticationServiceTest {
     @MockBean
     AuthenticationManager authenticationManager;
 
+    @MockBean
+    PasswordEncoder passwordEncoder;
+
     @Autowired
-    JWTTokenUtil jwtTokenUtil;
+    JWTUtil jwtUtil;
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -52,8 +56,8 @@ public class AuthenticationServiceTest {
     public void setUp() {
         authenticationService = new AuthenticationServiceImpl(userRepository,
                 authenticationManager,
-                jwtTokenUtil,
-                userDetailsService);
+                passwordEncoder,
+                jwtUtil);
     }
 
     @Test
@@ -64,7 +68,7 @@ public class AuthenticationServiceTest {
                 .email("natasha_romanov@shield.com")
                 .name("Natasha Romanov")
                 .password("Shield2020")
-                .type(UserType.USER)
+                .type(UserType.APPLICANT)
                 .build();
 
         given(userRepository.save(user)).willReturn(User.builder()
@@ -80,7 +84,7 @@ public class AuthenticationServiceTest {
         assertThat(entity.getId()).isNotNull();
         assertThat(entity.getEmail()).isEqualTo(user.getEmail());
         assertThat(entity.getName()).isEqualTo(user.getName());
-        assertThat(entity.getPassword()).isEqualTo(user.getPassword());
+        assertThat(entity.getPassword()).isNotEqualTo(user.getPassword());
 
         verify(userRepository, times(1)).save(user);
         verify(userRepository, times(1)).existsByEmail(user.getEmail());
@@ -94,14 +98,15 @@ public class AuthenticationServiceTest {
                 .email("natasha_romanov@shield.com")
                 .name("Natasha Romanov")
                 .password("Shield2020")
-                .type(UserType.USER)
+                .type(UserType.APPLICANT)
                 .build();
 
         given(userRepository.existsByEmail(user.getEmail())).willReturn(true);
 
-        User entity = authenticationService.save(user);
+        Throwable exception = catchThrowable(() -> authenticationService.save(user));
 
-        assertThat(entity).isNull();
+        assertThat(exception).isInstanceOf(EmailExistsException.class)
+                .hasMessage("Email: natasha_romanov@shield.com already exists in the database.");
 
         verify(userRepository, never()).save(user);
         verify(userRepository, times(1)).existsByEmail(user.getEmail());
@@ -109,6 +114,7 @@ public class AuthenticationServiceTest {
 
     @Test
     @DisplayName("Should authenticate a user when given valid credentials")
+    @WithMockCustomUser
     public void authenticateUser() throws Exception {
         LoginDTO loginDTO = new LoginDTO("natasha_romanov@shield.com", "Shield2020");
 
@@ -117,15 +123,14 @@ public class AuthenticationServiceTest {
                 .email("natasha_romanov@shield.com")
                 .name("Natasha Romanov")
                 .password("Shield2020")
-                .type(UserType.USER)
+                .type(UserType.APPLICANT)
                 .build();
 
         given(userRepository.findByEmail(loginDTO.getEmail())).willReturn(Optional.of(user));
 
-        JWTResponse jwtResponse = authenticationService.authenticate(loginDTO);
+        TokenDTO jwtResponse = authenticationService.authenticate(loginDTO);
 
-        assertThat(jwtResponse.getUser()).isEqualTo(user);
-        assertThat(jwtTokenUtil.getEmailFromToken(jwtResponse.getToken())).isEqualTo(user.getEmail());
+        assertThat(jwtUtil.getEmailFromToken(jwtResponse.getToken())).isEqualTo(user.getEmail());
     }
 
     @Test
@@ -134,11 +139,15 @@ public class AuthenticationServiceTest {
         LoginDTO loginDTO = new LoginDTO("natasha_romanov@shield.com", "Shield2020");
 
         given(userRepository.findByEmail(loginDTO.getEmail())).willReturn(Optional.empty());
+        given(authenticationManager.authenticate(any()))
+                .will(invocation -> userDetailsService.loadUserByUsername(loginDTO.getEmail()));
 
         Throwable exception = catchThrowable(() -> authenticationService.authenticate(loginDTO));
 
         assertThat(exception).isInstanceOf(UsernameNotFoundException.class)
                 .hasMessage("User not found with email: " + loginDTO.getEmail());
+        verify(authenticationManager, times(1)).authenticate(any());
+        verify(userRepository, times(1)).findByEmail(loginDTO.getEmail());
     }
 
 }
