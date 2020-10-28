@@ -1,7 +1,11 @@
 package br.com.house.digital.projetointegrador.model.profile;
 
 import br.com.house.digital.projetointegrador.model.Opportunity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,7 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "companies_profiles")
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)

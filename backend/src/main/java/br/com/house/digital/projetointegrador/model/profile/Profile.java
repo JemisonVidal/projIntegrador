@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Entity
 @Table(name = "profiles")
 @Inheritance(strategy = InheritanceType.JOINED)
+@SuperBuilder
 public abstract class Profile extends AbstractEntity<Long> {
 
     @Lob

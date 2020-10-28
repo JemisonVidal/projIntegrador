@@ -3,12 +3,12 @@ package br.com.house.digital.projetointegrador.model;
 import br.com.house.digital.projetointegrador.model.profile.CompanyProfile;
 import br.com.house.digital.projetointegrador.model.profile.Profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -23,6 +23,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 public class Opportunity extends AbstractEntity<Long> {
 
     @Column(length = 50, nullable = false)
