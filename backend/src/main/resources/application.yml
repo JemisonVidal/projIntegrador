@@ -1,13 +1,17 @@
 spring:
-  profiles: prod
   datasource:
-    url: jdbc:mysql://localhost/recruit?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
+    url: jdbc:mysql://localhost/projIntegrador?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
     username: root
     password: root
     platform: mysql
   jpa:
     hibernate:
       ddl-auto: create
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
 server:
   error:
