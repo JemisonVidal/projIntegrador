@@ -1,73 +1,90 @@
 package br.com.house.digital.projetointegrador.model;
 
 import br.com.house.digital.projetointegrador.model.enums.UserType;
+import br.com.house.digital.projetointegrador.model.profile.Profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class User implements UserDetails {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+public class User extends AbstractEntity<Long> implements UserDetails {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@EqualsAndHashCode.Include
-	private Long id;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-	@Column(nullable = false)
-	private String name;
+    @Column(length = 50, nullable = false)
+    private String name;
 
-	@Column(unique = true, nullable = false)
-	private String email;
+    @Column(unique = true, nullable = false)
+    private String email;
 
-	@JsonIgnore
-	@Column(nullable = false)
-	private String password;
+    @JsonIgnore
+    @Column(nullable = false)
+    private String password;
 
-	@Enumerated(value = EnumType.STRING)
-	@Column(nullable = false)
-	private UserType type;
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 10, nullable = false)
+    private UserType type;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority(this.type.toString()));
-		return authorities;
-	}
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id")
+    @JsonIgnore
+    private Profile profile;
 
-	@Override
-	public String getUsername() {
-		return this.email;
-	}
+    @Override
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(this.type.toString()));
+        return authorities;
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    @Override
+    @JsonIgnore
+    public String getUsername() {
+        return this.email;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() {
+        return true;
+    }
 }

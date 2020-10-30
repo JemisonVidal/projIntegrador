@@ -1,35 +1,68 @@
 package br.com.house.digital.projetointegrador.model;
 
+import br.com.house.digital.projetointegrador.model.profile.CompanyProfile;
+import br.com.house.digital.projetointegrador.model.profile.Profile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "opportunities")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Opportunity {
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
+public class Opportunity extends AbstractEntity<Long> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+    @Column(length = 50, nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String description;
     private String benefits;
-    private String salary;
+    private Double salary;
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(columnDefinition = "text")
     private String text;
+
+    @Column(nullable = false)
     private Boolean active;
 
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
     @ManyToOne
-    private User user;
-    
-    @OneToMany
-    private List<User> appliedUsers = new ArrayList<>();
+    @JoinColumn(name = "company_profile_id")
+    @JsonIgnore
+    private Profile company;
+
+    @ManyToMany
+    private Set<User> appliedUsers = new HashSet<>();
+
+    @JsonValue
+    public Long getCompanyId() {
+        return company.getId();
+    }
+
+    @JsonValue
+    public String getCompanyName() {
+        return ((CompanyProfile) company).getName();
+    }
 }

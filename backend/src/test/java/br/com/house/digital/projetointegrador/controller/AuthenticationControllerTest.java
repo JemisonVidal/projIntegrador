@@ -1,20 +1,22 @@
 package br.com.house.digital.projetointegrador.controller;
 
-import br.com.house.digital.projetointegrador.dto.LoginDTO;
-import br.com.house.digital.projetointegrador.dto.UserDTO;
-import br.com.house.digital.projetointegrador.model.JWTResponse;
+import br.com.house.digital.projetointegrador.dto.authentication.LoginDTO;
+import br.com.house.digital.projetointegrador.dto.authentication.RegisterDTO;
+import br.com.house.digital.projetointegrador.dto.authentication.TokenDTO;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.enums.UserType;
 import br.com.house.digital.projetointegrador.security.JWTAuthenticationEntryPoint;
 import br.com.house.digital.projetointegrador.security.JWTRequestFilter;
-import br.com.house.digital.projetointegrador.security.JWTTokenUtil;
+import br.com.house.digital.projetointegrador.security.JWTUtil;
 import br.com.house.digital.projetointegrador.security.WebSecurityConfig;
 import br.com.house.digital.projetointegrador.service.AuthenticationService;
+import br.com.house.digital.projetointegrador.service.impl.AuthenticationServiceImpl;
 import br.com.house.digital.projetointegrador.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,9 +36,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,7 +50,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         JWTAuthenticationEntryPoint.class,
         WebSecurityConfig.class,
         JWTRequestFilter.class,
-        JWTTokenUtil.class
+        JWTUtil.class,
+        ModelMapper.class
 })
 public class AuthenticationControllerTest {
 
@@ -68,10 +69,10 @@ public class AuthenticationControllerTest {
     @Test
     @DisplayName("Should register a user and return status 201")
     public void registerUserTest() throws Exception {
-        UserDTO userDTO = new UserDTO("natasha_romanov@shield.com",
+        RegisterDTO userDTO = new RegisterDTO("natasha_romanov@shield.com",
                 "Natasha Romanov",
                 "Shield2020",
-                UserType.USER);
+                UserType.APPLICANT);
 
         when(authenticationService.save(any(User.class)))
                 .thenReturn(User.builder()
@@ -96,12 +97,12 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    @DisplayName("Should return error 400 when try to register a user with empty email")
+    @DisplayName("Should return error 400 when trying to register a user with empty email")
     public void registerUserWithEmptyEmail() throws Exception {
-        UserDTO userDTO = new UserDTO("",
+        RegisterDTO userDTO = new RegisterDTO("",
                 "Natasha Romanov",
                 "Shield2020",
-                UserType.USER);
+                UserType.APPLICANT);
 
         String json = objectMapper.writeValueAsString(userDTO);
 
@@ -116,12 +117,12 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    @DisplayName("Should return error 400 when try to register a user with empty name")
+    @DisplayName("Should return error 400 when trying to register a user with empty name")
     public void registerUserWithEmptyName() throws Exception {
-        UserDTO userDTO = new UserDTO("natasha_romanov@shield.com",
+        RegisterDTO userDTO = new RegisterDTO("natasha_romanov@shield.com",
                 "",
                 "Shield2020",
-                UserType.USER);
+                UserType.APPLICANT);
 
         String json = objectMapper.writeValueAsString(userDTO);
 
@@ -138,10 +139,10 @@ public class AuthenticationControllerTest {
     @Test
     @DisplayName("Should return an error 400 when try to register a user with empty password")
     public void registerUserWithEmptyPassword() throws Exception {
-        UserDTO userDTO = new UserDTO("natasha_romanov@shield.com",
+        RegisterDTO userDTO = new RegisterDTO("natasha_romanov@shield.com",
                 "Natasha Romanov",
                 "",
-                UserType.USER);
+                UserType.APPLICANT);
 
         String json = objectMapper.writeValueAsString(userDTO);
 
@@ -165,13 +166,13 @@ public class AuthenticationControllerTest {
                 .email(loginDTO.getEmail())
                 .name("Natasha Romanov")
                 .password(loginDTO.getPassword())
-                .type(UserType.USER)
+                .type(UserType.APPLICANT)
                 .build();
 
         String token = UUID.randomUUID().toString();
 
         when(authenticationService.authenticate(any(LoginDTO.class)))
-                .thenReturn(new JWTResponse(user, token));
+                .thenReturn(new TokenDTO(token));
 
         RequestBuilder request = post("/v1/api/authenticate")
                 .contentType(MediaType.APPLICATION_JSON)

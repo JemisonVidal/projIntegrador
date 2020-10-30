@@ -1,9 +1,11 @@
 package br.com.house.digital.projetointegrador.configuration;
 
+import br.com.house.digital.projetointegrador.model.User;
 import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Pageable;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
@@ -32,6 +34,7 @@ public class SwaggerConfig {
             .apis(RequestHandlerSelectors.any())
             .paths(regex(DEFAULT_INCLUDE_PATTERN))
             .build()
+            .ignoredParameterTypes(User.class, Pageable.class)
             .securityContexts(Lists.newArrayList(securityContext()))
             .securitySchemes(Lists.newArrayList(apiKey()));
     }
@@ -55,5 +58,6 @@ public class SwaggerConfig {
         return Lists.newArrayList(
             new SecurityReference("JWT", authorizationScopes));
     }
+
 
 }

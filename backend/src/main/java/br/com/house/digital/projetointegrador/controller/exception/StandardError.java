@@ -2,15 +2,10 @@ package br.com.house.digital.projetointegrador.controller.exception;
 
 import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Data
-@Setter
-@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class StandardError implements Serializable {
@@ -18,5 +13,5 @@ public class StandardError implements Serializable {
 
 	private Integer status;
 	private String msg;
-	private Long timeStamp;
+	private final Long timeStamp = System.currentTimeMillis();
 }
