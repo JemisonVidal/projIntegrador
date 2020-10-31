@@ -42,6 +42,10 @@ public class Opportunity extends AbstractEntity<Long> {
     @Column(nullable = false)
     private Boolean active;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "opportunity_id")
+    private Set<Requirement> requirements = new HashSet<>();
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
