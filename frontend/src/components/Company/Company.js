@@ -1,11 +1,13 @@
 import React from "react";
 import { Container, CardDeck, Card, Button } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import Main from "../../components/Template/main/Main";
 
 import "./Company.css";
 
 const mockCompany = [
   {
+    id: 1,
     descricao: "Empresa 1",
     visao:
       "Mussum Ipsum, cacilds vidis litro abertis, Nec orci ornare consequat. Praesent lacinia ultrices consectetur. Sed non ipsum felis. Praesent malesuada urna nisi, quis volutpat erat hendrerit non",
@@ -15,6 +17,7 @@ const mockCompany = [
     Linkedin: "https://linkedin/mussumipsum",
   },
   {
+    id: 2,
     descricao: "Empresa 2",
     visao:
       "Mauris nec dolor in eros commodo tempor. Aenean aliquam molestie leo",
@@ -24,6 +27,7 @@ const mockCompany = [
     Linkedin: "https://linkedin/mussumipsum",
   },
   {
+    id: 3,
     descricao: "Empresa 3",
     visao:
       "Quem manda na minha terra sou euzis! Paisis, filhis, espiritis santis",
@@ -35,13 +39,19 @@ const mockCompany = [
 ];
 
 const Company = () => {
+  const history = useHistory();
+
+  function handleVerPerfilClick(event) {
+    return history.push(`/profile/company/${event.target.id}`);
+  }
+
   return (
     <Main>
       <Container fluid="md" className="py-2">
         {mockCompany &&
           mockCompany.map((mockCompany) => {
             return (
-              <CardDeck>
+              <CardDeck key={mockCompany.id}>
                 <Card>
                   <Card.Body>
                     <Card.Title>{mockCompany.descricao}</Card.Title>
@@ -51,7 +61,12 @@ const Company = () => {
                     <Card.Text>site: {mockCompany.site}</Card.Text>
                     <Card.Text>linkedin:{mockCompany.linkedin}</Card.Text>
                   </Card.Body>
-                  <Button variant="primary" type="submit">
+                  <Button
+                    id={mockCompany.id}
+                    variant="primary"
+                    type="submit"
+                    onClick={handleVerPerfilClick}
+                  >
                     Ver Perfil
                   </Button>
                 </Card>

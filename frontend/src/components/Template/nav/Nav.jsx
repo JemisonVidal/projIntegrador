@@ -12,11 +12,13 @@ const NavBar = ({ avatar, type, id }) => {
   return (
     <>
       <Navbar className="Navbar" collapseOnSelect expand="lg">
-        <Link to={`/`}>
-          <Navbar.Brand className="nav-item" href="#home">
+        <Nav className="title">
+          <Link to={`/`}>
+            {/* <Navbar.Brand className="nav-item" href="#home"> */}
             RecruIT
-          </Navbar.Brand>
-        </Link>
+            {/* </Navbar.Brand> */}
+          </Link>
+        </Nav>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">

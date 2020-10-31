@@ -6,6 +6,7 @@ import "./Opportunity.css";
 
 const mockOpportunity = [
   {
+    id: 1,
     idEmpresa: 1,
     tituloVaga: "Programadora Node Js",
     descricao: "Desenvolver novas features em Node Js",
@@ -15,6 +16,7 @@ const mockOpportunity = [
     status: "aberta",
   },
   {
+    id: 2,
     idEmpresa: 2,
     tituloVaga: "Programadora React",
     descricao: "Executar manutenções e novas features em react",
@@ -24,6 +26,7 @@ const mockOpportunity = [
     status: "aberta",
   },
   {
+    id: 3,
     idEmpresa: 3,
     tituloVaga: "Programadora full stack",
     descricao: "Desenvolver novas features em Node Js e React",
@@ -41,7 +44,7 @@ const Opportunity = () => {
         {mockOpportunity &&
           mockOpportunity.map((opportunity) => {
             return (
-              <CardDeck>
+              <CardDeck key={opportunity.id}>
                 <Card>
                   <Card.Body>
                     <Card.Title>{opportunity.tituloVaga}</Card.Title>
