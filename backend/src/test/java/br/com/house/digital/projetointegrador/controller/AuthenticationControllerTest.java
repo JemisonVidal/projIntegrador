@@ -172,7 +172,7 @@ public class AuthenticationControllerTest {
         String token = UUID.randomUUID().toString();
 
         when(authenticationService.authenticate(any(LoginDTO.class)))
-                .thenReturn(new TokenDTO(token));
+                .thenReturn(TokenDTO.builder().token(token).build());
 
         RequestBuilder request = post("/v1/api/authenticate")
                 .contentType(MediaType.APPLICATION_JSON)

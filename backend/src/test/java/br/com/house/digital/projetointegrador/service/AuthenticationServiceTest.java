@@ -1,10 +1,10 @@
 package br.com.house.digital.projetointegrador.service;
 
-import br.com.house.digital.projetointegrador.annotation.WithMockCustomUser;
 import br.com.house.digital.projetointegrador.dto.authentication.LoginDTO;
 import br.com.house.digital.projetointegrador.dto.authentication.TokenDTO;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.enums.UserType;
+import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
 import br.com.house.digital.projetointegrador.repository.UserRepository;
 import br.com.house.digital.projetointegrador.security.JWTUtil;
 import br.com.house.digital.projetointegrador.service.exceptions.EmailExistsException;
@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -114,9 +115,9 @@ public class AuthenticationServiceTest {
 
     @Test
     @DisplayName("Should authenticate a user when given valid credentials")
-    @WithMockCustomUser
     public void authenticateUser() throws Exception {
         LoginDTO loginDTO = new LoginDTO("natasha_romanov@shield.com", "Shield2020");
+        Authentication authentication = mock(Authentication.class);
 
         User user = User.builder()
                 .id(2L)
@@ -124,18 +125,21 @@ public class AuthenticationServiceTest {
                 .name("Natasha Romanov")
                 .password("Shield2020")
                 .type(UserType.APPLICANT)
+                .profile(ApplicantProfile.builder().id(1L).build())
                 .build();
 
-        given(userRepository.findByEmail(loginDTO.getEmail())).willReturn(Optional.of(user));
+        given(authenticationManager.authenticate(any())).willReturn(authentication);
+        given(authentication.getPrincipal()).willReturn(user);
 
         TokenDTO jwtResponse = authenticationService.authenticate(loginDTO);
 
         assertThat(jwtUtil.getEmailFromToken(jwtResponse.getToken())).isEqualTo(user.getEmail());
+        assertThat(jwtResponse.getProfileId()).isEqualTo(user.getProfile().getId());
     }
 
     @Test
     @DisplayName("Should throw an exception when given invalid credentials")
-    public void authenticateNonExistentUser() throws Exception {
+    public void authenticateNonExistentUser() {
         LoginDTO loginDTO = new LoginDTO("natasha_romanov@shield.com", "Shield2020");
 
         given(userRepository.findByEmail(loginDTO.getEmail())).willReturn(Optional.empty());
