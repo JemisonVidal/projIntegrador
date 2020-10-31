@@ -1,14 +1,23 @@
-import React from 'react';
-import { Card, Container, Button } from 'react-bootstrap';
-import ModalForm from '../../Modal/ModalForm';
-import ProfileCardItem from './ProfileCardItem/ProfileCardItem';
-import './ProfileCard.css';
+import React, { useState } from "react";
+import { Card, Container, Button } from "react-bootstrap";
+import ModalForm from "../../Modal/ModalForm";
+import ProfileCardItem from "./ProfileCardItem/ProfileCardItem";
+import "./ProfileCard.css";
 
 const ProfileCard = ({ title, data, canEdit }) => {
   const [modalShow, setModalShow] = React.useState(false);
+  const [dados, setDados] = useState(data);
 
   function handleClick(event) {
     setModalShow(true);
+  }
+
+  function handleOnHide() {
+    setModalShow(false);
+  }
+
+  function handleSalvar() {
+    //TODO: FAZER A REQUEST PARA ATUALIZAR OS DADOS
   }
 
   return (
@@ -33,13 +42,13 @@ const ProfileCard = ({ title, data, canEdit }) => {
       </Card>
       <ModalForm
         title={title}
-        data={data}
+        data={dados}
         show={modalShow}
-        onHide={() => setModalShow(false)}
+        onHide={handleOnHide}
+        setDados={setDados}
+        onClickSalvar={handleSalvar}
       />
     </Container>
-
-
   );
 };
 
