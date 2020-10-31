@@ -1,79 +1,82 @@
-.footer{
-    display: grid;
-    background-color: #27187E;
-    color: #FFFFFF;
-    grid-template-columns: 1fr 1.5fr;
-    grid-template-rows: 5fr 1fr;
-    padding: 15px 20px;
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 960px;
+  display: grid;
+  background-color: #27187e;
+  color: #ffffff;
+  grid-template-columns: 1fr 1.5fr;
+  grid-template-rows: 5fr 1fr;
+  padding: 15px 20px;
 }
 
-.footer span{
-    color: #FFFFFF;
-    font-weight: bold;
-    font-size: 16px;
+.footer span {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 16px;
 }
 
-.footer p{
-    margin: 0px 10px;
+.footer p {
+  margin: 0px 10px;
 }
 
-.col-footer-info{
-    grid-column: 1;
-    grid-row: 1;
-    font-size: 14px;
+.col-footer-info {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: 14px;
 }
 
-.col-footer-redesSociais{
-    grid-column: 1;
-    grid-row: 3;
-    
+.col-footer-redesSociais {
+  grid-column: 1;
+  grid-row: 3;
 }
 
-.col-footer-logo{
-    grid-column: 2;
-    grid-row: 1;
-    padding-top: 5px;
-    text-align: center;
+.col-footer-logo {
+  grid-column: 2;
+  grid-row: 1;
+  padding-top: 5px;
+  text-align: center;
 }
 
-.logo-footer{
-    width: 110px;
+.logo-footer {
+  width: 110px;
 }
 
-.col-footer-direitos{
-    margin-top: 10px;
-    grid-column: 2;
-    grid-row: 3;
-    text-align: center;
-    font-size: 13px;
+.col-footer-direitos {
+  margin-top: 10px;
+  grid-column: 2;
+  grid-row: 3;
+  text-align: center;
+  font-size: 13px;
 }
 
-.footer .titulo-redesSociais{
-    margin: 0px;
-    display: block;
+.footer .titulo-redesSociais {
+  margin: 0px;
+  display: block;
 }
 
-.footerLink{
-    display: inline;
-    margin: 0 5px;
+.footerLink {
+  display: inline;
+  margin: 0 5px;
 }
 
-.footerFacebookLink{
-    margin: 0 2px;
+.footerFacebookLink {
+  margin: 0 2px;
 }
 
-.logoFooterPng{
-    width: 25px;
+.logoFooterPng {
+  width: 25px;
 }
 
 @media (min-width: 576px) {
-    .footer{
-        border-radius: 0 0 25px 25px;
-    }
-    .col-footer-logo{
-        text-align: right;
-    }
-    .col-footer-direitos{
-        text-align: right;
-    }
+  .footer {
+    border-radius: 0 0 25px 25px;
+  }
+  .col-footer-logo {
+    text-align: right;
+  }
+  .col-footer-direitos {
+    text-align: right;
+  }
 }
