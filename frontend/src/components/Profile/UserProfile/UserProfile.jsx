@@ -1,29 +1,38 @@
-import React from 'react';
-import ProfileCard from '../ProfileCard/ProfileCard';
+import React from "react";
+import ProfileCard from "../ProfileCard/ProfileCard";
 
 const UserProfile = ({ data }) => {
   const canEdit = data.canEdit;
 
   const personalInfo = {
     Cidade: data.city,
-    'Tempo de experiência': data.experience,
-    'Disposta a trabalhar em': data.desiredCity,
-    'Lista de habilidades': data.skills.join(', '),
-    'Links externos': [
-      <span>
-        Github: <a href={data.links.github} target="_blank" rel="noopener noreferrer" >{data.links.github}</a>
-      </span>,
-      <span>
-        LinkedIn: <a href={data.links.linkedin} target="_blank" rel="noopener noreferrer">{data.links.linkedin}</a>
-      </span>,
-    ],
+    "Tempo de experiência": data.experience,
+    "Disposta a trabalhar em": data.desiredCity,
+    "Lista de habilidades": data.skills.join(", "),
+    Github: data.links.github,
+    LinkedIn: data.links.linkedin,
+    //TODO: verificar a necessidade de mandar em array, porque na alteração/cadastro os links campos são separados.
+    // "Links externos": [
+    //   <span>
+    //     Github:{" "}
+    //     <a href={data.links.github} target="_blank" rel="noopener noreferrer">
+    //       {data.links.github}
+    //     </a>
+    //   </span>,
+    //   <span>
+    //     LinkedIn:{" "}
+    //     <a href={data.links.linkedin} target="_blank" rel="noopener noreferrer">
+    //       {data.links.linkedin}
+    //     </a>
+    //   </span>,
+    // ],
   };
 
   const experience = data.companies.reduce((acc, company) => {
     acc[company.name] = [
       company.position,
       `${company.initialDate} - ${
-        company.acting ? 'atual' : company.finalDate
+        company.acting ? "atual" : company.finalDate
       }`,
     ];
     return acc;
