@@ -9,6 +9,7 @@ import Register from "../pages/Register/Register";
 import Login from "../pages/Login/Login";
 import Profile from "../pages/Profile/Profile";
 import Opportunity from "../pages/Opportunity/Opportunity";
+import Company from "../pages/Company/Company";
 
 const PagesRoot = () => (
   <BrowserRouter>
@@ -19,6 +20,7 @@ const PagesRoot = () => (
         <Route path="/" component={Home} exact />
         <Route path="/profile/:type/:id" component={Profile} />
         <Route path="/opportunity" component={Opportunity} />
+        <Route path="/company" component={Company} />
       </Switch>
     </StoreProvider>
   </BrowserRouter>
