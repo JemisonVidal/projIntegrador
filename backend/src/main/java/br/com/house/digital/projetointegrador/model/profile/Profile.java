@@ -25,14 +25,14 @@ public abstract class Profile extends AbstractEntity<Long> {
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String text;
 
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "address", column = @Column(name = "location_address")),
-        @AttributeOverride(name = "city", column = @Column(name = "location_city", nullable = false)),
-        @AttributeOverride(name = "state", column = @Column(name = "location_state", nullable = false))
+        @AttributeOverride(name = "city", column = @Column(name = "location_city")),
+        @AttributeOverride(name = "state", column = @Column(name = "location_state"))
     })
     private Location location;
 

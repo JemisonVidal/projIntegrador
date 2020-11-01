@@ -21,19 +21,17 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class CompanyProfile extends Profile {
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50)
     private String name;
 
-    @Column(length = 14, nullable = false)
+    @Column(length = 14)
     private String cnpj;
 
     @Column(length = 100)
     private String shortDescription;
 
-    @Column(nullable = false)
     private LocalDate startDate;
 
-    @Column(nullable = false)
     private String category;
 
     @OneToMany(fetch = FetchType.LAZY)

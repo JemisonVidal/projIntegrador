@@ -48,6 +48,10 @@ public class JWTUtil {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
+    public Long getProfileIdFromToken(String token) {
+        return getClaimFromToken(token, claims -> claims.get("pid", Long.class));
+    }
+
     //check if the token has expired
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
@@ -61,8 +65,9 @@ public class JWTUtil {
      */
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("type", user.getType());
         claims.put("name", user.getName());
+        claims.put("type", user.getType());
+        claims.put("pid", user.getProfileId());
         return doGenerateToken(claims, user.getUsername());
     }
 
