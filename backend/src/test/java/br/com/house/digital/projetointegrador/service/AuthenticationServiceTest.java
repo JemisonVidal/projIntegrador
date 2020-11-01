@@ -134,7 +134,7 @@ public class AuthenticationServiceTest {
         TokenDTO jwtResponse = authenticationService.authenticate(loginDTO);
 
         assertThat(jwtUtil.getEmailFromToken(jwtResponse.getToken())).isEqualTo(user.getEmail());
-        assertThat(jwtResponse.getProfileId()).isEqualTo(user.getProfile().getId());
+        assertThat(jwtUtil.getProfileIdFromToken(jwtResponse.getToken())).isEqualTo(user.getProfileId());
     }
 
     @Test
