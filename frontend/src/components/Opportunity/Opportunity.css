@@ -4,10 +4,87 @@
 
 .card-deck .card {
   margin-bottom: 20px;
+  font-size: 15px;
 }
 
 .card-deck .card button {
   border: #27187e;
   background-color: #27187e;
   margin: 5px;
+}
+
+.title-card-opportunity{
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.titulo-campo-opportunity{
+  font-size: 20px;
+  color: #27187e;
+  font-weight: bold;
+}
+
+.title-empresa-opportunity{
+  font-size: 18px;
+  text-align: center;
+}
+
+.card{
+  color: #27187e;
+}
+
+.titulo-campo{
+  color: #27187e;
+  font-weight: bold;
+}
+
+.buttonsCandidatar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonSelect{
+  display: flex;
+  margin: 5% 10%;
+  height: 100px;
+  width: 100px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  background-color: white;
+  box-shadow: 4px 8px 4px rgba(39, 24, 126, 0.25);
+  color: var(--color-primary-dark);
+}
+
+.buttonNo{
+  border: 6px solid var(--color-orange);
+}
+
+.buttonYes{
+  border: 6px solid var(--color-primary-dark);
+}
+
+.heartIco{
+  width: 60px;
+  fill: var(--color-primary-dark);
+}
+
+.xIco{
+  width: 50px;
+  fill: var(--color-orange);
+}
+
+@media (min-width: 576px) {
+  .title-card-opportunity{
+    font-size: 28px;
+  }
+  .card-deck .card {
+    font-size: 16px;
+  }
+  .buttonSelect{
+    margin: 2% 5%;
+  }
 }
