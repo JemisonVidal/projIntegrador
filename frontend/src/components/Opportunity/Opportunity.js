@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, CardDeck, Card, Button } from "react-bootstrap";
 import Main from "../Template/main/Main";
+import heart from "../../assets/images/Heart.svg";
+import heartFill from "../../assets/images/FilledHeart.svg";
+import back from "../../assets/images/back.svg";
 
 import "./Opportunity.css";
 
@@ -44,9 +47,15 @@ const mockOpportunity = [
 ];
 
 const opportunity = mockOpportunity.filter(vaga => vaga.id === 1);
-console.log(opportunity);
 
-const ListOpportunity = ({ idVaga }) => {
+const ListOpportunity = () => {
+
+  const handlerHeartClick = (event) => {
+    setHeartCheck(!heartCheck);
+  }
+
+  const [heartCheck, setHeartCheck] = useState(false);
+
   return (
     <Main>
       <Container fluid="md" className="py-2">
@@ -77,11 +86,11 @@ const ListOpportunity = ({ idVaga }) => {
           </Card>
         </CardDeck>
         <div className="buttonsCandidatar">
-          <div className="buttonSelect buttonNo"><span className="titulo-campo-opportunity"><svg className="xIco" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z" /></svg></span></div>
-          <div className="buttonSelect buttonYes"><span className="titulo-campo-opportunity"><svg className="heartIco" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.28 3c3.236.001 4.973 3.491 5.72 5.031.75-1.547 2.469-5.021 5.726-5.021 2.058 0 4.274 1.309 4.274 4.182 0 3.442-4.744 7.851-10 13-5.258-5.151-10-9.559-10-13 0-2.676 1.965-4.193 4.28-4.192zm.001-2c-3.183 0-6.281 2.187-6.281 6.192 0 4.661 5.57 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-4.011-3.097-6.182-6.274-6.182-2.204 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248z" /></svg></span></div>
+          <button className="buttonSelect buttonNo"><img className="xIco" src={back} /></button>
+          <button onClick={handlerHeartClick} disabled={heartCheck} className="buttonSelect buttonYes"><img className="heartIco" src={heartCheck ? heartFill : heart} /></button>
         </div>
-      </Container>
-    </Main>
+      </Container >
+    </Main >
   );
 };
 

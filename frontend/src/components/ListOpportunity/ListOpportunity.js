@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, CardDeck, Card, Button } from "react-bootstrap";
+import { Container, CardDeck, Card, Button, Pagination } from "react-bootstrap";
 import Main from "../Template/main/Main";
 import { Link } from "react-router-dom";
 
@@ -44,6 +44,23 @@ const mockOpportunity = [
   },
 ];
 
+const paginationBasic = () => {
+  let active = 2;
+  let items = [];
+  for (let number = 1; number <= 5; number++) {
+    items.push(
+      <Pagination.Item key={number} active={number === active}>
+        {number}
+      </Pagination.Item>,
+    );
+  }
+  return (
+    <div>
+      <Pagination size="sm">{items}</Pagination>
+    </div>
+  );
+};
+
 const ListOpportunity = () => {
   return (
     <Main>
@@ -75,6 +92,7 @@ const ListOpportunity = () => {
               </CardDeck>
             );
           })}
+        {paginationBasic()}
       </Container>
     </Main >
   );

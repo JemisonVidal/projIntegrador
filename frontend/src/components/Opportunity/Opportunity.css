@@ -20,12 +20,6 @@
   margin-bottom: 0;
 }
 
-.titulo-campo-opportunity{
-  font-size: 20px;
-  color: #27187e;
-  font-weight: bold;
-}
-
 .title-empresa-opportunity{
   font-size: 18px;
   text-align: center;
@@ -55,16 +49,36 @@
   justify-content: center;
   border-radius: 100%;
   background-color: white;
-  box-shadow: 4px 8px 4px rgba(39, 24, 126, 0.25);
   color: var(--color-primary-dark);
+  border: none;
+  background-color: white;
+  font-size: 20px;
+}
+
+.buttonSelect:focus{
+  outline: 0;
 }
 
 .buttonNo{
+  font-weight: bold;
   border: 6px solid var(--color-orange);
+  box-shadow: 3px 3px 0px 1px #930;
 }
 
 .buttonYes{
+  font-weight: bold;
   border: 6px solid var(--color-primary-dark);
+  box-shadow: 3px 3px 0px 1px #15255a;
+}
+
+.buttonNo:active{
+  box-shadow: 0px 0px 0px 0px #930, inset 3px 3px 3px;
+  transform: translate(3px, 3px) ;
+}
+
+.buttonYes:active{
+  box-shadow: 0px 0px 0px 0px #15255a, inset 3px 3px 3px;
+  transform: translate(3px, 3px);
 }
 
 .heartIco{
