@@ -17,36 +17,44 @@
   margin: 5px;
 }
 
-.title-card{
+.title-card {
   font-weight: bold;
   font-size: 24px;
   text-align: center;
 }
 
-.card{
+.card {
   color: #27187e;
 }
 
-.titulo-campo{
+.titulo-campo {
   color: #27187e;
   font-weight: bold;
 }
 
-.linkVaga{
+.linkVaga {
   width: 100%;
   text-align: center;
 }
 
-.buttonVaga{
+.buttonVaga {
   width: 90%;
 }
 
+#buttonGreen {
+  background-color: #00b200;
+}
+
+#buttonBlue {
+  background-color: #27187e;
+}
+
 @media (min-width: 576px) {
-  .title-card{
+  .title-card {
     font-size: 28px;
     text-align: justify;
   }
-  .buttonVaga{
+  .buttonVaga {
     width: 98%;
   }
   .card-deck .card {

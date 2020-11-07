@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Container, CardDeck, Card, Button, Pagination } from "react-bootstrap";
 import Main from "../Template/main/Main";
 import { Link } from "react-router-dom";
@@ -62,6 +62,12 @@ const paginationBasic = () => {
 };
 
 const ListOpportunity = () => {
+  const handlerCandidatar = (event) => {
+    setCandidatarCheck(!candidatarCheck);
+  }
+
+  const [candidatarCheck, setCandidatarCheck] = useState(false);
+
   return (
     <Main>
       <Container fluid="md" className="py-2">
@@ -84,8 +90,8 @@ const ListOpportunity = () => {
                     </Card.Text>
                   </Card.Body>
                   <Link className="linkVaga" to={`/opportunity/${opportunity.id}`}>
-                    <Button className="buttonVaga" variant="primary" type="button">
-                      Candidatar-se
+                    <Button id={candidatarCheck ? "buttonGreen" : "buttonBlue"} className="buttonVaga" variant="primary" type="button">
+                      {candidatarCheck ? "Candidatada" : "Candidatar-se"}
                     </Button>
                   </Link>
                 </Card>

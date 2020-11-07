@@ -8,39 +8,37 @@
 }
 
 .card-deck .card button {
-  border: #27187e;
-  background-color: #27187e;
   margin: 5px;
 }
 
-.title-card-opportunity{
+.title-card-opportunity {
   font-weight: bold;
   font-size: 24px;
   text-align: center;
   margin-bottom: 0;
 }
 
-.title-empresa-opportunity{
+.title-empresa-opportunity {
   font-size: 18px;
   text-align: center;
 }
 
-.card{
+.card {
   color: #27187e;
 }
 
-.titulo-campo{
+.titulo-campo {
   color: #27187e;
   font-weight: bold;
 }
 
-.buttonsCandidatar{
+.buttonsCandidatar {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.buttonSelect{
+.buttonSelect {
   display: flex;
   margin: 5% 10%;
   height: 100px;
@@ -55,50 +53,50 @@
   font-size: 20px;
 }
 
-.buttonSelect:focus{
+.buttonSelect:focus {
   outline: 0;
 }
 
-.buttonNo{
+.buttonNo {
   font-weight: bold;
   border: 6px solid var(--color-orange);
   box-shadow: 3px 3px 0px 1px #930;
 }
 
-.buttonYes{
+.buttonYes {
   font-weight: bold;
   border: 6px solid var(--color-primary-dark);
   box-shadow: 3px 3px 0px 1px #15255a;
 }
 
-.buttonNo:active{
+.buttonNo:active {
   box-shadow: 0px 0px 0px 0px #930, inset 3px 3px 3px;
-  transform: translate(3px, 3px) ;
+  transform: translate(3px, 3px);
 }
 
-.buttonYes:active{
+.buttonYes:active {
   box-shadow: 0px 0px 0px 0px #15255a, inset 3px 3px 3px;
   transform: translate(3px, 3px);
 }
 
-.heartIco{
+.heartIco {
   width: 60px;
   fill: var(--color-primary-dark);
 }
 
-.xIco{
+.xIco {
   width: 50px;
   fill: var(--color-orange);
 }
 
 @media (min-width: 576px) {
-  .title-card-opportunity{
+  .title-card-opportunity {
     font-size: 28px;
   }
   .card-deck .card {
     font-size: 16px;
   }
-  .buttonSelect{
+  .buttonSelect {
     margin: 2% 5%;
   }
 }
