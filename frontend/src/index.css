@@ -1,10 +1,9 @@
 :root {
-  --color-primary: #758BFD;
-  --color-primary-dark: #27187E;
-  --color-primary-light: #AEB8FE;
-  --color-white: #F1F2F6;
-  --color-orange: #FF8600;
-
+  --color-primary: #758bfd;
+  --color-primary-dark: #27187e;
+  --color-primary-light: #aeb8fe;
+  --color-white: #f1f2f6;
+  --color-orange: #ff8600;
 }
 
 * {
@@ -13,14 +12,18 @@
 
 body {
   margin: 0;
-  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+#root {
+  background-image: linear-gradient(#27187e, #758bfd);
 }
