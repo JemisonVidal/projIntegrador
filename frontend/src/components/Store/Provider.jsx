@@ -5,7 +5,8 @@ import jwt_decode from "jwt-decode";
 
 const StoreProvider = ({ children }) => {
   const [apptoken, setToken] = useStorage("apptoken");
-  const user = jwt_decode(apptoken);
+  let user = {};
+  if (apptoken) user = jwt_decode(apptoken);
 
   return (
     <Context.Provider

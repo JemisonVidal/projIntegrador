@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card, CardDeck, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import StoreContext from "../../components/Store/Context";
 import Main from "../../components/Template/main/Main";
 import imageMain from "../../assets/images/main-photo.jpg";
 import logo from "../../assets/images/Logo2RecruIT.png";
@@ -16,6 +17,7 @@ import "./Home.css";
 
 const PagesHome = () => {
   const history = useHistory();
+  const { user } = useContext(StoreContext);
 
   const renderProfileUser = () => {
     function handleOnClick(event) {
@@ -134,7 +136,9 @@ const PagesHome = () => {
         </h1>
         <p>Descubra e seja descoberto</p>
       </div>
-      {renderProfileCompany()}
+      {user?.type === "applicant"
+        ? renderProfileUser()
+        : renderProfileCompany()}
       {/* TODO: ADICIONAR O HOME DA EMPRESA COM OS CARDS CRIAR VAGA/BUSCAR CANDIDATA */}
     </Main>
   );
