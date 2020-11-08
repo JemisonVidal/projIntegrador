@@ -1,8 +1,9 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
 const StoreContext = createContext({
   apptoken: null,
-  setToken: () => { },
+  setToken: () => {},
+  user: null,
 });
 
 export default StoreContext;
