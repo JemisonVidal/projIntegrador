@@ -58,52 +58,16 @@
   justify-self: center;
 }
 
-.divCarousel {
-  display: flex;
-  margin: 40px 40px;
-  height: 30vh;
-  background-color: #f1f2f6;
-  color: #27187e;
-  border-radius: 20px;
-  justify-content: center;
-  align-items: center;
-  box-shadow: -5px 5px 5px #27187e;
-  border: 4px solid #27187e;
-  text-align: center;
-}
-
-.carousel-indicators li {
-  background-color: white !important;
-}
-
-.titleCarousel {
-  font-weight: bold;
-  font-size: 24px;
-  margin: 0;
-  text-decoration: none;
-  color: #27187e;
-}
-
-.titleCarousel:hover {
-  font-size: 28px;
-  text-decoration: none;
-  color: #27187e;
-  transition: 0.5s;
-}
-
 .linkNavPhoto {
   border: solid white 3px;
   border-radius: 100%;
   width: 60px;
 }
 
-/* .data-profile {
-  display: grid;
-} */
-
 .data-profile > .card-deck {
-  padding: 10px;
+  padding: 10px 10px 0 0px;
   margin: 0 auto;
+  /* padding-bottom: 0; */
 }
 
 .data-profile .card-deck .card {
@@ -111,7 +75,7 @@
   max-height: 500px;
   height: 400px;
   align-items: center;
-  margin-bottom: 0;
+  margin-bottom: 10px;
 }
 
 .card-img-top {
@@ -139,43 +103,5 @@
 
   .image-banner-home {
     height: 450px;
-  }
-
-  .carousel {
-    margin: 20px auto;
-  }
-
-  .divCarousel {
-    width: 70%;
-    background-color: #27187e;
-    color: white;
-    border-radius: 20px;
-    box-shadow: none;
-    border: 2px solid #aeb8fe;
-    margin: 0px auto;
-  }
-
-  .carousel-control-prev-icon {
-    border-image: none !important;
-    position: relative;
-    left: 8em;
-  }
-
-  .carousel-control-next-icon {
-    border-image: none !important;
-    position: relative;
-    right: 8em;
-  }
-
-  .titleCarousel {
-    color: white;
-  }
-
-  .titleCarousel:hover {
-    color: white;
-  }
-
-  .linkNavPhoto {
-    width: 65px;
   }
 }
