@@ -65,7 +65,7 @@
 }
 
 .data-profile > .card-deck {
-  padding: 10px 10px 0 0px;
+  padding: 10px 10px 0 10px;
   margin: 0 auto;
   /* padding-bottom: 0; */
 }
