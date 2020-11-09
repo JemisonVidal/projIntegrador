@@ -37,3 +37,13 @@
   font-weight: 700;
   font-size: larger;
 }
+
+#avatar {
+  margin-left: 15px;
+}
+
+@media (min-width: 991px) {
+  #avatar {
+    margin-left: auto;
+  }
+}

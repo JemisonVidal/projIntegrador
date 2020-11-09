@@ -29,7 +29,7 @@ const NavBar = ({ avatar, type, id }) => {
               Empresas
             </Link>
           </Nav>
-          <Nav className="ml-auto">
+          <Nav id="avatar">
             <Link to={`/profile/${type}/${id}`}>
               <Image className="avatar" src={mockPropAtavar} rounded />
             </Link>
