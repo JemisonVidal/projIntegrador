@@ -4,6 +4,7 @@ import br.com.house.digital.projetointegrador.model.AbstractEntity;
 import br.com.house.digital.projetointegrador.service.BaseService;
 import br.com.house.digital.projetointegrador.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,6 +23,7 @@ public abstract class BaseServiceImpl<T extends AbstractEntity<PK>, PK extends S
         this.repository = repository;
         this.modelMapper = modelMapper;
         this.genericType = genericType;
+        this.modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.LOOSE);
     }
 
     @Override
@@ -33,6 +35,13 @@ public abstract class BaseServiceImpl<T extends AbstractEntity<PK>, PK extends S
     @Override
     public T update(T entity) {
         findById(entity.getId());
+        return save(entity);
+    }
+
+    @Override
+    public T patch(T partial) {
+        final T entity = findById(partial.getId());
+        modelMapper.map(partial, entity);
         return save(entity);
     }
 

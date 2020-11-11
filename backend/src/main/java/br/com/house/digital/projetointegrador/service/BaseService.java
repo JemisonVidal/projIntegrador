@@ -11,6 +11,8 @@ public interface BaseService<T, PK> {
 
     T update(T entity);
 
+    T patch(T entity);
+
     T findById(PK id);
 
     List<T> findAll();
