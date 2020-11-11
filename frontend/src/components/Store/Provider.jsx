@@ -16,9 +16,10 @@ const StoreProvider = ({ children }) => {
 
   useEffect(() => {
     (async () => {
+      if (!user.type && !user.pid) return
       const { url, options } = GET_AVATAR(user.type, user.pid);
       const { response, json } = await request(url, options)
-      if (response.ok) {
+      if (response.ok && json.imgSrc) {
         setAvatar(json.imgSrc)
       }
     })()

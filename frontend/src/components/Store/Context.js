@@ -10,6 +10,7 @@ const StoreContext = createContext({
     iat: null,
     exp: null,
   },
+  avatar: null,
 });
 
 export default StoreContext;
