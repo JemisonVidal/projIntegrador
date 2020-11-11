@@ -4,6 +4,7 @@ import br.com.house.digital.projetointegrador.service.exceptions.DataIntegrityEx
 import br.com.house.digital.projetointegrador.service.exceptions.EmailExistsException;
 import br.com.house.digital.projetointegrador.service.exceptions.ObjectNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -17,8 +18,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -56,9 +55,9 @@ public class ControllerExceptionHandler {
         return handleResponse(err);
     }
 
-    @ExceptionHandler(SignatureException.class)
-    public ResponseEntity<StandardError> invalidTokenSignature(SignatureException e) {
-        StandardError err = new StandardError(HttpStatus.UNAUTHORIZED.value(), "Invalid token signature.");
+    @ExceptionHandler({SignatureException.class, MalformedJwtException.class})
+    public ResponseEntity<StandardError> handleInvalidToken(Exception e) {
+        StandardError err = new StandardError(HttpStatus.UNAUTHORIZED.value(), "Invalid token.");
         return handleResponse(err);
     }
 
