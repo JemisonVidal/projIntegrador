@@ -1,13 +1,12 @@
-import React from "react";
-import { Navbar, Nav, Image } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import "./Nav.css";
+import React, { useContext } from 'react';
+import { Navbar, Nav, Image } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import StoreContext from '../../Store/Context';
+import './Nav.css';
 
-const NavBar = ({ avatar, type, id }) => {
+const NavBar = () => {
   //TODO: Confirmar se iremos receber props ou utilizar o context/redux
-  const mockPropAtavar = `http://placekitten.com/300/300`;
-  type = `user`;
-  id = 1;
+  const { user, avatar } = useContext(StoreContext);
 
   return (
     <>
@@ -29,10 +28,20 @@ const NavBar = ({ avatar, type, id }) => {
               Empresas
             </Link>
           </Nav>
-          <Nav id="avatar">
-            <Link to={`/profile/${type}/${id}`}>
-              <Image className="avatar" src={mockPropAtavar} rounded />
-            </Link>
+          <Nav>
+            {user.pid 
+              ? (
+                  <Link className="nav-item" to={`/profile/${user.type}/${user.pid}`}>
+                    Meu Perfil
+                    <Image className="avatar ml-2" src={avatar} rounded />
+                  </Link>
+              )
+              : (
+                  <Link className="nav-item" to='/login'>
+                    Login
+                  </Link>
+              )
+            }
           </Nav>
         </Navbar.Collapse>
       </Navbar>
