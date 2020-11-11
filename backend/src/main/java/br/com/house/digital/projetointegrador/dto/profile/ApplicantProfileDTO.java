@@ -21,6 +21,7 @@ import java.util.List;
 public class ApplicantProfileDTO extends ProfileDTO {
 
     private String name;
+    private String locationWanted;
     private Double desiredSalary;
     private String phoneNumber;
     @JsonIgnoreProperties("id")
