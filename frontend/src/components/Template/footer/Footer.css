@@ -1,7 +1,7 @@
 .footer {
   bottom: 0;
   width: 100%;
-  max-width: 960px;
+  /* max-width: 960px; */
   display: grid;
   background-color: #27187e;
   color: #ffffff;
@@ -70,7 +70,7 @@
 
 @media (min-width: 576px) {
   .footer {
-    border-radius: 0 0 10px 10px;
+    /* border-radius: 0 0 25px 25px; */
   }
   .col-footer-logo {
     text-align: right;
