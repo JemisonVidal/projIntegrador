@@ -9,8 +9,8 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "companies_profiles")
@@ -27,14 +27,11 @@ public class CompanyProfile extends Profile {
     @Column(length = 14)
     private String cnpj;
 
-    @Column(length = 100)
-    private String shortDescription;
-
     private LocalDate startDate;
 
     private String category;
 
     @OneToMany(fetch = FetchType.LAZY)
-    private Set<Opportunity> opportunities = new HashSet<>();
+    private List<Opportunity> opportunities = new ArrayList<>();
 
 }

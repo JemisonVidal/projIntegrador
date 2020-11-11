@@ -7,11 +7,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -26,15 +25,21 @@ public abstract class Profile extends AbstractEntity<Long> {
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(columnDefinition = "TEXT")
-    private String text;
+    private String about;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "address", column = @Column(name = "location_address")),
-        @AttributeOverride(name = "city", column = @Column(name = "location_city")),
-        @AttributeOverride(name = "state", column = @Column(name = "location_state"))
-    })
-    private Location location;
+    @Column(length = 50)
+    private String title;
+
+    private String imgSrc;
+
+    @Column(length = 50)
+    private String location;
+
+    private String linkedin;
+
+    private String github;
+
+    private String site;
 
     @Version
     private Integer version;
@@ -42,9 +47,5 @@ public abstract class Profile extends AbstractEntity<Long> {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id")
-    private Set<ExternalLink> links = new HashSet<>();
 
 }
