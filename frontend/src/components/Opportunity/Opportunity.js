@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, CardDeck, Card, Button } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import Main from "../Template/main/Main";
 import heart from "../../assets/images/Heart.svg";
 import heartFill from "../../assets/images/FilledHeart.svg";
@@ -50,8 +51,15 @@ const opportunity = mockOpportunity.filter(vaga => vaga.id === 1);
 
 const ListOpportunity = () => {
 
+  const history = useHistory();
+
+  const handlerBackClick = (event) => {
+    history.push('/listOpportunity');
+  }
+
   const handlerHeartClick = (event) => {
     setHeartCheck(!heartCheck);
+    history.push('/listOpportunity');
   }
 
   const [heartCheck, setHeartCheck] = useState(false);
@@ -86,7 +94,7 @@ const ListOpportunity = () => {
           </Card>
         </CardDeck>
         <div className="buttonsCandidatar">
-          <button className="buttonSelect buttonNo"><img className="xIco" src={back} /></button>
+          <button onClick={handlerBackClick} className="buttonSelect buttonNo"><img className="xIco" src={back} /></button>
           <button onClick={handlerHeartClick} disabled={heartCheck} className="buttonSelect buttonYes"><img className="heartIco" src={heartCheck ? heartFill : heart} /></button>
         </div>
       </Container >

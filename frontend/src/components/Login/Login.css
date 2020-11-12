@@ -3,21 +3,22 @@
   margin: 16px 0;
 }
 
-.logo-banner-login{
+.logo-banner-login {
   width: 50vw;
 }
 
 h2 {
   text-align: center;
   color: white;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-size: 45px;
   font-weight: bold;
   margin-bottom: 42px;
 }
 
 span {
-  color: #FF8600;
+  color: #ff8600;
 }
 
 .container-box-login {
@@ -26,6 +27,11 @@ span {
   min-height: 100vh;
   width: 100vw;
   background-image: linear-gradient(#27187e, #758bfd);
+}
+
+.container-image-background-login {
+  display: contents;
+  margin: 0 auto;
 }
 
 .form-box-login {
@@ -55,17 +61,16 @@ span {
 }
 
 @media (min-width: 576px) {
-
-  .logo-banner-login{
+  .logo-banner-login {
     width: 10vw;
   }
-  
+
   h2 {
     color: #27187e;
   }
-  
+
   span {
-    color: #FF8600;
+    color: #ff8600;
   }
 
   .form-box-login {

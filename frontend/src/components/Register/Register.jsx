@@ -48,8 +48,7 @@ const UserRegister = () => {
 
   return (
     <div className="container-box">
-      {/* className="container-image-background" está no Main.css */}
-      <div className="container-image-background">
+      <div className="container-image-background-cadastro">
         <Form className="container form-box" onSubmit={handleSubmit}>
           <h1 className="titulo-registro">Cadastre-se</h1>
           <Input
