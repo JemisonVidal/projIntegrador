@@ -125,12 +125,11 @@ const PagesHome = () => {
     );
   };
 
-  var image = "http://placekitten.com/300/300";
   return (
     <Main>
       <div className="div-banner-home">
-        <img className="image-banner-home" src={imageMain} />
-        <img className="logo-banner-home" src={logo} />
+        <img className="image-banner-home" src={imageMain} alt='Banner' />
+        <img className="logo-banner-home" src={logo} alt='Logo RecruIT' />
         <h1>
           Recru<span>IT</span>
         </h1>

@@ -42,7 +42,7 @@ const UserLogin = () => {
     <div className="container-box-login">
       <div className="container-image-background-login">
         <Form className="container form-box-login" onSubmit={onSubmit}>
-          <h1 className="logo-login"><img className="logo-banner-login" src={logo} /></h1>
+          <h1 className="logo-login"><img className="logo-banner-login" src={logo} alt='Logo RecruIT' /></h1>
           <h2>Recru<span>IT</span></h2>
           <Input
             namelabel="Email"
