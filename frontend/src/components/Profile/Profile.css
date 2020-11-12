@@ -9,3 +9,21 @@
   justify-content: center;
   text-align: center;
 }
+
+.btn-profile-edit {
+  background: none;
+  border: none;
+  color: var(--color-primary-light);
+  font-weight: bold;
+  padding: 0.15em;
+  font-size: 1.5rem;
+  transition: color 0.1s linear;
+}
+
+.btn-profile-edit:hover {
+  color: var(--color-primary-dark);
+}
+
+.btn-profile-edit:focus {
+  outline: none;
+}
