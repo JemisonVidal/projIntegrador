@@ -3,21 +3,22 @@
   margin: 16px 0;
 }
 
-.logo-banner-login{
+.logo-banner-login {
   width: 50vw;
 }
 
-h2 {
+.container-box-login h2 {
   text-align: center;
   color: white;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-size: 45px;
   font-weight: bold;
   margin-bottom: 42px;
 }
 
-span {
-  color: #FF8600;
+.container-box-login span {
+  color: var(--color-orange);
 }
 
 .container-box-login {
@@ -25,7 +26,7 @@ span {
   align-items: center;
   min-height: 100vh;
   width: 100vw;
-  background-image: linear-gradient(#27187e, #758bfd);
+  background-image: linear-gradient(var(--color-primary-dark), var(--color-primary));
 }
 
 .form-box-login {
@@ -36,8 +37,8 @@ span {
 #btnEntrar {
   margin-top: 5px;
   width: 100%;
-  border-color: #27187e;
-  background-color: #27187e;
+  border-color: var(--color-primary-dark);
+  background-color: var(--color-primary-dark);
   border-radius: 5px;
 }
 
@@ -55,17 +56,12 @@ span {
 }
 
 @media (min-width: 576px) {
-
-  .logo-banner-login{
+  .logo-banner-login {
     width: 10vw;
   }
-  
-  h2 {
-    color: #27187e;
-  }
-  
-  span {
-    color: #FF8600;
+
+  .container-box-login h2 {
+    color: var(--color-primary-dark);
   }
 
   .form-box-login {
@@ -77,6 +73,6 @@ span {
   #links-login,
   #esqueci-senha,
   #cadastro-login {
-    color: #27187e;
+    color: var(--color-primary-dark);
   }
 }

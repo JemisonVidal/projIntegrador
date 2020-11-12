@@ -41,18 +41,9 @@
 
 .card-profile .profile-item {
   padding: 0.2rem 0;
-}
-
-.card-profile .profile-item .font-weight-bold {
   color: var(--color-primary-dark);
-}
-
-.card-profile .profile-item span {
-  color: var(--color-primary-dark);
-}
-
-.card-profile .profile-item span a {
-  color: var(--color-primary);
+  text-align: justify;
+  white-space: pre-line;
 }
 
 .card-profile .profile-item span a:hover {
