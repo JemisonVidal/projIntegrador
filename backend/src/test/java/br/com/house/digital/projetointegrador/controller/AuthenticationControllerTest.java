@@ -5,6 +5,7 @@ import br.com.house.digital.projetointegrador.dto.authentication.RegisterDTO;
 import br.com.house.digital.projetointegrador.dto.authentication.TokenDTO;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.enums.UserType;
+import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
 import br.com.house.digital.projetointegrador.security.JWTAuthenticationEntryPoint;
 import br.com.house.digital.projetointegrador.security.JWTRequestFilter;
 import br.com.house.digital.projetointegrador.security.JWTUtil;
@@ -76,8 +77,10 @@ public class AuthenticationControllerTest {
 
         when(authenticationService.save(any(User.class)))
                 .thenReturn(User.builder()
-                        .id(1L)
-                        .build());
+                    .id(1L)
+                    .type(userDTO.getType())
+                    .profile(ApplicantProfile.builder().id(1L).build())
+                    .build());
 
         String json = objectMapper.writeValueAsString(userDTO);
 
@@ -93,7 +96,7 @@ public class AuthenticationControllerTest {
 
         verify(authenticationService, times(1)).save(any(User.class));
 
-        assertThat(response.getHeader("Location")).isEqualTo("http://localhost/v1/api/register/1");
+        assertThat(response.getHeader("Location")).isEqualTo("http://localhost/v1/api/profile/applicant/1");
     }
 
     @Test
