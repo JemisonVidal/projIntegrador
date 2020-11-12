@@ -6,8 +6,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Entity
@@ -18,11 +21,22 @@ import java.time.LocalDate;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 public class WorkExperience extends AbstractEntity<Long> {
 
+    @Column(nullable = false)
+    @NotBlank
     private String name;
+
+    @Column(nullable = false)
+    @NotBlank
     private String position;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String activities;
+
     private LocalDate initialDate;
     private LocalDate finalDate;
+
+    @Column(nullable = false)
     private boolean acting;
 
 //	@ManyToOne

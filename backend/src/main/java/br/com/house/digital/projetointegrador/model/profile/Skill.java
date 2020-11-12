@@ -3,6 +3,8 @@ package br.com.house.digital.projetointegrador.model.profile;
 import java.io.Serializable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import br.com.house.digital.projetointegrador.model.AbstractEntity;
 import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
@@ -19,8 +21,14 @@ import lombok.*;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 public class Skill extends AbstractEntity<Long> {
 
+	@NotBlank
+	@Column(nullable = false)
 	private String name;
+
 	private String experienceTime;
+
+	@NotNull
+	@Column(nullable = false)
 	private Integer knowledgeLevel;
 
 //	@ManyToOne

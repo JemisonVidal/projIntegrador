@@ -21,7 +21,7 @@ const UserRegister = () => {
 
   const optionsComboBox = [
     {value: '', text: 'Escolha uma opção'},
-    {value: 'USER', text: 'Quero trabalhar'},
+    {value: 'APPLICANT', text: 'Quero trabalhar'},
     {value: 'COMPANY', text: 'Quero recrutar'},
   ];
 

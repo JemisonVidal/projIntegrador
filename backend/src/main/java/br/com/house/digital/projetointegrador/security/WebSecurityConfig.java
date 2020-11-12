@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -51,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             // don't authenticate this particular request
             .authorizeRequests()
             .antMatchers("/**/api/authenticate", "/**/api/register").permitAll()
+            .antMatchers(HttpMethod.GET, "/**/avatar").permitAll()
             .antMatchers("/**/api/**").authenticated()
             .antMatchers("/", "/**").permitAll()
             .anyRequest().authenticated()

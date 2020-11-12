@@ -1,5 +1,6 @@
 package br.com.house.digital.projetointegrador.controller;
 
+import br.com.house.digital.projetointegrador.dto.profile.AvatarDTO;
 import br.com.house.digital.projetointegrador.dto.profile.CompanyProfileDTO;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.profile.CompanyProfile;
@@ -48,11 +49,19 @@ public class CompanyProfileController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<Void> patch(@RequestBody @Valid CompanyProfileDTO profileDTO, @PathVariable Long id) {
+        CompanyProfile profile = companyProfileService.convertToEntity(profileDTO);
+        profile.setId(id);
+        companyProfileService.patch(profile);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping(value = "/{id}")
     public ResponseEntity<Void> update(@RequestBody CompanyProfileDTO profileDTO, @PathVariable Long id) {
         CompanyProfile profile = companyProfileService.convertToEntity(profileDTO);
         profile.setId(id);
-        profile = companyProfileService.update(profile);
+        companyProfileService.update(profile);
         return ResponseEntity.noContent().build();
     }
 
@@ -60,6 +69,12 @@ public class CompanyProfileController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.companyProfileService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/{id}/avatar")
+    public ResponseEntity<AvatarDTO> findAvatarById(@PathVariable Long id) {
+        final String imgSrc = companyProfileService.findById(id).getImgSrc();
+        return ResponseEntity.ok(new AvatarDTO(imgSrc));
     }
 
 }

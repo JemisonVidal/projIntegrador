@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "applicants_profiles")
@@ -19,6 +19,9 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class ApplicantProfile extends Profile {
 
+    @Column(length = 50)
+    private String locationWanted;
+
     private Double desiredSalary;
 
     @Column(length = 20)
@@ -26,15 +29,15 @@ public class ApplicantProfile extends Profile {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id")
-    private Set<Skill> skills = new HashSet<>();
+    private List<Skill> skills = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id")
-    private Set<Course> courses = new HashSet<>();
+    private List<Course> courses = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id")
-    private Set<WorkExperience> workExperiences = new HashSet<>();
+    private List<WorkExperience> workExperiences = new ArrayList<>();
 
 }
 

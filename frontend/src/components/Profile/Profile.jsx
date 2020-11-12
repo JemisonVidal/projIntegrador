@@ -1,24 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import User from "./User/User";
 import CompanyProfile from "./CompanyProfile/CompanyProfile";
-import UserProfile from "./UserProfile/UserProfile";
-import logo from "../../assets/images/Logo2RecruIT.png";
-import { Link } from "react-router-dom";
+import ApplicantProfile from "./ApplicantProfile/ApplicantProfile";
 
 import "./Profile.css";
-// import useFetch from '../../Hooks/useFetch';
-// import { GET_PROFILE } from '../../APIs/APIs';
+import useFetch from '../../Hooks/useFetch';
+import { GET_PROFILE } from '../../APIs/APIs';
+import { useState } from "react";
+import StoreContext from "../Store/Context";
 
 const Profile = ({ type, id }) => {
-  // const {data, loading, request} = useFetch();
-  // const {url, options} = GET_PROFILE(type, id)
+  const {request} = useFetch();
+  const {url, options} = GET_PROFILE(type, id)
+  const [profileData, setProfileData] = useState({});
+  const {user} = useContext(StoreContext);
+  const [canEdit, setCanEdit] = useState(false);
 
-  const user = {
-    imgSrc: `http://placekitten.com/300/300`,
-    name: "Rebeca Souza",
-    title: "Desenvolvedora Full-Stack",
-  };
+
+  user.imgSrc = 'http://placekitten.com/300/300'
+
+  // const user = {
+  //   imgSrc: `http://placekitten.com/300/300`,
+  //   name: "Rebeca Souza",
+  //   title: "Desenvolvedora Full-Stack",
+  // };
 
   const userData = {
     canEdit: true,
@@ -98,24 +104,27 @@ const Profile = ({ type, id }) => {
       },
     ],
   };
-  // useEffect(() => {
-  //   request(url, options)
-  // }, [])
+
+  useEffect(() => {
+    (async () => {
+      const { response, json } = await request(url, options);
+      if (response.ok) {
+        setProfileData(json);
+        setCanEdit(type === user.type && Number(id) === user.pid);
+      }
+    })()
+  }, [url])
+
   return (
     <Container fluid className="container-profile p-0">
+      <User imgSrc={profileData.imgSrc} name={profileData.name} title={profileData.title} />
       {type === "company" ? (
         <>
-          <User
-            imgSrc={companyDataMock.imgSrc}
-            name={companyDataMock.name}
-            title={companyDataMock.main}
-          />
           <CompanyProfile data={companyDataMock} />
         </>
       ) : (
         <>
-          <User imgSrc={user.imgSrc} name={user.name} title={user.title} />
-          <UserProfile data={userData} />
+          <ApplicantProfile profileId={id} data={profileData} setData={setProfileData} canEdit={canEdit} />
         </>
       )}
     </Container>

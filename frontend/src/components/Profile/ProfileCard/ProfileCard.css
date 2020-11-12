@@ -7,12 +7,22 @@
   padding: 2.5rem;
 }
 
-.card-profile .btn {
+.card-profile .btn-profile-edit {
   background-color: white;
   color: var(--color-primary-dark);
   font-weight: bold;
   padding: 0;
   font-size: 1.5rem;
+}
+
+#save-profile {
+  margin-top: 0.5em;
+  color: var(--color-white);
+  font-weight: bold;
+  width: 100%;
+  border-color: #27187e;
+  background-color: #27187e;
+  border-radius: 0.5em;
 }
 
 .card-profile {
@@ -21,7 +31,7 @@
   border-radius: 10px;
   box-shadow: 4px 8px 4px rgba(39, 24, 126, 0.25);
   color: var(--color-primary-dark);
-  margin-bottom: 10px;
+  margin-bottom: 0.5em;
 }
 
 .card-profile .card-title {
@@ -38,7 +48,7 @@
 }
 
 .card-profile .profile-item span {
-  color: #FF8600;
+  color: var(--color-primary-dark);
 }
 
 .card-profile .profile-item span a {
@@ -50,8 +60,21 @@
   font-size: 16.5px;
 }
 
+.card-profile input, textarea {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--color-primary);
+  color: var(--color-primary-dark);
+  transition: color 0.1s ease-in-out;
+}
+
+.card-profile input:focus, textarea:focus {
+  border-bottom: 2px solid var(--color-primary-dark);
+  color: var(--color-primary-dark);
+}
+
 @media (min-width: 576px) {
-  .card-profile .btn {
+  .card-profile .btn-profile-edit {
     font-size: 1.75rem;
   }
   .card-profile {

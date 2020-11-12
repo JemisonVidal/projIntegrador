@@ -48,6 +48,10 @@ public class JWTUtil {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
+    public Long getProfileIdFromToken(String token) {
+        return getClaimFromToken(token, claims -> claims.get("pid", Long.class));
+    }
+
     //check if the token has expired
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
@@ -61,8 +65,9 @@ public class JWTUtil {
      */
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("type", user.getType());
         claims.put("name", user.getName());
+        claims.put("type", user.getType().name().toLowerCase());
+        claims.put("pid", user.getProfileId());
         return doGenerateToken(claims, user.getUsername());
     }
 
@@ -101,7 +106,7 @@ public class JWTUtil {
     public Boolean validateToken(String token, User user) {
         final Claims claims = getAllClaimsFromToken(token);
         final String email = claims.getSubject();
-        final UserType type = UserType.valueOf(claims.get("type", String.class));
+        final UserType type = UserType.valueOf(claims.get("type", String.class).toUpperCase());
         return (email.equals(user.getUsername()) && type.equals(user.getType()) && !isTokenExpired(token));
     }
 
