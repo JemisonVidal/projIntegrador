@@ -10,6 +10,11 @@
   border-color:var(--color-primary-dark);
   background-color:var(--color-primary-dark);
   border-radius: 0.5em;
+  transition: background-color 0.1s linear;
+}
+
+#save-profile:hover {
+  background-color: var(--color-primary-darker);
 }
 
 .card-profile {
@@ -47,6 +52,7 @@
 }
 
 .card-profile input:focus, textarea:focus {
+  outline: none;
   border-bottom: 2px solid var(--color-primary-dark);
   color: var(--color-primary-dark);
 }
