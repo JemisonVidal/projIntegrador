@@ -27,6 +27,10 @@ public class WorkExperience extends AbstractEntity<Long> {
 
     @Column(nullable = false)
     @NotBlank
+    private String company;
+
+    @Column(nullable = false)
+    @NotBlank
     private String position;
 
     @Lob
@@ -38,10 +42,5 @@ public class WorkExperience extends AbstractEntity<Long> {
 
     @Column(nullable = false)
     private boolean acting;
-
-//	@ManyToOne
-//	@JsonBackReference
-//	@JoinColumn(name = "profile_id")
-//	private ApplicantProfile profile;
 
 }
