@@ -6,9 +6,7 @@ const ProfileCardItem = ({ title, value, formatter }) => {
   return (
     <Row className="profile-item">
       <Col sm={12} md="auto">
-        <span className="font-weight-bold">
-          {title}
-        </span>
+        <span className="font-weight-bold">{title}</span>
       </Col>
       <Col sm={12} md>
         {formatter ? formatter(value) : value}
@@ -17,24 +15,18 @@ const ProfileCardItem = ({ title, value, formatter }) => {
   );
 };
 
-const Edit = ({name, data, fields, setData}) => {
-  const [value, setValue] = useState(data.value);
+const Edit = ({ name, data, fields, setData }) => {
+  const [value, setValue] = useState(data.value || '');
 
   const handleOnChange = (e) => {
     e.preventDefault();
-    const newData = {...fields};
+    const newData = { ...fields };
     const newValue = e.target.value;
     setValue(newValue);
     newData[name] = newValue;
-    setData(newData)
-  }
+    setData(newData);
+  };
 
-  let input;
-  if (data.type === 'textarea') {
-    input = <textarea id={name} name={name} value={value} rows='3' onChange={handleOnChange}></textarea>
-  } else {
-    input = <input id={name} type={data.type || 'text'} name={name} value={value} onChange={handleOnChange} />
-  }
   return (
     <Row className="profile-item">
       <Col sm={12} md="auto">
@@ -43,11 +35,28 @@ const Edit = ({name, data, fields, setData}) => {
         </label>
       </Col>
       <Col sm={12} md>
-        {input}
+        {data.type === 'textarea' ? (
+          <textarea
+            id={name}
+            name={name}
+            value={value}
+            rows="3"
+            onChange={handleOnChange}
+          ></textarea>
+        ) : (
+          <input
+            id={name}
+            type={data.type || 'text'}
+            name={name}
+            value={value}
+            onChange={handleOnChange}
+            placeholder={data.placeholder}
+          />
+        )}
       </Col>
     </Row>
   );
-}
+};
 ProfileCardItem.Edit = Edit;
 
 export default ProfileCardItem;

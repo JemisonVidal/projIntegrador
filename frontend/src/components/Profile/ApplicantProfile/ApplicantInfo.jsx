@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import ProfileCard from '../ProfileCard/ProfileCard';
-import ProfileCardItem from '../ProfileCard/ProfileCardItem/ProfileCardItem';
+import ProfileCardItem from '../ProfileCard/ProfileCardItem';
 
 const ApplicantInfo = ({ data, setData, canEdit, handleSubmit }) => {
   const [isEditing, setEditing] = useState(false);

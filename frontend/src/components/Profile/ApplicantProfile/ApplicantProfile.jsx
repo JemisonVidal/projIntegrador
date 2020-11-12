@@ -41,11 +41,17 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
         type: 'number',
         formatter: (v) => currencyFormat.format(v),
       },
-      github: { text: 'Github', value: data.github, formatter: linkFormat },
+      github: {
+        text: 'Github',
+        value: data.github,
+        formatter: linkFormat,
+        placeholder: 'https://github.com/usuaria',
+      },
       linkedin: {
         text: 'LinkedIn',
         value: data.linkedin,
         formatter: linkFormat,
+        placeholder: 'https://linkedin.com/in/usuaria',
       },
     });
     setSkills(data.skills);
