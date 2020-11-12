@@ -29,6 +29,11 @@
   background-image: linear-gradient(var(--color-primary-dark), var(--color-primary));
 }
 
+.container-image-background-login {
+  display: contents;
+  margin: 0 auto;
+}
+
 .form-box-login {
   max-width: 500px;
   padding: 30px;

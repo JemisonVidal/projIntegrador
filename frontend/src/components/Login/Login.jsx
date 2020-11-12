@@ -40,8 +40,7 @@ const UserLogin = () => {
 
   return (
     <div className="container-box-login">
-      {/* className="container-image-background" está no Main.css */}
-      <div className="container-image-background">
+      <div className="container-image-background-login">
         <Form className="container form-box-login" onSubmit={onSubmit}>
           <h1 className="logo-login"><img className="logo-banner-login" src={logo} /></h1>
           <h2>Recru<span>IT</span></h2>
