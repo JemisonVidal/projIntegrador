@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import ApplicantInfo from './ApplicantInfo';
 import useFetch from '../../../Hooks/useFetch';
 import { PATCH_PROFILE } from '../../../APIs/APIs';
+import ApplicantExperiences from './ApplicantExperiences';
 
 const currencyFormat = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -54,9 +55,9 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
         placeholder: 'https://linkedin.com/in/usuaria',
       },
     });
-    setSkills(data.skills);
-    setCourses(data.courses);
-    setWorkExperiences(data.workExperiences);
+    setSkills(data.skills || []);
+    setCourses(data.courses || []);
+    setWorkExperiences(data.workExperiences || []);
   }, [data]);
 
   return (
@@ -64,6 +65,12 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
       <ApplicantInfo
         data={info}
         setData={setInfo}
+        canEdit={canEdit}
+        handleSubmit={handleSubmit}
+      />
+      <ApplicantExperiences
+        data={workExperiences}
+        setData={setWorkExperiences}
         canEdit={canEdit}
         handleSubmit={handleSubmit}
       />

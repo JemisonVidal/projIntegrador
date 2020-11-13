@@ -57,6 +57,20 @@
   color: var(--color-primary-dark);
 }
 
+.card-profile .btn-outline-primary {
+  color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+.card-profile .btn-outline-primary:hover {
+  color: var(--color-white);
+  background-color: var(--color-primary-dark);
+}
+
+.card-profile .btn-profile-edit-item, .btn-profile-remove {
+  max-height: 3em;
+}
+
 @media (min-width: 576px) {
   .card-profile {
     margin-bottom: 15px;
