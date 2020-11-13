@@ -2,8 +2,7 @@ import { requestOptions } from "./configAPI";
 
 export function GET_AVATAR(type, id) {
   return requestOptions({
-    url: `/profile/${type}/${id}/avhttpSecurity.csrf().disable();
-        httpSecurity.cors();atar`,
+    url: `/profile/${type}/${id}/avatar`,
     isAuthenticated: false,
   });
 }
