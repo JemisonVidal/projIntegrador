@@ -1,7 +1,6 @@
 package br.com.house.digital.projetointegrador.repository;
 
 import br.com.house.digital.projetointegrador.model.Opportunity;
-import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.profile.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
