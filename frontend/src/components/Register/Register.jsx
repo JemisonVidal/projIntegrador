@@ -39,6 +39,7 @@ const UserRegister = () => {
       senha.validate() &&
       confirmarSenha.validate() &&
       tipo.validate() && 
+      termo.value() &&
       senha.value === confirmarSenha.value
     ) {
       const { response } = await registrar(nome, email, senha, tipo);

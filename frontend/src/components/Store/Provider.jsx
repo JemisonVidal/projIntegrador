@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Context from "./Context";
 import useStorage from "../../utils/useStorage";

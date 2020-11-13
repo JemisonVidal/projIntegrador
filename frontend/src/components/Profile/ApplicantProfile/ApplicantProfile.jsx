@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import ApplicantInfo from './ApplicantInfo';
 import useFetch from '../../../Hooks/useFetch';
 import { PATCH_PROFILE } from '../../../APIs/APIs';
+import ApplicantExperiences from './ApplicantExperiences';
 
 const currencyFormat = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -41,16 +42,22 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
         type: 'number',
         formatter: (v) => currencyFormat.format(v),
       },
-      github: { text: 'Github', value: data.github, formatter: linkFormat },
+      github: {
+        text: 'Github',
+        value: data.github,
+        formatter: linkFormat,
+        placeholder: 'https://github.com/usuaria',
+      },
       linkedin: {
         text: 'LinkedIn',
         value: data.linkedin,
         formatter: linkFormat,
+        placeholder: 'https://linkedin.com/in/usuaria',
       },
     });
-    setSkills(data.skills);
-    setCourses(data.courses);
-    setWorkExperiences(data.workExperiences);
+    setSkills(data.skills || []);
+    setCourses(data.courses || []);
+    setWorkExperiences(data.workExperiences || []);
   }, [data]);
 
   return (
@@ -58,6 +65,12 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
       <ApplicantInfo
         data={info}
         setData={setInfo}
+        canEdit={canEdit}
+        handleSubmit={handleSubmit}
+      />
+      <ApplicantExperiences
+        data={workExperiences}
+        setData={setWorkExperiences}
         canEdit={canEdit}
         handleSubmit={handleSubmit}
       />

@@ -1,38 +1,29 @@
 .container-profile {
-    /* display: flex; */
-    /* align-items: center; */
-    min-height: 100vh;
-  }
-  
-  .header {
-    /* width: 100%; */
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .profile {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-  }
-  
-  #logo {
-    width: 80px;
-    height: auto;
-  }
-  
-  #menu {
-    color: var(--color-white);
-    font-size: 2rem;
-  }
+  /* display: flex; */
+  /* align-items: center; */
+  min-height: 100vh;
+}
 
-  .linkNavLogo{
-    width: 90px;
-  }
+.profile {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
 
-  @media (min-width: 576px) {
-    #menu {
-      color: var(--color-primary-dark);
-      font-size: 2rem;
-    }
-  }
+.btn-profile-edit {
+  background: none;
+  border: none;
+  color: var(--color-primary-light);
+  font-weight: bold;
+  padding: 0.15em;
+  font-size: 1.5rem;
+  transition: color 0.1s linear;
+}
+
+.btn-profile-edit:hover {
+  color: var(--color-primary-dark);
+}
+
+.btn-profile-edit:focus {
+  outline: none;
+}

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Carousel } from 'react-bootstrap';
 import ProfileCard from '../ProfileCard/ProfileCard';
 import './CompanyProfile.css'
 
