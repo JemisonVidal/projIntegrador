@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import ApplicantInfo from './ApplicantInfo';
-import useFetch from '../../../Hooks/useFetch';
-import { PATCH_PROFILE } from '../../../APIs/APIs';
-import ApplicantExperiences from './ApplicantExperiences';
+import React, { useState } from "react";
+import { useEffect } from "react";
+import ApplicantInfo from "./ApplicantInfo";
+import useFetch from "../../../Hooks/useFetch";
+import { PATCH_PROFILE } from "../../../APIs/APIs";
+import ApplicantExperiences from "./ApplicantExperiences";
 
-const currencyFormat = new Intl.NumberFormat('pt-BR', {
-  style: 'currency',
-  currency: 'BRL',
+const currencyFormat = new Intl.NumberFormat("pt-BR", {
+  style: "currency",
+  currency: "BRL",
 });
 
 const linkFormat = (v) => (
@@ -19,40 +19,40 @@ const linkFormat = (v) => (
 const ApplicantProfile = ({ data, canEdit, profileId }) => {
   const { request } = useFetch();
   const [info, setInfo] = useState({});
-  const [skills, setSkills] = useState([]);
-  const [courses, setCourses] = useState([]);
+  const [setSkills] = useState([]);
+  const [setCourses] = useState([]);
   const [workExperiences, setWorkExperiences] = useState([]);
 
   const handleSubmit = (body) => {
-    const { url, options } = PATCH_PROFILE('applicant', profileId, body);
+    const { url, options } = PATCH_PROFILE("applicant", profileId, body);
     return request(url, options);
   };
 
   useEffect(() => {
     setInfo({
-      about: { text: 'Sobre', value: data.about, type: 'textarea' },
-      location: { text: 'Cidade onde mora', value: data.location },
+      about: { text: "Sobre", value: data.about, type: "textarea" },
+      location: { text: "Cidade onde mora", value: data.location },
       locationWanted: {
-        text: 'Disposta a trabalhar em',
+        text: "Disposta a trabalhar em",
         value: data.locationWanted,
       },
       desiredSalary: {
-        text: 'Salário desejado',
+        text: "Salário desejado",
         value: data.desiredSalary,
-        type: 'number',
+        type: "number",
         formatter: (v) => currencyFormat.format(v),
       },
       github: {
-        text: 'Github',
+        text: "Github",
         value: data.github,
         formatter: linkFormat,
-        placeholder: 'https://github.com/usuaria',
+        placeholder: "https://github.com/usuaria",
       },
       linkedin: {
-        text: 'LinkedIn',
+        text: "LinkedIn",
         value: data.linkedin,
         formatter: linkFormat,
-        placeholder: 'https://linkedin.com/in/usuaria',
+        placeholder: "https://linkedin.com/in/usuaria",
       },
     });
     setSkills(data.skills || []);

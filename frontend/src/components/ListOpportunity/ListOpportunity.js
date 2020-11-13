@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Container, CardDeck, Card, Button, Pagination } from "react-bootstrap";
 import Main from "../Template/main/Main";
 import { Link } from "react-router-dom";
@@ -51,7 +51,7 @@ const paginationBasic = () => {
     items.push(
       <Pagination.Item key={number} active={number === active}>
         {number}
-      </Pagination.Item>,
+      </Pagination.Item>
     );
   }
   return (
@@ -62,9 +62,9 @@ const paginationBasic = () => {
 };
 
 const ListOpportunity = () => {
-  const handlerCandidatar = (event) => {
-    setCandidatarCheck(!candidatarCheck);
-  }
+  // const handlerCandidatar = (event) => {
+  //   setCandidatarCheck(!candidatarCheck);
+  // }
 
   const [candidatarCheck, setCandidatarCheck] = useState(false);
 
@@ -77,10 +77,22 @@ const ListOpportunity = () => {
               <CardDeck key={opportunity.id}>
                 <Card className="card">
                   <Card.Body>
-                    <Card.Title className="title-card">{opportunity.tituloVaga}</Card.Title>
-                    <Card.Text><span className="titulo-campo">Localização:</span> <i class="fa fa-map-marker" aria-hidden="true"></i> {opportunity.localizacao}</Card.Text>
-                    <Card.Text><span className="titulo-campo">Requisitos:</span> {opportunity.requisitos}</Card.Text>
-                    <Card.Text><span className="titulo-campo">Benefícios:</span> {opportunity.beneficios}</Card.Text>
+                    <Card.Title className="title-card">
+                      {opportunity.tituloVaga}
+                    </Card.Title>
+                    <Card.Text>
+                      <span className="titulo-campo">Localização:</span>{" "}
+                      <i class="fa fa-map-marker" aria-hidden="true"></i>{" "}
+                      {opportunity.localizacao}
+                    </Card.Text>
+                    <Card.Text>
+                      <span className="titulo-campo">Requisitos:</span>{" "}
+                      {opportunity.requisitos}
+                    </Card.Text>
+                    <Card.Text>
+                      <span className="titulo-campo">Benefícios:</span>{" "}
+                      {opportunity.beneficios}
+                    </Card.Text>
                     <Card.Text>
                       <span className="titulo-campo">Salário:</span>{" "}
                       {opportunity.salario.toLocaleString("pt-br", {
@@ -89,8 +101,16 @@ const ListOpportunity = () => {
                       })}
                     </Card.Text>
                   </Card.Body>
-                  <Link className="linkVaga" to={`/opportunity/${opportunity.id}`}>
-                    <Button id={candidatarCheck ? "buttonGreen" : "buttonBlue"} className="buttonVaga" variant="primary" type="button">
+                  <Link
+                    className="linkVaga"
+                    to={`/opportunity/${opportunity.id}`}
+                  >
+                    <Button
+                      id={candidatarCheck ? "buttonGreen" : "buttonBlue"}
+                      className="buttonVaga"
+                      variant="primary"
+                      type="button"
+                    >
                       {candidatarCheck ? "Candidatada" : "Candidatar-se"}
                     </Button>
                   </Link>
@@ -100,7 +120,7 @@ const ListOpportunity = () => {
           })}
         {paginationBasic()}
       </Container>
-    </Main >
+    </Main>
   );
 };
 
