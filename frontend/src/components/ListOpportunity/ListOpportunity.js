@@ -66,7 +66,7 @@ const ListOpportunity = () => {
   //   setCandidatarCheck(!candidatarCheck);
   // }
 
-  const [candidatarCheck, setCandidatarCheck] = useState(false);
+  const [candidatarCheck] = useState(false);
 
   return (
     <Main>

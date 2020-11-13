@@ -19,8 +19,8 @@ const linkFormat = (v) => (
 const ApplicantProfile = ({ data, canEdit, profileId }) => {
   const { request } = useFetch();
   const [info, setInfo] = useState({});
-  const [setSkills] = useState([]);
-  const [setCourses] = useState([]);
+  const [skills, setSkills] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [workExperiences, setWorkExperiences] = useState([]);
 
   const handleSubmit = (body) => {
@@ -58,7 +58,7 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
     setSkills(data.skills || []);
     setCourses(data.courses || []);
     setWorkExperiences(data.workExperiences || []);
-  }, [data]);
+  }, [data, courses, skills]);
 
   return (
     <div>
