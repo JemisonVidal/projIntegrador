@@ -61,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/**/api/authenticate", "/**/api/register").permitAll()
             .antMatchers(HttpMethod.GET, "/**/avatar").permitAll()
-            .antMatchers("/**/api/profile/{type}/{id}").access("@webSecurityConfig.checkUserId(authentication,#type.toUpperCase(),#id)")
+            .antMatchers(HttpMethod.PATCH, "/**/api/profile/{type}/{id}").access("@webSecurityConfig.checkUserId(authentication,#type.toUpperCase(),#id)")
             .antMatchers("/**/api/**").authenticated()
             .antMatchers("/", "/**").permitAll()
             .anyRequest().authenticated()
