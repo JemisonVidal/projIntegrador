@@ -23,15 +23,15 @@ public class WorkExperience extends AbstractEntity<Long> {
 
     @Column(nullable = false)
     @NotBlank
-    private String name;
-
-    @Column(nullable = false)
-    @NotBlank
     private String company;
 
     @Column(nullable = false)
     @NotBlank
     private String position;
+
+    @Column(nullable = false)
+    @NotBlank
+    private String location;
 
     @Lob
     @Column(columnDefinition = "TEXT")
