@@ -71,7 +71,6 @@ const Company = () => {
     return (
       companys &&
       companys.map((company, index) => {
-        if (!company.name) return;
         return (
           <CardDeck key={index}>
             <Card>
