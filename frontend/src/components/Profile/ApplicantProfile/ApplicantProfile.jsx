@@ -1,22 +1,12 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import ApplicantInfo from './ApplicantInfo';
+import ProfileInfo from '../ProfileInfo';
 import useFetch from '../../../Hooks/useFetch';
 import { PATCH_PROFILE } from '../../../APIs/APIs';
 import ApplicantExperiences from './ApplicantExperiences';
 import ApplicantSkills from './ApplicantSkills';
 import ApplicantCourses from './ApplicantCourses';
-
-const currencyFormat = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
-
-const linkFormat = (v) => (
-  <a href={v} target="blank">
-    {v}
-  </a>
-);
+import { currencyFormatter, linkFormatter } from '../../../utils/formatters';
 
 const ApplicantProfile = ({ data, canEdit, profileId }) => {
   const { request } = useFetch();
@@ -42,18 +32,18 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
         text: "Salário desejado",
         value: data.desiredSalary,
         type: "number",
-        formatter: (v) => currencyFormat.format(v),
+        formatter: currencyFormatter,
       },
       github: {
         text: "Github",
         value: data.github,
-        formatter: linkFormat,
+        formatter: linkFormatter,
         placeholder: "https://github.com/usuaria",
       },
       linkedin: {
         text: "LinkedIn",
         value: data.linkedin,
-        formatter: linkFormat,
+        formatter: linkFormatter,
         placeholder: "https://linkedin.com/in/usuaria",
       },
     });
@@ -64,7 +54,7 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
 
   return (
     <div>
-      <ApplicantInfo
+      <ProfileInfo
         data={info}
         setData={setInfo}
         canEdit={canEdit}

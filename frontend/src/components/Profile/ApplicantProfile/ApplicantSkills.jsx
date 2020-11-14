@@ -1,11 +1,6 @@
 import React from 'react';
+import { skillMap, skillOptions } from '../../../utils/skills';
 import ProfileCard from '../ProfileCard/ProfileCard';
-
-const skillMap = {
-  BASIC: 'Básico',
-  INTERMEDIATE: 'Intermediário',
-  ADVANCED: 'Avançado'
-}
 
 const title = 'Habilidades';
 const schema = {
@@ -23,7 +18,7 @@ const schema = {
     label: 'Nível de Conhecimento',
     required: true,
     as: 'select',
-    options: Object.entries(skillMap).reduce((acc, [k, v]) => acc.concat({value: k, text: v}), [])
+    options: skillOptions
   }
 };
 

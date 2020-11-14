@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import ProfileCard from '../ProfileCard/ProfileCard';
-import ProfileCardItem from '../ProfileCard/ProfileCardItem';
-import useEditMode from '../../../Hooks/useEditMode';
+import ProfileCard from './ProfileCard/ProfileCard';
+import ProfileCardItem from './ProfileCard/ProfileCardItem';
+import useEditMode from '../../Hooks/useEditMode';
 
-const ApplicantInfo = ({ data, setData, canEdit, handleSubmit }) => {
+const title = 'Informações Gerais';
+
+const ProfileInfo = ({ data, setData, canEdit, handleSubmit }) => {
   const { editing, setEditing, toggleEditMode } = useEditMode();
   const [newData, setNewData] = useState({});
-  const title = 'Informações Pessoais';
 
   const handleSave = async () => {
     const { response } = await handleSubmit(newData);
@@ -50,4 +51,4 @@ const ApplicantInfo = ({ data, setData, canEdit, handleSubmit }) => {
   );
 };
 
-export default ApplicantInfo;
+export default ProfileInfo;

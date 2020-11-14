@@ -9,7 +9,7 @@ const ProfileCardItem = ({ title, value, formatter }) => {
         <span className="font-weight-bold">{title}</span>
       </Col>
       <Col sm={12} md>
-        {value && formatter ? formatter(value) : value}
+        {formatter ? formatter(value) : value}
       </Col>
     </Row>
   );
