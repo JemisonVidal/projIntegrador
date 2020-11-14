@@ -45,8 +45,6 @@ const ListOpportunity = ({ type }) => {
     await getOpportunity();
   }
 
-  console.log(arrayOpportunity);
-
   function renderLoading() {
     return (
       <div className="spinner-load">
