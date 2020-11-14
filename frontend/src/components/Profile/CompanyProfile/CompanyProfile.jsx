@@ -1,51 +1,49 @@
-import React from 'react';
-import ProfileCard from '../ProfileCard/ProfileCard';
-import './CompanyProfile.css'
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import ProfileInfo from '../ProfileInfo';
+import useFetch from '../../../Hooks/useFetch';
+import { PATCH_PROFILE } from '../../../APIs/APIs';
+import { linkFormatter } from '../../../utils/formatters';
 
-const CompanyProfile = ({ data }) => {
+const CompanyProfile = ({ data, canEdit, profileId }) => {
+  const { request } = useFetch();
+  const [info, setInfo] = useState({});
 
-  const about = {
-    'Sobre': data.about,
-  }
+  const handleSubmit = (body) => {
+    const { url, options } = PATCH_PROFILE("company", profileId, body);
+    return request(url, options);
+  };
 
-  const additional = {
-    "Endereço": data.address,
-    "Tempo de existência": data.lifetime,
-    "Ramo": data.branch,
-    "Site": data.site
-  }
+  useEffect(() => {
+    setInfo({
+      about: { text: "Sobre", value: data.about, type: "textarea" },
+      location: { text: "Localização", value: data.location },
+      category: {text: "Categoria", value: data.category, required: true},
+      site: {
+        text: "Site",
+        value: data.site,
+        formatter: linkFormatter,
+        placeholder: "https://sitedaempresa.com.br",
+      },
+      linkedin: {
+        text: "LinkedIn",
+        value: data.linkedin,
+        formatter: linkFormatter,
+        placeholder: "https://linkedin.com/company/empresa",
+      },
+    });
+  }, [data]);
+
   return (
     <div>
-      <ProfileCard title='Visão Geral' data={about} />
-      <ProfileCard title='Informações Gerais' data={additional} />
-      {
-        data.opportunitys &&
-        <div className="opportunitys">
-          <div className="sidebar" >
-            {renderOpportunitys(data.opportunitys)}
-          </div>
-        </div>
-      }
+      <ProfileInfo
+        data={info}
+        setData={setInfo}
+        canEdit={canEdit}
+        handleSubmit={handleSubmit}
+      />
     </div>
-  )
-}
-
-const renderOpportunitys = (opportunitys) => {
-  return (
-    opportunitys.map(o => {
-      const data = {
-        description: o.description,
-        activities: o.activities
-      }
-      return (
-        <div key={o.id}>
-          <ProfileCard title={o.title} data={data} />
-        </div>
-      )
-    })
-  )
-}
-
-
+  );
+};
 
 export default CompanyProfile;

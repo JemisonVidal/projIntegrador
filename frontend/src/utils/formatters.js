@@ -5,6 +5,6 @@ const currency = new Intl.NumberFormat('pt-BR', {
   currency: 'BRL',
 });
 
-export const currencyFormatter = (v) => currency.format(v);
+export const currencyFormatter = (v) => v && currency.format(v);
 
 export const linkFormatter = (v) => <a href={v} target="blank">{v}</a>;
