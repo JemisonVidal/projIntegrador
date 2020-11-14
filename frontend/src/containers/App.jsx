@@ -20,11 +20,11 @@ const PagesRoot = () => (
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
-          <Route path="/" component={Home} exact />
-          <Route path="/profile/:type/:id" component={Profile} />
-          <Route path="/listOpportunity" component={listOpportunity} />
-          <Route path="/opportunity/:id" component={Opportunity} />
-          <Route path="/company" component={Company} />
+          <RoutesPrivate path="/" component={Home} exact />
+          <RoutesPrivate path="/profile/:type/:id" component={Profile} />
+          <RoutesPrivate path="/listOpportunity" component={listOpportunity} />
+          <RoutesPrivate path="/opportunity/:id" component={Opportunity} />
+          <RoutesPrivate path="/company" component={Company} />
         </Switch>
       </StoreProvider>
     </BrowserRouter>

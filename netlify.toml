@@ -1,0 +1,12 @@
+# Redireciona requisições da API para o endereço correto.
+[[redirects]]
+  from = "/v1/api/*"
+  to = "https://pi.ggwadera.xyz/v1/api/:splat"
+  status = 200
+  force = true
+
+# Redireciona todas as rotas internas para funcionar como SPA.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
