@@ -1,6 +1,6 @@
 import React from "react";
-import ListOpportunity from "../../components/ListOpportunity/ListOpportunity";
+import TabListOpportunity from "../../components/ListOpportunity/TabListOpportunity";
 
-const PageListOpportunity = () => <ListOpportunity />;
+const PageListOpportunity = () => <TabListOpportunity />;
 
 export default PageListOpportunity;
