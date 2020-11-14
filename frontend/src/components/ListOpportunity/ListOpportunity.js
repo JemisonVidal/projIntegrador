@@ -13,11 +13,10 @@ import { skillMap } from "../../utils/skills";
 const ListOpportunity = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [pageCurrent, setPageCurrent] = useState(0);
-  const [candidatarCheck, setCandidatarCheck] = useState(false);
+  const [candidatarCheck, setCandidatarCheck] = useState(null);
   const {request, loading} = useFetch();
   const [arrayOpportunity, setArrayOpportunity] = useState([]);
   const searchInput = useRef(null);
-
 
   // const handlerCandidatar = (event) => {
   //   setCandidatarCheck(!candidatarCheck);
@@ -33,8 +32,12 @@ const ListOpportunity = () => {
       setArrayOpportunity(json.content);
       setPageCurrent(json.pageable?.pageNumber);
       setTotalPages(json.totalPages);
+      // const mockApply = {...arrayOpportunity};
+      // mockApply.listAppliedIDOpportunity = []
     }
   }
+
+  console.log(arrayOpportunity);
 
   useEffect(()=>{
     getOpportunity();

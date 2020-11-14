@@ -17,6 +17,7 @@ const ListOpportunity = ({id}) => {
   const {request, loading} = useFetch();
   const history = useHistory();
   const [opportunity, setOpportunity] = useState({});
+  const [heartCheck, setHeartCheck] = useState(false);
 
   useEffect(()=>{
     async function getOpportunity() {
@@ -24,10 +25,13 @@ const ListOpportunity = ({id}) => {
       const {json, response} = await request(url, options);
       if (response.ok) {
         setOpportunity(json);
+        setHeartCheck(json.isApplied);
       }
     }
     getOpportunity();
   }, [request]);
+
+  console.log(opportunity);
 
   function renderLoading() {
     return (
@@ -52,8 +56,6 @@ const ListOpportunity = ({id}) => {
     const { url, options } = POST_APPLY(id);
     return await request(url, options);
   }
-
-  const [heartCheck, setHeartCheck] = useState(false);
 
   function renderOpportunity(){
     return(
