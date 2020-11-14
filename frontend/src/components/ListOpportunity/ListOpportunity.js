@@ -37,11 +37,13 @@ const ListOpportunity = () => {
     }
   }
 
-  console.log(arrayOpportunity);
-
   useEffect(()=>{
     getOpportunity();
   }, [pageCurrent]);
+
+
+  console.log(arrayOpportunity);
+  
 
   async function handleSearchClick(event) {
     await getOpportunity();
@@ -75,7 +77,7 @@ const ListOpportunity = () => {
             <Card className="card">
               <Card.Body>
                 <Card.Title className="title-card">
-                  {opportunity.title}
+                  {opportunity.name}
                 </Card.Title>
                 <Card.Text>
                   <span className="titulo-campo">Localização:</span>{" "}
@@ -125,7 +127,7 @@ const ListOpportunity = () => {
             ref={searchInput}
             type="text"
             placeholder="Pesquisar"
-            className=" form-control"
+            className="form-control"
           />
           <Button className="btn-search ml-2" onClick={handleSearchClick}>
             <i class="fa fa-search" aria-hidden="true"></i>
