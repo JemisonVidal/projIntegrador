@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { Navbar, Nav, Image } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import StoreContext from '../../Store/Context';
-import './Nav.css';
+import React, { useContext } from "react";
+import { Navbar, Nav, Image } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import StoreContext from "../../Store/Context";
+import "./Nav.css";
 
 const NavBar = () => {
   //TODO: Confirmar se iremos receber props ou utilizar o context/redux
@@ -29,19 +29,19 @@ const NavBar = () => {
             </Link>
           </Nav>
           <Nav>
-            {user.pid 
-              ? (
-                  <Link className="nav-item" to={`/profile/${user.type}/${user.pid}`}>
-                    Meu Perfil
-                    <Image className="avatar ml-2" src={avatar} rounded />
-                  </Link>
-              )
-              : (
-                  <Link className="nav-item" to='/login'>
-                    Login
-                  </Link>
-              )
-            }
+            {user.pid ? (
+              <Link
+                className="nav-item"
+                to={`/profile/${user.type}/${user.pid}`}
+              >
+                Meu Perfil
+                <Image className="avatar ml-2" src={avatar} rounded />
+              </Link>
+            ) : (
+              <Link className="nav-item" to="/login">
+                Login
+              </Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
