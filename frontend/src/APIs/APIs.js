@@ -20,3 +20,15 @@ export function PATCH_PROFILE(type, id, body) {
     body,
   });
 }
+
+export function GET_OPPORTUNITY(id) {
+  return requestOptions({
+    url: `/opportunity/${id}`,
+  });
+}
+
+export function GET_LIST_OPPORTUNITY() {
+  return requestOptions({
+    url: `/opportunity/`,
+  });
+}

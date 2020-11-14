@@ -4,7 +4,6 @@ import Main from "../../components/Template/main/Main";
 import "./Profile.css";
 
 const PagesProfile = (props) => {
-  const teste = props;
   return (
     <Main>
       <Profile

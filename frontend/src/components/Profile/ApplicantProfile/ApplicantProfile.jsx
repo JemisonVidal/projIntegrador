@@ -58,7 +58,7 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
     setSkills(data.skills || []);
     setCourses(data.courses || []);
     setWorkExperiences(data.workExperiences || []);
-  }, [data, courses, skills]);
+  }, [data]);
 
   return (
     <div>

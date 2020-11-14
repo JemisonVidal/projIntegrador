@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, CardDeck, Card, Button, Pagination } from "react-bootstrap";
 import Main from "../Template/main/Main";
+import useFetch from "../../Hooks/useFetch"
+import { GET_LIST_OPPORTUNITY } from "../../APIs/APIs"
 import { Link } from "react-router-dom";
 
 import "./ListOpportunity.css";
@@ -62,12 +64,25 @@ const paginationBasic = () => {
 };
 
 const ListOpportunity = () => {
-  // const handlerCandidatar = (event) => {
-  //   setCandidatarCheck(!candidatarCheck);
-  // }
 
-  const [candidatarCheck] = useState(false);
+  const [candidatarCheck, setCandidatarCheck] = useState(false);
+  const {request} = useFetch();
 
+  const handlerCandidatar = (event) => {
+    setCandidatarCheck(!candidatarCheck);
+  }
+
+  useEffect(()=>{
+    
+  }, []);
+
+  async function getOpportunity() {
+    const {url, options} = GET_LIST_OPPORTUNITY();
+    const {json, response} = await request(url, options);
+    console.log(response, json);
+  }
+
+  getOpportunity();
   return (
     <Main>
       <Container fluid="md" className="py-2">
@@ -106,6 +121,7 @@ const ListOpportunity = () => {
                     to={`/opportunity/${opportunity.id}`}
                   >
                     <Button
+                      onClick={handlerCandidatar}
                       id={candidatarCheck ? "buttonGreen" : "buttonBlue"}
                       className="buttonVaga"
                       variant="primary"
