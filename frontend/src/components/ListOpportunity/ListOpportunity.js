@@ -25,16 +25,15 @@ import { ALL_OPPORTUNITYS, MY_OPPORTUNITYS } from "./listEnum";
 const ListOpportunity = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [pageCurrent, setPageCurrent] = useState(0);
-  const [candidatarCheck, setCandidatarCheck] = useState(null);
   const { request, loading } = useFetch();
   const [arrayOpportunity, setArrayOpportunity] = useState([]);
-  const searchInput = useRef(null);
+  const [searchInput, setSearchInput] = useState(null);
   const [key, setKey] = useState("allOpportunity");
 
   async function getOpportunity() {
     const { url, options } = GET_LIST_OPPORTUNITY(
       pageCurrent,
-      searchInput.current.value
+      searchInput
     );
     const { json, response } = await request(url, options);
     if (response.ok) {
@@ -51,6 +50,8 @@ const ListOpportunity = () => {
   async function handleSearchClick(event) {
     await getOpportunity();
   }
+
+  console.log(arrayOpportunity);
 
   function renderLoading() {
     return (
@@ -71,17 +72,18 @@ const ListOpportunity = () => {
         </p>
       );
     }
-
+  
+    console.log(arrayOpportunity);
     return (
       arrayOpportunity &&
       arrayOpportunity.map((opportunity) => {
-        if ((typeSearch = "MY_OPPORTUNITYS" && !opportunity.isApplied)) return;
+        if ((typeSearch === MY_OPPORTUNITYS && !opportunity.isApplied)) return;
         return (
           <CardDeck key={opportunity.id}>
             <Card className="card">
               <Card.Body>
                 <Card.Title className="title-card">
-                  {opportunity.title}
+                  {opportunity.name}
                 </Card.Title>
                 <Card.Text>
                   <span className="titulo-campo">Localização:</span>{" "}
@@ -117,7 +119,7 @@ const ListOpportunity = () => {
                   variant="primary"
                   type="button"
                 >
-                  {candidatarCheck ? "Candidatada" : "Candidatar-se"}
+                  {opportunity.isApplied ? "Candidatada" : "Candidatar-se"}
                 </Button>
               </Link>
             </Card>
@@ -132,10 +134,10 @@ const ListOpportunity = () => {
       <>
         <Form className="search" inline>
           <FormControl
-            ref={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
             type="text"
             placeholder="Pesquisar"
-            className="rfce   form-control"
+            className="form-control"
           />
           <Button className="btn-search ml-2" onClick={handleSearchClick}>
             <i class="fa fa-search" aria-hidden="true"></i>

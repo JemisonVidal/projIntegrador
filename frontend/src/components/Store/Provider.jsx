@@ -14,9 +14,9 @@ const StoreProvider = ({ children }) => {
 
   let user = {};
   if (apptoken) user = jwt_decode(apptoken);
-  const { name, type, sub, exp } = user;
-  if (!name || !type || !sub || !exp || new Date() > new Date(exp * 1000)) {
-    setToken(null);
+  const { type, sub, exp } = user;
+  if (!type || !sub || !exp || new Date() > new Date(exp * 1000)) {
+    localStorage.removeItem(apptoken);
   }
 
   useEffect(() => {
