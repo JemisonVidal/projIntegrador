@@ -27,15 +27,29 @@
 }
 
 .nav-item {
-  color: #ffffff;
+  color: #cad0e0;
   padding: 10px;
   margin-left: 5px;
+  font-weight: bold;
+}
+
+.nav-item:hover {
+  transition-duration: 0.3s;
+  color: white;
+  text-decoration: none;
 }
 
 .title a {
   color: #ffffff;
   font-weight: 700;
   font-size: larger;
+  font-size: 25px;
+}
+
+.title a:hover {
+  transition-duration: 1s;
+  text-decoration: none;
+  color: var(--color-orange);
 }
 
 #avatar {
