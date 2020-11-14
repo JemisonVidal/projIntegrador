@@ -12,91 +12,98 @@
   margin: 5px;
 }
 
-.form-control{
+.form-control {
   display: flex;
   margin-top: 15px;
   margin-bottom: 25px;
 }
 
-
-.img{
-  width:20px;
-  height:20px;
-  position:absolute;
+.img {
+  width: 20px;
+  height: 20px;
+  position: absolute;
   bottom: 30%;
-  right:20%;
-  margin-top:-50px;
-  margin-left:-50px;
+  right: 20%;
+  margin-top: -50px;
+  margin-left: -50px;
 }
 
-
-.btn-search{
+.btn-search {
   position: flex;
   width: 40px;
   height: 39px;
-  padding-bottom:20 px;
+  padding-bottom: 20 px;
   padding-right: 20px;
-  
+
   cursor: pointer;
   margin-top: 4px;
   margin-bottom: 15px;
-  background-color:#27187E ;
+  background-color: #27187e;
 }
 
-.search{
+.search {
   display: flex;
   justify-content: center;
 }
 
-.page-item.active .page-link{
-  background-color: #27187E;
+.page-item.active .page-link {
+  background-color: #27187e;
   cursor: pointer;
   border: none;
 }
 
-.page-item.active .page-link:hover{
-  background-color: #748AFB;
+.page-item.active .page-link:hover {
+  background-color: #748afb;
 }
 
-.pagination-company{
+.pagination-company {
   display: flex;
   justify-content: center;
 }
 
-.img-search{
+.img-search {
   display: flex;
   height: 20px;
-  
+
   margin-right: 25px;
 }
 
+.spinner-load {
+  display: flex;
+  justify-content: center;
+}
 
-@media (max-width:600px){
-  .btn-search{
+.spinner-load > div {
+  height: 100px;
+  width: 100px;
+  color: #27187e;
+}
+
+@media (max-width: 600px) {
+  .btn-search {
     position: absolute;
     width: 40px;
     height: 39px;
-    padding-bottom:20 px;
-    padding-right:20px;
-    
+    padding-bottom: 20 px;
+    padding-right: 20px;
+
     right: 75px;
     top: 72px;
     cursor: pointer;
     margin-top: 4px;
     margin-bottom: 15px;
-    background-color:#27187E ;
+    background-color: #27187e;
     border: none;
   }
 
-  .form-control{
+  .form-control {
     display: inline-block;
     width: 250px;
     margin-top: 15px;
     margin-bottom: 25px;
   }
 
-  .pagination-company:hover{
-    background-color: #27187E;
+  .pagination-company:hover {
+    background-color: #27187e;
   }
-
 }
