@@ -38,6 +38,10 @@
   justify-content: center;
 }
 
+.titulo-campo-opportunity {
+  font-weight: bold;
+}
+
 .buttonSelect {
   display: flex;
   margin: 5% 10%;
