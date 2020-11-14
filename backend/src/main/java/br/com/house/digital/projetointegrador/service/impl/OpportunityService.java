@@ -1,6 +1,7 @@
 package br.com.house.digital.projetointegrador.service.impl;
 
 import br.com.house.digital.projetointegrador.dto.opportunity.OpportunityDTO;
+import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
 import br.com.house.digital.projetointegrador.model.Opportunity;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.enums.UserType;
@@ -65,6 +66,11 @@ public class OpportunityService extends BaseServiceImpl<Opportunity, Long> {
 		return opportunityRepository.findByAppliedUsers_Id(id).stream()
 			.map(this::mapDTO)
 			.collect(Collectors.toList());
+	}
+
+	public List<ApplicantProfileDTO> findAppliedUsersByOpportunityId(Long id) {
+		final List<Profile> users = findById(id).getAppliedUsers();
+		return users.stream().map(u -> this.modelMapper.map(u, ApplicantProfileDTO.class)).collect(Collectors.toList());
 	}
 
 }

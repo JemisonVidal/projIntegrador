@@ -14,7 +14,6 @@ import br.com.house.digital.projetointegrador.service.AuthenticationService;
 import br.com.house.digital.projetointegrador.service.exceptions.DataIntegrityException;
 import br.com.house.digital.projetointegrador.service.exceptions.EmailExistsException;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

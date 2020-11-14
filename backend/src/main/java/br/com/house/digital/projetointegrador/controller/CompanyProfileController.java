@@ -1,9 +1,7 @@
 package br.com.house.digital.projetointegrador.controller;
 
-import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
 import br.com.house.digital.projetointegrador.dto.profile.AvatarDTO;
 import br.com.house.digital.projetointegrador.dto.profile.CompanyProfileDTO;
-import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
 import br.com.house.digital.projetointegrador.model.profile.CompanyProfile;
 import br.com.house.digital.projetointegrador.service.impl.CompanyProfileService;
 import org.springframework.beans.factory.annotation.Autowired;

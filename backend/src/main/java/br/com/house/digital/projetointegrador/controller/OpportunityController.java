@@ -3,19 +3,15 @@ package br.com.house.digital.projetointegrador.controller;
 import br.com.house.digital.projetointegrador.configuration.ApiPageable;
 import br.com.house.digital.projetointegrador.dto.opportunity.NewOpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.opportunity.OpportunityDTO;
-import br.com.house.digital.projetointegrador.dto.profile.CompanyProfileDTO;
+import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
 import br.com.house.digital.projetointegrador.model.Opportunity;
 import br.com.house.digital.projetointegrador.model.User;
-import br.com.house.digital.projetointegrador.model.enums.UserType;
-import br.com.house.digital.projetointegrador.model.profile.CompanyProfile;
 import br.com.house.digital.projetointegrador.service.impl.OpportunityService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/v1/api/opportunity", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,6 +60,12 @@ public class OpportunityController extends BaseController<Opportunity, Opportuni
         this.service.apply(id, user);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping(value = "/{id}/applied")
+    public ResponseEntity<List<ApplicantProfileDTO>> findAppliedUsersByOpportunityId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findAppliedUsersByOpportunityId(id));
+    }
+
 
     @Override
     OpportunityDTO mapDTO(Opportunity entity) {

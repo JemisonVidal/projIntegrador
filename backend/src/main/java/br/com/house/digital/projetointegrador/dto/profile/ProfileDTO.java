@@ -8,8 +8,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
-import javax.validation.constraints.NotBlank;
-
 @Getter
 @Setter
 @SuperBuilder
