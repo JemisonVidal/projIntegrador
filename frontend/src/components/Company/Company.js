@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Container,
   CardDeck,
@@ -18,28 +18,35 @@ import "./Company.css";
 const Company = () => {
   const history = useHistory();
   const [totalPages, setTotalPages] = useState(0);
-  const [pageCurrent, setPageCurrent] = useState(null);
-  const [wordSearch, setWordSearch] = useState(null);
+  const [pageCurrent, setPageCurrent] = useState(0);
   const [companys, setCompanys] = useState(null);
+  const searchInput = useRef(null);
 
   const { request, loading } = useFetch();
 
   async function getCompany() {
-    const { url, options } = GET_COMPANYS();
+    const { url, options } = GET_COMPANYS(
+      pageCurrent,
+      searchInput.current.value
+    );
     const { json, response } = await request(url, options);
     if (response.ok) {
       setCompanys(json.content);
-      setPageCurrent(json.pageable?.pageNumber + 1);
+      setPageCurrent(json.pageable?.pageNumber);
       setTotalPages(json.totalPages);
     }
   }
 
   useEffect(() => {
     getCompany();
-  }, [request, wordSearch, pageCurrent]);
+  }, [pageCurrent]);
 
   function handleVerPerfilClick(event) {
     return history.push(`/profile/company/${event.target.id}`);
+  }
+
+  async function handleSearchClick(event) {
+    await getCompany();
   }
 
   function renderLoading() {
@@ -51,6 +58,16 @@ const Company = () => {
   }
 
   function renderCompanys() {
+    if (companys && companys.length <= 0) {
+      return (
+        <p className="messageOps">
+          Ops... Não encontramos nenhuma empresa com esse nome.
+          <br /> :(
+          <br />
+          Tente novamente !
+        </p>
+      );
+    }
     return (
       companys &&
       companys.map((company, index) => {
@@ -81,7 +98,6 @@ const Company = () => {
               <Button
                 id={company.id}
                 variant="primary"
-                type="submit"
                 onClick={handleVerPerfilClick}
               >
                 Ver Perfil
@@ -98,11 +114,12 @@ const Company = () => {
       <Container fluid="md" className="py-2">
         <Form className="search" inline>
           <FormControl
+            ref={searchInput}
             type="text"
             placeholder="Pesquisar"
             className=" form-control"
           />
-          <Button className="btn-search ml-2" type="submit">
+          <Button className="btn-search ml-2" onClick={handleSearchClick}>
             <i class="fa fa-search" aria-hidden="true"></i>
           </Button>
         </Form>

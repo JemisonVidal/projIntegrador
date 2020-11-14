@@ -6,7 +6,7 @@ const PaginationPage = ({ pageCurrent, totalPages, setPageCurrent }) => {
     setPageCurrent(event.target.outerText);
   }
 
-  let active = pageCurrent;
+  let active = pageCurrent + 1;
   let items = [];
   for (let number = 1; number <= totalPages; number++) {
     items.push(
