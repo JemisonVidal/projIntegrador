@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/projIntegrador?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
+    username: root
+    password: root
+    platform: mysql
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+
+server:
+  error:
+    include-stacktrace: never

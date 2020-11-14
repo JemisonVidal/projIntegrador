@@ -2,7 +2,6 @@ package br.com.house.digital.projetointegrador.controller;
 
 import br.com.house.digital.projetointegrador.dto.opportunity.NewOpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.opportunity.OpportunityDTO;
-import br.com.house.digital.projetointegrador.dto.profile.ProfileDTO;
 import br.com.house.digital.projetointegrador.model.Opportunity;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.service.impl.OpportunityService;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;

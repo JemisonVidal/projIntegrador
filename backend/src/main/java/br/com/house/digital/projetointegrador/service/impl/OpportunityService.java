@@ -4,7 +4,6 @@ import br.com.house.digital.projetointegrador.model.Opportunity;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.profile.Profile;
 import br.com.house.digital.projetointegrador.repository.OpportunityRepository;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;

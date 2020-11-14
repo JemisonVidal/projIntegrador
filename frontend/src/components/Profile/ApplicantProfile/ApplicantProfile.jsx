@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import ApplicantInfo from "./ApplicantInfo";
-import useFetch from "../../../Hooks/useFetch";
-import { PATCH_PROFILE } from "../../../APIs/APIs";
-import ApplicantExperiences from "./ApplicantExperiences";
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import ApplicantInfo from './ApplicantInfo';
+import useFetch from '../../../Hooks/useFetch';
+import { PATCH_PROFILE } from '../../../APIs/APIs';
+import ApplicantExperiences from './ApplicantExperiences';
+import ApplicantSkills from './ApplicantSkills';
+import ApplicantCourses from './ApplicantCourses';
 
 const currencyFormat = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -68,9 +70,21 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
         canEdit={canEdit}
         handleSubmit={handleSubmit}
       />
+      <ApplicantSkills
+        data={skills}
+        setData={setSkills}
+        canEdit={canEdit}
+        handleSubmit={handleSubmit}
+      />
       <ApplicantExperiences
         data={workExperiences}
         setData={setWorkExperiences}
+        canEdit={canEdit}
+        handleSubmit={handleSubmit}
+      />
+      <ApplicantCourses
+        data={courses}
+        setData={setCourses}
         canEdit={canEdit}
         handleSubmit={handleSubmit}
       />

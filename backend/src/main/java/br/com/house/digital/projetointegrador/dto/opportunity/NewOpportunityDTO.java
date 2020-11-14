@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,6 +31,6 @@ public class NewOpportunityDTO {
     private Boolean active;
 
     @NotNull
-    private Set<Requirement> requirements;
+    private List<@Valid Requirement> requirements;
 
 }

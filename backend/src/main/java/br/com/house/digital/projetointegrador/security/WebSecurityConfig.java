@@ -1,5 +1,7 @@
 package br.com.house.digital.projetointegrador.security;
 
+import br.com.house.digital.projetointegrador.model.User;
+import br.com.house.digital.projetointegrador.model.enums.UserType;
 import br.com.house.digital.projetointegrador.service.impl.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -26,6 +29,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final UserDetailsServiceImpl jwtUserDetailsService;
     private final JWTRequestFilter jwtRequestFilter;
+
+    public boolean checkUserId(Authentication authentication, UserType type, Long id) {
+        User user = (User) authentication.getPrincipal();
+        return user.getType().equals(type) && user.getProfileId().equals(id);
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -48,11 +56,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable().cors().disable()
+        httpSecurity.csrf().disable().cors().and()
             // don't authenticate this particular request
             .authorizeRequests()
             .antMatchers("/**/api/authenticate", "/**/api/register").permitAll()
             .antMatchers(HttpMethod.GET, "/**/avatar").permitAll()
+            .antMatchers(HttpMethod.PATCH, "/**/api/profile/{type}/{id}").access("@webSecurityConfig.checkUserId(authentication,#type.toUpperCase(),#id)")
             .antMatchers("/**/api/**").authenticated()
             .antMatchers("/", "/**").permitAll()
             .anyRequest().authenticated()
