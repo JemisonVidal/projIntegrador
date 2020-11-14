@@ -31,9 +31,6 @@ public class User extends AbstractEntity<Long> implements UserDetails {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(length = 50, nullable = false)
-    private String name;
-
     @Column(unique = true, nullable = false)
     private String email;
 

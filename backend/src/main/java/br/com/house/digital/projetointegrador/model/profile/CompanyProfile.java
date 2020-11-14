@@ -21,17 +21,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class CompanyProfile extends Profile {
 
-    @Column(length = 50)
-    private String name;
-
-    @Column(length = 14)
-    private String cnpj;
-
     private LocalDate startDate;
 
     private String category;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Opportunity> opportunities = new ArrayList<>();
 
 }

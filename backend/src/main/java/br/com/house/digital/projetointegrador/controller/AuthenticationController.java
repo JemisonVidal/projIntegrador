@@ -24,11 +24,10 @@ import java.net.URI;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
-    private final ModelMapper modelMapper;
 
     @PostMapping("/register")
     public ResponseEntity<Void> save(@RequestBody @Valid RegisterDTO registerDTO) {
-        final User user = authenticationService.save(modelMapper.map(registerDTO, User.class));
+        final User user = authenticationService.save(registerDTO);
         final ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentContextPath();
         builder.removePathExtension();
         URI uri = builder.path("/v1/api/profile/{type}/{id}").buildAndExpand(user.getType().name().toLowerCase(), user.getProfileId())

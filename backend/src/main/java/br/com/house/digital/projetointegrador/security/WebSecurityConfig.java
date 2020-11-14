@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             // don't authenticate this particular request
             .authorizeRequests()
             .antMatchers("/**/api/authenticate", "/**/api/register").permitAll()
+            .antMatchers(HttpMethod.GET, "/**/api/opportunity/{id}").permitAll()
             .antMatchers(HttpMethod.GET, "/**/avatar").permitAll()
             .antMatchers(HttpMethod.PATCH, "/**/api/profile/{type}/{id}").access("@webSecurityConfig.checkUserId(authentication,#type.toUpperCase(),#id)")
             .antMatchers("/**/api/**").authenticated()

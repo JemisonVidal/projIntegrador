@@ -29,7 +29,10 @@ import java.util.Set;
 public class Opportunity extends AbstractEntity<Long> {
 
     @Column(length = 50, nullable = false)
-    private String title;
+    private String name;
+
+    @Column(length = 50, nullable = false)
+    private String location;
 
     @Column(nullable = false)
     private String description;
@@ -60,7 +63,7 @@ public class Opportunity extends AbstractEntity<Long> {
     private Profile company;
 
     @ManyToMany
-    private Set<User> appliedUsers = new HashSet<>();
+    private List<Profile> appliedUsers = new ArrayList<>();
 
     @JsonValue
     public Long getCompanyId() {
@@ -69,6 +72,6 @@ public class Opportunity extends AbstractEntity<Long> {
 
     @JsonValue
     public String getCompanyName() {
-        return ((CompanyProfile) company).getName();
+        return company.getName();
     }
 }

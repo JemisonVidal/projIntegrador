@@ -19,6 +19,8 @@ public interface BaseService<T, PK> {
 
     Page<T> findAll(Pageable pageable);
 
+    Page<T> findAllByName(String name, Pageable pageable);
+
     void deleteById(PK id);
 
     T convertToEntity(Object dto);
