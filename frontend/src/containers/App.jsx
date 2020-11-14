@@ -8,22 +8,27 @@ import Home from "../pages/Home/Home";
 import Register from "../pages/Register/Register";
 import Login from "../pages/Login/Login";
 import Profile from "../pages/Profile/Profile";
+import listOpportunity from "../pages/ListOpportunity/ListOpportunity";
 import Opportunity from "../pages/Opportunity/Opportunity";
 import Company from "../pages/Company/Company";
+import "./App.css";
 
 const PagesRoot = () => (
-  <BrowserRouter>
-    <StoreProvider>
-      <Switch>
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/" component={Home} exact />
-        <Route path="/profile/:type/:id" component={Profile} />
-        <Route path="/opportunity" component={Opportunity} />
-        <Route path="/company" component={Company} />
-      </Switch>
-    </StoreProvider>
-  </BrowserRouter>
+  <div className="app">
+    <BrowserRouter>
+      <StoreProvider>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <RoutesPrivate path="/" component={Home} exact />
+          <RoutesPrivate path="/profile/:type/:id" component={Profile} />
+          <RoutesPrivate path="/listOpportunity" component={listOpportunity} />
+          <RoutesPrivate path="/opportunity/:id" component={Opportunity} />
+          <RoutesPrivate path="/company" component={Company} />
+        </Switch>
+      </StoreProvider>
+    </BrowserRouter>
+  </div>
 );
 
 export default PagesRoot;

@@ -1,9 +1,9 @@
 package br.com.house.digital.projetointegrador.controller.exception;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import lombok.Getter;
 
 @Getter
 public class ValidationError extends StandardError {

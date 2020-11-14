@@ -20,5 +20,7 @@
 ![Perfil-Editado](https://user-images.githubusercontent.com/61213281/95663197-8cd53800-0b13-11eb-8a98-91d39bf72e0e.png)
 ![Perfil - Empresas](https://user-images.githubusercontent.com/61213281/95663196-8c3ca180-0b13-11eb-8816-3aa80c211794.png)
 ![Home - Empresas](https://user-images.githubusercontent.com/61213281/95663198-8d6dce80-0b13-11eb-8c22-6becf96a81ee.png)
+![Procurar](https://user-images.githubusercontent.com/61213281/98186146-e0595c80-1eec-11eb-882a-9b929b7ba040.png)
+![Vaga](https://user-images.githubusercontent.com/61213281/98186147-e18a8980-1eec-11eb-876b-a1ad8ae9c859.png)
 
 

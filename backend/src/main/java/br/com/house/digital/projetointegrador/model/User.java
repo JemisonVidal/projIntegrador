@@ -45,7 +45,7 @@ public class User extends AbstractEntity<Long> implements UserDetails {
     @Column(length = 10, nullable = false)
     private UserType type;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "profile_id")
     @JsonIgnore
     private Profile profile;
@@ -86,5 +86,9 @@ public class User extends AbstractEntity<Long> implements UserDetails {
     @JsonIgnore
     public boolean isEnabled() {
         return true;
+    }
+
+    public Long getProfileId() {
+        return this.profile.getId();
     }
 }

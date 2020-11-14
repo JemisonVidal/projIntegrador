@@ -14,7 +14,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -41,6 +43,10 @@ public class Opportunity extends AbstractEntity<Long> {
 
     @Column(nullable = false)
     private Boolean active;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "opportunity_id")
+    private List<Requirement> requirements = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createdAt;

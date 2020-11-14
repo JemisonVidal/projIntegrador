@@ -29,7 +29,9 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<Void> save(@RequestBody @Valid RegisterDTO registerDTO) {
         final User user = authenticationService.save(modelMapper.map(registerDTO, User.class));
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId())
+        final ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentContextPath();
+        builder.removePathExtension();
+        URI uri = builder.path("/v1/api/profile/{type}/{id}").buildAndExpand(user.getType().name().toLowerCase(), user.getProfileId())
             .toUri();
         return ResponseEntity.created(uri).build();
     }

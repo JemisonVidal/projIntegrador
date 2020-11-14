@@ -13,6 +13,11 @@
   background-image: linear-gradient(#27187e, #758bfd);
 }
 
+.container-image-background-cadastro {
+  display: contents;
+  margin: 0 auto;
+}
+
 .form-box {
   max-width: 500px;
   padding: 30px;

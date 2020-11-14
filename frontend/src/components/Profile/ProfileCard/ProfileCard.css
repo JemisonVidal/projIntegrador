@@ -2,17 +2,19 @@
   padding: 0 0.5rem;
 }
 
-.btn-profile-edit {
-  border: none;
-  padding: 2.5rem;
+#save-profile {
+  margin-top: 0.5em;
+  color: var(--color-white);
+  font-weight: bold;
+  width: 100%;
+  border-color:var(--color-primary-dark);
+  background-color:var(--color-primary-dark);
+  border-radius: 0.5em;
+  transition: background-color 0.1s linear;
 }
 
-.card-profile .btn {
-  background-color: white;
-  color: var(--color-primary-dark);
-  font-weight: bold;
-  padding: 0;
-  font-size: 1.5rem;
+#save-profile:hover {
+  background-color: var(--color-primary-darker);
 }
 
 .card-profile {
@@ -21,7 +23,7 @@
   border-radius: 10px;
   box-shadow: 4px 8px 4px rgba(39, 24, 126, 0.25);
   color: var(--color-primary-dark);
-  margin-bottom: 10px;
+  margin-bottom: 0.5em;
 }
 
 .card-profile .card-title {
@@ -31,18 +33,9 @@
 
 .card-profile .profile-item {
   padding: 0.2rem 0;
-}
-
-.card-profile .profile-item .font-weight-bold {
   color: var(--color-primary-dark);
-}
-
-.card-profile .profile-item span {
-  color: #FF8600;
-}
-
-.card-profile .profile-item span a {
-  color: var(--color-primary);
+  text-align: justify;
+  white-space: pre-line;
 }
 
 .card-profile .profile-item span a:hover {
@@ -50,10 +43,35 @@
   font-size: 16.5px;
 }
 
+.card-profile input, textarea {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--color-primary);
+  color: var(--color-primary-dark);
+  transition: border 0.1s ease-in-out;
+}
+
+.card-profile input:focus, textarea:focus {
+  outline: none;
+  border-bottom: 2px solid var(--color-primary-dark);
+  color: var(--color-primary-dark);
+}
+
+.card-profile .btn-outline-primary {
+  color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+.card-profile .btn-outline-primary:hover {
+  color: var(--color-white);
+  background-color: var(--color-primary-dark);
+}
+
+.card-profile .btn-profile-edit-item, .btn-profile-remove {
+  max-height: 3em;
+}
+
 @media (min-width: 576px) {
-  .card-profile .btn {
-    font-size: 1.75rem;
-  }
   .card-profile {
     margin-bottom: 15px;
   }

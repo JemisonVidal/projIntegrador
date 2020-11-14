@@ -23,6 +23,11 @@ public class ApplicantProfileService extends BaseServiceImpl<ApplicantProfile, L
                                    ModelMapper modelMapper) {
         super(applicantProfileRepository, modelMapper, ApplicantProfile.class);
         this.userRepository = userRepository;
+        modelMapper.typeMap(ApplicantProfileDTO.class, ApplicantProfile.class).addMappings(mapper -> {
+            mapper.skip(ApplicantProfile::setWorkExperiences);
+            mapper.skip(ApplicantProfile::setSkills);
+            mapper.skip(ApplicantProfile::setCourses);
+        });
     }
 
     @Transactional
@@ -41,5 +46,19 @@ public class ApplicantProfileService extends BaseServiceImpl<ApplicantProfile, L
         final ApplicantProfileDTO dto = this.convertFromEntity(profile, ApplicantProfileDTO.class);
         dto.setName(name);
         return dto;
+    }
+
+    public ApplicantProfile patch(ApplicantProfileDTO partial, Long id) {
+        ApplicantProfile profile = super.findById(id);
+        if (partial.getWorkExperiences() != null) {
+            replaceList(partial.getWorkExperiences(), profile.getWorkExperiences());
+        }
+        if (partial.getSkills() != null) {
+            replaceList(partial.getSkills(), profile.getSkills());
+        }
+        if (partial.getCourses() != null) {
+            replaceList(partial.getCourses(), profile.getCourses());
+        }
+        return super.patch(partial, profile);
     }
 }

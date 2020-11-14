@@ -1,47 +1,22 @@
-export const baseURL = 'http://localhost:8080';
-// TODO arrumar o CORS no back, por enquanto ta usando o proxy no ambiente dev
-//export const baseURL = '';
+import { requestOptions } from "./configAPI";
 
-const requestOptions = ({url, method = 'GET', body, jwt}) => {
-  return {
-    url: baseURL + url,
-    options: {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: jwt ? 'Bearer ' + jwt : undefined,
-      },
-      body: body ? JSON.stringify(body) : undefined
-    }
-  }
+export function GET_AVATAR(type, id) {
+  return requestOptions({
+    url: `/profile/${type}/${id}/avatar`,
+    isAuthenticated: false,
+  });
 }
 
-export function USER_REGISTER(body) {
+export function GET_PROFILE(type, id) {
   return requestOptions({
-    url: '/v1/api/register',
-    method: 'POST',
-    body
-  })
+    url: `/profile/${type}/${id}`,
+  });
 }
 
-export function USER_LOGIN(body) {
+export function PATCH_PROFILE(type, id, body) {
   return requestOptions({
-    url: '/v1/api/authenticate',
-    method: 'POST',
-    body
-  })
-}
-
-export function GET_PROFILE(type, id, jwt) {
-  const url = `/v1/api/profile/${type}/${id}`
-  return requestOptions({
-    url,
-    jwt
-  })
-}
-
-export function GET_SEARCH(search) {
-  return requestOptions({
-    url: `/v1/api/search/${search}`
-  })
+    url: `/profile/${type}/${id}`,
+    method: "PATCH",
+    body,
+  });
 }
