@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
 @Entity
@@ -37,6 +38,7 @@ public class WorkExperience extends AbstractEntity<Long> {
     @Column(columnDefinition = "TEXT")
     private String activities;
 
+    @PastOrPresent
     private LocalDate initialDate;
     private LocalDate finalDate;
 

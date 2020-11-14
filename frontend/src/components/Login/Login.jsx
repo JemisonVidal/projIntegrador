@@ -53,7 +53,7 @@ const UserLogin = () => {
           </h2>
           <Input
             namelabel="Email"
-            type="text"
+            type="email"
             placeholder="Email"
             required
             {...email}

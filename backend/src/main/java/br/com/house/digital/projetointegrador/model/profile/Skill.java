@@ -1,21 +1,23 @@
 package br.com.house.digital.projetointegrador.model.profile;
 
-import java.io.Serializable;
+import br.com.house.digital.projetointegrador.model.AbstractEntity;
+import br.com.house.digital.projetointegrador.model.enums.KnowledgeLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import br.com.house.digital.projetointegrador.model.AbstractEntity;
-import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import br.com.house.digital.projetointegrador.model.enums.KnowledgeLevel;
-import lombok.*;
 
 @Entity
 @Table(name = "skills")
 @Data
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
@@ -25,16 +27,11 @@ public class Skill extends AbstractEntity<Long> {
 	@Column(nullable = false)
 	private String name;
 
-	private String experienceTime;
+	private Integer experienceYears;
 
 	@NotNull
 	@Column(nullable = false)
 	private Integer knowledgeLevel;
-
-//	@ManyToOne
-//	@JsonBackReference
-//	@JoinColumn(name = "profile_id")
-//	private ApplicantProfile profile;
 
 	public KnowledgeLevel getKnowledgeLevel() {
 		return KnowledgeLevel.toEnum(knowledgeLevel);
