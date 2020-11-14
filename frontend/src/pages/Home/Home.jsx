@@ -21,7 +21,7 @@ const PagesHome = () => {
 
   const renderProfileUser = () => {
     function handleOnClick(event) {
-      return history.push(`/profile/user/${1}`);
+      return history.push(`/profile/applicant/${user.pid}`);
     }
 
     return (
@@ -82,7 +82,7 @@ const PagesHome = () => {
 
   const renderProfileCompany = () => {
     function handleOnClick(event) {
-      return history.push(`/profile/company/${1}`);
+      return history.push(`/profile/company/${user.pid}`);
     }
 
     return (

@@ -63,7 +63,7 @@ const ListOpportunity = ({id}) => {
         <CardDeck key={opportunity.id}>
             <Card className="card">
               <Card.Body>
-                <Card.Title className="title-card-opportunity">{opportunity.title}</Card.Title>
+                <Card.Title className="title-card-opportunity">{opportunity.name}</Card.Title>
                 <Card.Text className="title-empresa-opportunity">{opportunity.companyName}</Card.Text>
                 <span className="titulo-campo-opportunity">Localização</span>
                 <Card.Text><i class="fa fa-map-marker" aria-hidden="true"></i> {opportunity.location}</Card.Text>

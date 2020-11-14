@@ -69,25 +69,46 @@
 }
 
 .spinner-load {
+  height: 60vh;
   display: flex;
   justify-content: center;
+  align-content: center;
 }
 
 .spinner-load > div {
+  align-self: center;
   height: 100px;
   width: 100px;
-  color: #27187e;
+  color: #ffff;
+  font-weight: bold;
 }
 
 .messageOps {
   text-align: center;
   color: #ffff;
-  font-size: 20px;
+  font-size: 26px;
+  margin-top: 25vh;
+  font-weight: bold;
+}
+
+.title-company-search {
+  font-size: 28px;
+  text-align: justify;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
 @media (max-width: 600px) {
+  .messageOps {
+    margin-top: 20vh;
+  }
+
+  .title-company-search {
+    font-size: 24px;
+    text-align: center;
+  }
+
   .btn-search {
-    position: absolute;
     width: 40px;
     height: 39px;
     padding-bottom: 20px;
@@ -104,7 +125,7 @@
 
   .form-control {
     display: inline-block;
-    width: 250px;
+    width: 200px;
     margin-top: 15px;
     margin-bottom: 25px;
   }

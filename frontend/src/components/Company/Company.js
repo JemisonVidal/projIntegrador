@@ -53,6 +53,7 @@ const Company = () => {
     return (
       <div className="spinner-load">
         <Spinner animation="border" />
+        <span className="sr-only">Loading...</span>
       </div>
     );
   }
@@ -75,22 +76,24 @@ const Company = () => {
           <CardDeck key={index}>
             <Card>
               <Card.Body>
-                <Card.Title>{company.name}</Card.Title>
+                <Card.Title className="title-company-search">{company.name}</Card.Title>
                 <Card.Text>
                   <strong>Visão Geral:</strong> {company.about}
                 </Card.Text>
                 <Card.Text>
-                  <strong>local:</strong> {company.location}
+                  <strong>Localização:</strong>{" "}
+                  <i class="fa fa-map-marker" aria-hidden="true"></i>{" "}
+                  {company.location}
                 </Card.Text>
                 <Card.Text>
                   <strong>Ramo:</strong>
                   {company.category}
                 </Card.Text>
                 <Card.Text>
-                  <strong>site:</strong> {company.site}
+                  <strong>Site:</strong> {company.site}
                 </Card.Text>
                 <Card.Text>
-                  <strong>linkedin:</strong>
+                  <strong>Linkedin:</strong>
                   {company.linkedin}
                 </Card.Text>
               </Card.Body>
