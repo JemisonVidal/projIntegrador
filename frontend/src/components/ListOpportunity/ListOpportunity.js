@@ -51,6 +51,7 @@ const ListOpportunity = () => {
     return (
       <div className="spinner-load">
         <Spinner animation="border" />
+        <span className="sr-only">Loading...</span>
       </div>
     );
   }
