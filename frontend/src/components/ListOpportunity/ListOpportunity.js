@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Container, CardDeck, Card, Button, Pagination, Spinner } from "react-bootstrap";
+import React, { useState, useEffect, useRef } from "react";
+import { Container, CardDeck, Card, Button, Pagination, Spinner, Form, FormControl } from "react-bootstrap";
 import Main from "../Template/main/Main";
 import useFetch from "../../Hooks/useFetch";
 import PaginationPage from "../Pagination/Pagination";
@@ -12,27 +12,37 @@ import { skillMap } from "../../utils/skills";
 
 const ListOpportunity = () => {
   const [totalPages, setTotalPages] = useState(0);
-  const [pageCurrent, setPageCurrent] = useState(null);
+  const [pageCurrent, setPageCurrent] = useState(0);
   const [candidatarCheck, setCandidatarCheck] = useState(false);
   const {request, loading} = useFetch();
   const [arrayOpportunity, setArrayOpportunity] = useState([]);
+  const searchInput = useRef(null);
+
 
   // const handlerCandidatar = (event) => {
   //   setCandidatarCheck(!candidatarCheck);
   // }
 
-  useEffect(()=>{
-    async function getOpportunity() {
-      const {url, options} = GET_LIST_OPPORTUNITY();
-      const {json, response} = await request(url, options);
-      if (response.ok) {
-        setArrayOpportunity(json.content);
-        setPageCurrent(json.pageable?.pageNumber + 1);
-        setTotalPages(json.totalPages);
-      }
+  async function getOpportunity() {
+    const {url, options} = GET_LIST_OPPORTUNITY(
+      pageCurrent,
+      searchInput.current.value
+    );
+    const {json, response} = await request(url, options);
+    if (response.ok) {
+      setArrayOpportunity(json.content);
+      setPageCurrent(json.pageable?.pageNumber);
+      setTotalPages(json.totalPages);
     }
+  }
+
+  useEffect(()=>{
     getOpportunity();
-  }, [request, pageCurrent]);
+  }, [pageCurrent]);
+
+  async function handleSearchClick(event) {
+    await getOpportunity();
+  }
 
   function renderLoading() {
     return (
@@ -43,6 +53,16 @@ const ListOpportunity = () => {
   }
 
   function renderListOpportunity() {
+    if (arrayOpportunity && arrayOpportunity.length <= 0) {
+      return (
+        <p className="messageOps">
+          Ops... Não encontramos nenhuma vaga com esse nome.
+          <br /> :(
+          <br />
+          Tente novamente !
+        </p>
+      );
+    }
     return (
     arrayOpportunity &&
       arrayOpportunity.map((opportunity) => {
@@ -96,6 +116,17 @@ const ListOpportunity = () => {
   return (
     <Main>
       <Container fluid="md" className="py-2">
+      <Form className="search" inline>
+          <FormControl
+            ref={searchInput}
+            type="text"
+            placeholder="Pesquisar"
+            className=" form-control"
+          />
+          <Button className="btn-search ml-2" onClick={handleSearchClick}>
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </Button>
+        </Form>
       {loading ? renderLoading() : renderListOpportunity()}
         {
           <PaginationPage

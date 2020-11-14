@@ -98,7 +98,7 @@
     cursor: pointer;
     margin-top: 4px;
     margin-bottom: 15px;
-    background-color: var(--color-primary);
+    background-color: var(--color-primary-dark);
     border: none;
   }
 

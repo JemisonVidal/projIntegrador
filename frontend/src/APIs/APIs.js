@@ -27,9 +27,14 @@ export function GET_OPPORTUNITY(id) {
   });
 }
 
-export function GET_LIST_OPPORTUNITY() {
+export function GET_LIST_OPPORTUNITY(page = 0, name = "") {
+  let uri = `/opportunity/?page=${page}`;
+  if (name) {
+    uri += `&name=${name}`;
+  }
+
   return requestOptions({
-    url: `/opportunity/`,
+    url: uri,
   });
 }
 
