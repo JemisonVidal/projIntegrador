@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Card, Container, ListGroup } from 'react-bootstrap';
+import ModalForm from '../../Modal/ModalForm';
 import './ProfileCard.css';
 
 const BaseCard = ({ title, titleChildren, children }) => {
@@ -35,23 +36,50 @@ const ProfileCard = ({ title, canEdit, handleClick, children }) => {
 
 const List = ({
   title,
+  schema,
   canEdit,
-  handleAdd,
-  handleEdit,
-  handleRemove,
+  onAdd,
+  onEdit,
+  onRemove,
   items,
   formatter,
 }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [editIndex, setEditIndex] = useState(undefined);
+
+  const handleShowEdit = (i) => {
+    setEditIndex(i);
+    setShowModal(true);
+  };
+
+  const handleSubmit = async (item) => {
+    try {
+      if (editIndex >= 0) await onEdit(item, editIndex);
+      else await onAdd(item);
+      setShowModal(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      if (editIndex) setEditIndex(undefined);
+    }
+  };
+
+  const onHide = () => {
+    if (editIndex) setEditIndex(undefined);
+    setShowModal(false);
+  };
+
   const addButton = (
     <Button
       variant="outline-primary"
       className="btn-profile-add"
-      onClick={handleAdd}
+      onClick={() => setShowModal(true)}
     >
       <i className="fas fa-plus mr-1"></i>
       Adicionar
     </Button>
   );
+
   return (
     <BaseCard title={title} titleChildren={canEdit && addButton}>
       <ListGroup variant="flush" className="px-0">
@@ -66,7 +94,7 @@ const List = ({
                 <Button
                   variant="outline-primary"
                   className="btn-profile-edit-item mr-1"
-                  onClick={() => handleEdit(i)}
+                  onClick={() => handleShowEdit(i)}
                   title="Editar item"
                 >
                   <i className="far fa-edit"></i>
@@ -74,7 +102,7 @@ const List = ({
                 <Button
                   variant="outline-danger"
                   className="btn-profile-remove"
-                  onClick={() => handleRemove(i)}
+                  onClick={() => onRemove(i)}
                   title="Remover item"
                 >
                   <i className="far fa-trash-alt"></i>
@@ -84,6 +112,14 @@ const List = ({
           </ListGroup.Item>
         ))}
       </ListGroup>
+      <ModalForm
+        show={showModal}
+        onHide={onHide}
+        onSubmit={handleSubmit}
+        schema={schema}
+        title={editIndex ? 'Editar item' : 'Adicionar item'}
+        values={editIndex >= 0 ? items[editIndex] : undefined}
+      />
     </BaseCard>
   );
 };
