@@ -14,7 +14,7 @@ const UserRegister = () => {
   const senha = useForm();
   const confirmarSenha = useForm();
   const tipo = useForm();
-  const termo = useForm();
+  // const termo = useForm();
   const { loading, error, request } = useFetch();
   const history = useHistory();
 
