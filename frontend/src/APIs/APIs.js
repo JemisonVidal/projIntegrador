@@ -32,3 +32,10 @@ export function GET_LIST_OPPORTUNITY() {
     url: `/opportunity/`,
   });
 }
+
+export function POST_APPLY(id) {
+  return requestOptions({
+    url: `/opportunity/${id}/apply`,
+    method: "POST"
+  });
+};
