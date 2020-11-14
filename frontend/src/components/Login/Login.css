@@ -26,7 +26,10 @@
   align-items: center;
   min-height: 100vh;
   width: 100vw;
-  background-image: linear-gradient(var(--color-primary-dark), var(--color-primary));
+  background-image: linear-gradient(
+    var(--color-primary-dark),
+    var(--color-primary)
+  );
 }
 
 .container-image-background-login {
@@ -35,6 +38,9 @@
 }
 
 .form-box-login {
+  display: flex;
+  align-content: center;
+  flex-direction: column;
   max-width: 500px;
   padding: 30px;
 }
@@ -58,6 +64,16 @@
 #cadastro-login {
   color: white;
   font-weight: bold;
+}
+
+.spinner-login {
+  color: white;
+}
+
+#entrarBtn {
+  align-self: center;
+  padding: 5px 10px 10px 10px;
+  background-color: var(--color-primary-dark);
 }
 
 @media (min-width: 576px) {

@@ -73,16 +73,14 @@ const ListOpportunity = () => {
   }
 
   useEffect(()=>{
-    
+    async function getOpportunity() {
+      const {url, options} = GET_LIST_OPPORTUNITY();
+      const {json, response} = await request(url, options);
+      console.log(response, json);
+    }
+    getOpportunity();
   }, []);
 
-  async function getOpportunity() {
-    const {url, options} = GET_LIST_OPPORTUNITY();
-    const {json, response} = await request(url, options);
-    console.log(response, json);
-  }
-
-  getOpportunity();
   return (
     <Main>
       <Container fluid="md" className="py-2">

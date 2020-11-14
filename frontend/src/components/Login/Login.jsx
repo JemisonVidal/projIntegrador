@@ -71,15 +71,14 @@ const UserLogin = () => {
             label="Lembrar minha senha"
           />
           {loading ? (
-            <Button id="Entrar" variant="primary" disabled>
-              <Spinner
+            <Button id="entrarBtn" variant="primary" disabled>
+              <Spinner className="spinner-login"
                 as="span"
                 animation="border"
                 size="sm"
                 role="status"
-                aria-hidden="true"
+                variant="light"
               />
-              <span className="sr-only">Carregando...</span>
             </Button>
           ) : (
             <Button id="btnEntrar" variant="primary" type="submit">
