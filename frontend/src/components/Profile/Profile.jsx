@@ -11,6 +11,7 @@ import "./Profile.css";
 // import { GET_PROFILE } from '../../APIs/APIs';
 
 const Profile = ({ type, id }) => {
+  
   // const {data, loading, request} = useFetch();
   // const {url, options} = GET_PROFILE(type, id)
 

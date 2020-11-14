@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
-import axios from 'axios';
-import { Container, CardDeck, Card, Button } from "react-bootstrap";
+import React, { useState, useEffect, useContext } from "react";
+import { Container, CardDeck, Card, Button, Pagination, Form, FormControl } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import Main from "../../components/Template/main/Main";
-import Img from "../../../src/assets/images/mdi_search.png"
-
+import Img from "../../../src/assets/images/mdi_search.png";
+import useFetch from "../../Hooks/useFetch";
+import { GET_SEARCH } from "../../APIs/APIs";
+import StoreContext from "../../components/Store/Context";
 import "./Company.css";
 
 
 const mockCompany = [
+  
   {
     id: 1,
     descricao: "Empresa 1",
@@ -39,41 +41,62 @@ const mockCompany = [
     site: "https://mussumipsum.com/",
     linkedin: "https://linkedin/mussumipsum",
   },
+  
 ];
-{/*Mudar de cima para o que está parecido com o Procurar no figma */}
-
-const App = ()=>{
-  const [post, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage, setPostPerPage] = useState(10);
-
-  useEffect(()=>{
-    const fetchPosts = async()=>{
-      setLoading(true);
-      const res = await axios.get('http://localhost:3000/company');
-      setPosts(res.data);
-      setLoading(false);
-    }
-
-    fetchPosts();
-  }, []);
-}
 
 const Company = () => {
   const history = useHistory();
+  const [totalPages, setTotalPages] = useState(1)
+  const {request, loading} = useFetch();
+  const {appToken} = useContext(StoreContext);
+  
+  useEffect(async ()=>{
+    //usar dependência
+    async function getPagination(){
+      const {url, options} = GET_SEARCH(appToken);
+      const {json, response} = await request(url, options);
+      console.log(response, json);
+    }
+    getPagination();
+  }, []);
 
   function handleVerPerfilClick(event) {
     return history.push(`/profile/company/${event.target.id}`);
-  }
+  } 
+
+const paginationBasic = () => {
+    let active = 1;
+    let items = [];
+  for (let number = 1; number <= totalPages; number++) {
+  items.push(
+    <Pagination.Item  key={number} active={number === active}>
+      {number}
+    </Pagination.Item>,
+  );
+}
+
+  return(
+  <div>
+    <Pagination className = "pagination-company" size="sm">{items}</Pagination>
+  </div>
+)
+    }
+
+
+//fazer o get aqui
+//setTotalPages(coloca o get aqui);
 
   return (
     <Main>
       <Container fluid="md" className="py-2">
-          <input className="form-control" type="search" placeholder="Ex: Rebeca Souza"/>
-          <Button className="btn-search" type="submit">
-            <img className = "img" src={Img}/>
-             </Button>
+        
+          <Form className="search" inline>
+            <FormControl type="text" placeholder="Pesquisar" className=" form-control" />
+            <Button className ="btn-search" type="submit">
+              <img className = "img-search" src={Img} alt="Procurar"/>
+            </Button>
+          </Form>
+
         {mockCompany &&
           mockCompany.map((mockCompany) => {
             return (
@@ -95,10 +118,15 @@ const Company = () => {
                   >
                     Ver Perfil
                   </Button>
+                  
                 </Card>
+
+                
               </CardDeck>
+              
             );
           })}
+          {paginationBasic()}
       </Container>
     </Main>
   );

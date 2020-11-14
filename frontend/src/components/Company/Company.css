@@ -13,11 +13,12 @@
 }
 
 .form-control{
-  display: inline;
-  width: 250px;
+  display: flex;
   margin-top: 15px;
   margin-bottom: 25px;
 }
+
+
 .img{
   width:20px;
   height:20px;
@@ -28,19 +29,74 @@
   margin-left:-50px;
 }
 
+
 .btn-search{
-  position: absolute;
-  width: 36px;
-  height: 37px;
-  padding-bottom:10 px;
+  position: flex;
+  width: 40px;
+  height: 39px;
+  padding-bottom:20 px;
   padding-right: 20px;
   
-  margin-top: 15px;
-  margin-bottom: 20px;
+  cursor: pointer;
+  margin-top: 4px;
+  margin-bottom: 15px;
   background-color:#27187E ;
 }
 
-.pagination{
+.search{
   display: flex;
-  min-width: 500px;
+  justify-content: center;
+}
+
+.page-item.active .page-link{
+  background-color: #27187E;
+  cursor: pointer;
+  border: none;
+}
+
+.page-item.active .page-link:hover{
+  background-color: #748AFB;
+}
+
+.pagination-company{
+  display: flex;
+  justify-content: center;
+}
+
+.img-search{
+  display: flex;
+  height: 20px;
+  
+  margin-right: 25px;
+}
+
+
+@media (max-width:600px){
+  .btn-search{
+    position: absolute;
+    width: 40px;
+    height: 39px;
+    padding-bottom:20 px;
+    padding-right:20px;
+    
+    right: 75px;
+    top: 72px;
+    cursor: pointer;
+    margin-top: 4px;
+    margin-bottom: 15px;
+    background-color:#27187E ;
+    border: none;
+  }
+
+  .form-control{
+    display: inline-block;
+    width: 250px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+  }
+
+  .pagination-company:hover{
+    background-color: #27187E;
+  }
+
 }
