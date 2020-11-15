@@ -35,7 +35,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -140,6 +142,7 @@ public class OpportunityControllerTest {
 
     @Test
     @DisplayName("Should apply user to opportunity and return status 204")
+    @WithMockCustomUser
     void applyToOpportunityTest() throws Exception {
         RequestBuilder request = post("/v1/api/opportunity/1/apply")
             .accept(MediaType.APPLICATION_JSON);
@@ -148,6 +151,19 @@ public class OpportunityControllerTest {
             .andExpect(status().isNoContent());
 
         verify(opportunityService, times(1)).apply(anyLong(), any(User.class));
+    }
+
+    @Test
+    @DisplayName("Should apply company to opportunity and return status 403")
+    @WithMockCustomUser(type = UserType.COMPANY)
+    void applyCompanyToOpportunityTest() throws Exception {
+        RequestBuilder request = post("/v1/api/opportunity/1/apply")
+            .accept(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request)
+            .andExpect(status().isForbidden());
+
+        verify(opportunityService, never()).apply(anyLong(), any(User.class));
     }
 
     @Test
