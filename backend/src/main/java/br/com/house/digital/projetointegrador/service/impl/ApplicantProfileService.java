@@ -1,10 +1,8 @@
 package br.com.house.digital.projetointegrador.service.impl;
 
 import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
-import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
 import br.com.house.digital.projetointegrador.repository.ApplicantProfileRepository;
-import br.com.house.digital.projetointegrador.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,17 +10,13 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
-public class ApplicantProfileService extends BaseServiceImpl<ApplicantProfile, Long> {
-
-    private final UserRepository userRepository;
+public class ApplicantProfileService extends ProfileService<ApplicantProfile> {
 
     @Autowired
     public ApplicantProfileService(ApplicantProfileRepository applicantProfileRepository,
-                                   UserRepository userRepository,
                                    ModelMapper modelMapper) {
         super(applicantProfileRepository, modelMapper, ApplicantProfile.class);
-        this.userRepository = userRepository;
-        modelMapper.typeMap(ApplicantProfileDTO.class, ApplicantProfile.class).addMappings(mapper -> {
+        super.modelMapper.typeMap(ApplicantProfileDTO.class, ApplicantProfile.class).addMappings(mapper -> {
             mapper.skip(ApplicantProfile::setWorkExperiences);
             mapper.skip(ApplicantProfile::setSkills);
             mapper.skip(ApplicantProfile::setCourses);
@@ -30,13 +24,6 @@ public class ApplicantProfileService extends BaseServiceImpl<ApplicantProfile, L
     }
 
     @Transactional
-    public ApplicantProfile saveWithUser(ApplicantProfile profile, User user) {
-        profile = this.save(profile);
-        user.setProfile(profile);
-        userRepository.save(user);
-        return profile;
-    }
-
     public ApplicantProfile patch(ApplicantProfileDTO partial, Long id) {
         ApplicantProfile profile = super.findById(id);
         if (partial.getWorkExperiences() != null) {
