@@ -1,30 +1,30 @@
-import React from 'react';
-import ProfileCard from '../ProfileCard/ProfileCard';
+import React from "react";
+import ProfileCard from "../ProfileCard/ProfileCard";
 
-const title = 'Cursos e Certificados';
+const title = "Cursos e Certificados";
 const schema = {
   name: {
-    label: 'Nome',
+    label: "Nome",
     required: true,
-    type: 'text',
+    type: "text"
   },
   institution: {
-    label: 'Instituição',
+    label: "Instituição",
     required: true,
-    type: 'text'
+    type: "text"
   },
   conclusionMonth: {
-    label: 'Mês de conclusão',
-    type: 'number'
+    label: "Mês de conclusão",
+    type: "number"
   },
   conclusionYear: {
-    label: 'Ano de conclusão',
+    label: "Ano de conclusão",
     required: true,
-    type: 'number'
+    type: "number"
   },
   workLoad: {
-    label: 'Carga horária (horas)',
-    type: 'number'
+    label: "Carga horária (horas)",
+    type: "number"
   }
 };
 
@@ -34,7 +34,11 @@ const formatCourse = (e) => {
     <div>
       <p className="font-weight-bold mb-0">{e.name}</p>
       <p className="mb-0">{e.institution}</p>
-      <p className="mb-0">Conclusão {e.conclusionMonth && `${e.conclusionMonth}`.padStart(2, '0') + '/'}{e.conclusionYear}</p>
+      <p className="mb-0">
+        Conclusão{" "}
+        {e.conclusionMonth && `${e.conclusionMonth}`.padStart(2, "0") + "/"}
+        {e.conclusionYear}
+      </p>
       {e.workLoad && <p className="mb-0">Carga horária {e.workLoad} horas</p>}
     </div>
   );
@@ -58,7 +62,7 @@ const ApplicantCourses = ({ data, setData, canEdit, handleSubmit }) => {
   };
 
   const onRemove = async (i) => {
-    if (!window.confirm('Deseja realmente apagar este item?')) return;
+    if (!window.confirm("Deseja realmente apagar este item?")) return;
     const newData = [...data];
     newData.splice(i, 1);
     const { response } = await submit(newData);

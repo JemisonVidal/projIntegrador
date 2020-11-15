@@ -7,8 +7,8 @@
   color: var(--color-white);
   font-weight: bold;
   width: 100%;
-  border-color:var(--color-primary-dark);
-  background-color:var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  background-color: var(--color-primary-dark);
   border-radius: 0.5em;
   transition: background-color 0.1s linear;
 }
@@ -43,7 +43,8 @@
   font-size: 16.5px;
 }
 
-.card-profile input, textarea {
+.card-profile input,
+textarea {
   width: 100%;
   border: none;
   border-bottom: 1px solid var(--color-primary);
@@ -51,7 +52,8 @@
   transition: border 0.1s ease-in-out;
 }
 
-.card-profile input:focus, textarea:focus {
+.card-profile input:focus,
+textarea:focus {
   outline: none;
   border-bottom: 2px solid var(--color-primary-dark);
   color: var(--color-primary-dark);
@@ -67,7 +69,8 @@
   background-color: var(--color-primary-dark);
 }
 
-.card-profile .btn-profile-edit-item, .btn-profile-remove {
+.card-profile .btn-profile-edit-item,
+.btn-profile-remove {
   max-height: 3em;
 }
 

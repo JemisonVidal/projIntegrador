@@ -4,7 +4,7 @@ export const requestOptions = ({
   url,
   method = "GET",
   body,
-  isAuthenticated = true,
+  isAuthenticated = true
 }) => {
   const jwt = localStorage.getItem("apptoken");
   const request = {
@@ -12,10 +12,10 @@ export const requestOptions = ({
     options: {
       method: method,
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: body ? JSON.stringify(body) : undefined,
-    },
+      body: body ? JSON.stringify(body) : undefined
+    }
   };
   if (isAuthenticated) {
     request.options.headers["Authorization"] = "Bearer " + JSON.parse(jwt);

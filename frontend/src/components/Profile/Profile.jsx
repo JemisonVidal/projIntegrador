@@ -1,15 +1,14 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect } from 'react';
-import { Container } from 'react-bootstrap';
-import User from './User/User';
-import CompanyProfile from './CompanyProfile/CompanyProfile';
-import ApplicantProfile from './ApplicantProfile/ApplicantProfile';
+import React, { useContext, useEffect } from "react";
+import { Container } from "react-bootstrap";
+import User from "./User/User";
+import CompanyProfile from "./CompanyProfile/CompanyProfile";
+import ApplicantProfile from "./ApplicantProfile/ApplicantProfile";
 
-import './Profile.css';
-import useFetch from '../../Hooks/useFetch';
-import { GET_PROFILE } from '../../APIs/APIs';
-import { useState } from 'react';
-import StoreContext from '../Store/Context';
+import "./Profile.css";
+import useFetch from "../../Hooks/useFetch";
+import { GET_PROFILE } from "../../APIs/APIs";
+import { useState } from "react";
+import StoreContext from "../Store/Context";
 
 const Profile = ({ type, id }) => {
   const { request } = useFetch();
@@ -29,7 +28,7 @@ const Profile = ({ type, id }) => {
   }, [url]);
 
   const renderProfile = () => {
-    if (type === 'company') {
+    if (type === "company") {
       return (
         <CompanyProfile
           profileId={id}

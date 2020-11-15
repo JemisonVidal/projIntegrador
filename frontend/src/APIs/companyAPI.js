@@ -7,6 +7,6 @@ export function GET_COMPANYS(page = 0, name = "") {
   }
 
   return requestOptions({
-    url: uri,
+    url: uri
   });
 }

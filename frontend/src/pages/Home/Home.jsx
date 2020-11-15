@@ -20,7 +20,7 @@ const PagesHome = () => {
   const { user } = useContext(StoreContext);
 
   const renderProfileUser = () => {
-    function handleOnClick(event) {
+    function handleOnClick() {
       return history.push(`/profile/applicant/${user.pid}`);
     }
 
@@ -81,7 +81,7 @@ const PagesHome = () => {
   };
 
   const renderProfileCompany = () => {
-    function handleOnClick(event) {
+    function handleOnClick() {
       return history.push(`/profile/company/${user.pid}`);
     }
 
@@ -128,8 +128,8 @@ const PagesHome = () => {
   return (
     <Main>
       <div className="div-banner-home">
-        <img className="image-banner-home" src={imageMain} alt='Banner' />
-        <img className="logo-banner-home" src={logo} alt='Logo RecruIT' />
+        <img className="image-banner-home" src={imageMain} alt="Banner" />
+        <img className="logo-banner-home" src={logo} alt="Logo RecruIT" />
         <h1>
           Recru<span>IT</span>
         </h1>

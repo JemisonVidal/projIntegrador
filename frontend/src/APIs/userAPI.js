@@ -5,7 +5,7 @@ export const USER_REGISTER = (body) => {
     url: "/register",
     method: "POST",
     body,
-    isAuthenticated: false,
+    isAuthenticated: false
   });
 };
 
@@ -14,6 +14,6 @@ export const USER_LOGIN = (body) => {
     url: "/authenticate",
     method: "POST",
     body,
-    isAuthenticated: false,
+    isAuthenticated: false
   });
 };

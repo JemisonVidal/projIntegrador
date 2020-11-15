@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Button, Container, FormControl, InputGroup } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
-import { PATCH_PROFILE } from '../../../APIs/APIs';
-import logo from '../../../assets/images/Logo2RecruIT.svg';
-import useEditMode from '../../../Hooks/useEditMode';
-import useFetch from '../../../Hooks/useFetch';
+import React, { useState } from "react";
+import { Button, Container, FormControl, InputGroup } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { PATCH_PROFILE } from "../../../APIs/APIs";
+import logo from "../../../assets/images/Logo2RecruIT.svg";
+import useEditMode from "../../../Hooks/useEditMode";
+import useFetch from "../../../Hooks/useFetch";
 
-import './User.css';
+import "./User.css";
 
 const UserEdit = ({ type, id, imgSrc, title }) => {
   const [newImg, setNewImg] = useState(imgSrc);
@@ -18,7 +18,7 @@ const UserEdit = ({ type, id, imgSrc, title }) => {
   const handleSave = async () => {
     const { url, options } = PATCH_PROFILE(type, id, {
       imgSrc: newImg,
-      title: newTitle,
+      title: newTitle
     });
     const { response } = await request(url, options);
     if (response.ok) history.go();

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Button, Card, Container, ListGroup } from 'react-bootstrap';
-import ModalForm from '../../Modal/ModalForm';
-import './ProfileCard.css';
+import React, { useState } from "react";
+import { Button, Card, Container, ListGroup } from "react-bootstrap";
+import ModalForm from "../../Modal/ModalForm";
+import "./ProfileCard.css";
 
 const BaseCard = ({ title, titleChildren, children }) => {
   return (
@@ -42,7 +42,7 @@ const List = ({
   onEdit,
   onRemove,
   items,
-  formatter,
+  formatter
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [editIndex, setEditIndex] = useState(undefined);
@@ -117,7 +117,7 @@ const List = ({
         onHide={onHide}
         onSubmit={handleSubmit}
         schema={schema}
-        title={editIndex ? 'Editar item' : 'Adicionar item'}
+        title={editIndex ? "Editar item" : "Adicionar item"}
         values={editIndex >= 0 ? items[editIndex] : undefined}
       />
     </BaseCard>

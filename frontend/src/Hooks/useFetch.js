@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { useHistory } from "react-router-dom";
 
@@ -31,7 +30,7 @@ const useFetch = () => {
     data,
     loading,
     error,
-    request,
+    request
   };
 };
 

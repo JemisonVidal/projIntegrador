@@ -23,7 +23,7 @@ const UserLogin = () => {
   async function login(email, senha) {
     const { url, options } = USER_LOGIN({
       email: email.value,
-      password: senha.value,
+      password: senha.value
     });
     return await request(url, options);
   }
@@ -72,7 +72,8 @@ const UserLogin = () => {
           />
           {loading ? (
             <Button id="entrarBtn" variant="primary" disabled>
-              <Spinner className="spinner-login"
+              <Spinner
+                className="spinner-login"
                 as="span"
                 animation="border"
                 size="sm"

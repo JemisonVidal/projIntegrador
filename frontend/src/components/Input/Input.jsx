@@ -11,7 +11,7 @@ const Input = ({
   onBlur,
   options,
   error,
-  required,
+  required
 }) => {
   const [valueModal, setValueModal] = React.useState(value);
 

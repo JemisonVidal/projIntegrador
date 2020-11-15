@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import ProfileCard from './ProfileCard/ProfileCard';
-import ProfileCardItem from './ProfileCard/ProfileCardItem';
-import useEditMode from '../../Hooks/useEditMode';
+import React, { useState } from "react";
+import ProfileCard from "./ProfileCard/ProfileCard";
+import ProfileCardItem from "./ProfileCard/ProfileCardItem";
+import useEditMode from "../../Hooks/useEditMode";
 
-const title = 'Informações Gerais';
+const title = "Informações Gerais";
 
 const ProfileInfo = ({ data, setData, canEdit, handleSubmit }) => {
   const { editing, setEditing, toggleEditMode } = useEditMode();
@@ -24,7 +24,11 @@ const ProfileInfo = ({ data, setData, canEdit, handleSubmit }) => {
 
   if (editing)
     return (
-      <ProfileCard.Edit title={title} handleClick={toggleEditMode} handleSave={handleSave}>
+      <ProfileCard.Edit
+        title={title}
+        handleClick={toggleEditMode}
+        handleSave={handleSave}
+      >
         {Object.entries(data).map(([k, v]) => (
           <ProfileCardItem.Edit
             key={k}
