@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.URL;
 public class UpdateAvatarDTO {
 
     @URL String imgSrc;
+    @Length(max = 100) String name;
     @Length(max = 50) String title;
 
 }

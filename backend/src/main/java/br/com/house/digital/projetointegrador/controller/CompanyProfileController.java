@@ -2,6 +2,7 @@ package br.com.house.digital.projetointegrador.controller;
 
 import br.com.house.digital.projetointegrador.dto.profile.AvatarDTO;
 import br.com.house.digital.projetointegrador.dto.profile.CompanyProfileDTO;
+import br.com.house.digital.projetointegrador.dto.profile.UpdateAvatarDTO;
 import br.com.house.digital.projetointegrador.model.profile.CompanyProfile;
 import br.com.house.digital.projetointegrador.service.impl.CompanyProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ public class CompanyProfileController extends BaseController<CompanyProfile, Com
         CompanyProfile profile = service.convertToEntity(profileDTO);
         profile.setId(id);
         service.patch(profile);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(value = "/{id}/avatar")
+    public ResponseEntity<Void> patchAvatar(@RequestBody @Valid UpdateAvatarDTO avatarDTO, @PathVariable Long id) {
+        service.patchAvatar(avatarDTO, id);
         return ResponseEntity.noContent().build();
     }
 

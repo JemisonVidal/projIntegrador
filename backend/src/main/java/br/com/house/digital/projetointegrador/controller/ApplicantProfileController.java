@@ -2,6 +2,7 @@ package br.com.house.digital.projetointegrador.controller;
 
 import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
 import br.com.house.digital.projetointegrador.dto.profile.AvatarDTO;
+import br.com.house.digital.projetointegrador.dto.profile.UpdateAvatarDTO;
 import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
 import br.com.house.digital.projetointegrador.service.impl.ApplicantProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,12 @@ public class ApplicantProfileController extends BaseController<ApplicantProfile,
     @PatchMapping(value = "/{id}")
     public ResponseEntity<Void> patch(@RequestBody @Valid ApplicantProfileDTO profileDTO, @PathVariable Long id) {
         service.patch(profileDTO, id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(value = "/{id}/avatar")
+    public ResponseEntity<Void> patchAvatar(@RequestBody @Valid UpdateAvatarDTO avatarDTO, @PathVariable Long id) {
+        service.patchAvatar(avatarDTO, id);
         return ResponseEntity.noContent().build();
     }
 

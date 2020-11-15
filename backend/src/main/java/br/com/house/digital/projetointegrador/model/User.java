@@ -51,7 +51,7 @@ public class User extends AbstractEntity<Long> implements UserDetails {
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(this.type.toString()));
+        authorities.add(new SimpleGrantedAuthority(this.type.name()));
         return authorities;
     }
 
