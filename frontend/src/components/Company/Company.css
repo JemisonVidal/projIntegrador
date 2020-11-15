@@ -12,11 +12,11 @@
   margin: 5px;
 }
 
-.form-control {
+/* .form-control {
   display: flex;
   margin-top: 15px;
   margin-bottom: 25px;
-}
+} */
 
 .img {
   width: 20px;
@@ -123,12 +123,12 @@
     border: none;
   }
 
-  .form-control {
+  /* .form-control {
     display: inline-block;
     width: 200px;
     margin-top: 15px;
     margin-bottom: 25px;
-  }
+  } */
 
   .pagination-company:hover {
     background-color: #27187e;

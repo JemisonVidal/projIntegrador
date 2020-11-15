@@ -1,10 +1,10 @@
 .label {
   color: white;
-  margin-bottom: 1px;
+  margin: 0;
 }
 
 .Input {
-  margin-bottom: 1em;
+  margin: 0 0 15px 0;
   border-radius: 5px;
 }
 
@@ -16,9 +16,9 @@
   font-size: 15px;
 }
 
-@media(min-width: 576px) {
+@media (min-width: 576px) {
   .label {
-    color: #27187E;
+    color: #27187e;
     margin-bottom: 1px;
   }
 }

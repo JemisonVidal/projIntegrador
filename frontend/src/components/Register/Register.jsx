@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Form, Button, Spinner } from "react-bootstrap";
+import { Form, Button, Spinner, Modal } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
 import Input from "../../components/Input/Input";
 import Error from "../../components/Helper/Error";
 import useForm from "../../Hooks/useForm";
 import useFetch from "../../Hooks/useFetch";
 import { USER_REGISTER } from "../../APIs/userAPI";
+import SucessSVG from "../../assets/images/register/sucessRegister.svg";
 import "./Register.css";
 
 const UserRegister = () => {
@@ -16,7 +17,8 @@ const UserRegister = () => {
   const confirmarSenha = useForm("password");
   const tipo = useForm();
   const [errorSubmit, setErrorSubmit] = useState(null);
-  const { loading, error, request } = useFetch();
+  const [messageSucess, setMessageSucess] = useState(false);
+  const { loading, request } = useFetch();
 
   const optionsComboBox = [
     { value: "", text: "Escolha uma opção" },
@@ -48,13 +50,18 @@ const UserRegister = () => {
       try {
         const { response, json } = await registrar(nome, email, senha, tipo);
         if (response?.ok) {
-          return history.push("/login");
+          setMessageSucess(true);
+          setTimeout(() => {
+            return history.push("/login");
+          }, 3000);
         } else {
           setErrorSubmit(json.msg);
         }
       } catch (error) {
         setErrorSubmit("Desculpe, ocorreu uma falha, tente novamente");
       }
+    } else {
+      setErrorSubmit("Falha ao validar campos");
     }
   }
 
@@ -123,6 +130,19 @@ const UserRegister = () => {
           </p>
         </Form>
       </div>
+      <Modal
+        show={messageSucess}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <p className="sucess-register">
+          Cadastro realizado com <strong>Sucesso!</strong>
+          <br />
+          Você será redicionado ao login em <strong>5 segundos</strong> ;)
+        </p>
+
+        <img className="sucess-register-img" src={SucessSVG}></img>
+      </Modal>
     </div>
   );
 };
