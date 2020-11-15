@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import { Route, Redirect } from "react-router-dom";
-import StoreContext from "../components/Store/Context";
+import React, { useContext } from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import StoreContext from '../components/Store/Context';
 
 const RoutesPrivate = ({ component: Component, ...rest }) => {
   const { apptoken } = useContext(StoreContext);
@@ -8,11 +8,12 @@ const RoutesPrivate = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={() =>
-        apptoken ? <Component {...rest} /> : <Redirect to="/login" />
+      render={() => apptoken
+        ? <Component {...rest} />
+        : <Redirect to="/login" />
       }
     />
-  );
-};
+  )
+}
 
 export default RoutesPrivate;

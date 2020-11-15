@@ -23,7 +23,7 @@ const UserRegister = () => {
   const optionsComboBox = [
     { value: "", text: "Escolha uma opção" },
     { value: "APPLICANT", text: "Quero trabalhar" },
-    { value: "COMPANY", text: "Quero recrutar" }
+    { value: "COMPANY", text: "Quero recrutar" },
   ];
 
   async function registrar(nome, email, senha, tipo) {
@@ -31,7 +31,7 @@ const UserRegister = () => {
       name: nome.value,
       email: email.value,
       password: senha.value,
-      type: tipo.value
+      type: tipo.value,
     });
     return await request(url, options);
   }
@@ -141,11 +141,7 @@ const UserRegister = () => {
           Você será redicionado ao login em <strong>5 segundos</strong> ;)
         </p>
 
-        <img
-          className="sucess-register-img"
-          src={SucessSVG}
-          alt="Cadastro realizado com sucesso."
-        ></img>
+        <img className="sucess-register-img" src={SucessSVG}></img>
       </Modal>
     </div>
   );

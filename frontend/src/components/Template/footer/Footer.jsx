@@ -1,11 +1,11 @@
-import React from "react";
-import "./Footer.css";
-import logo from "../../../assets/images/Logo2RecruIT.png";
-import facebookLogo from "../../../assets/images/facebook.png";
-import linkedinLogo from "../../../assets/images/linkedin.png";
-import twitterLogo from "../../../assets/images/twitter.png";
+import React from 'react';
+import './Footer.css';
+import logo from '../../../assets/images/Logo2RecruIT.png';
+import facebookLogo from '../../../assets/images/facebook.png';
+import linkedinLogo from '../../../assets/images/linkedin.png';
+import twitterLogo from '../../../assets/images/twitter.png';
 
-const Footer = () => (
+export default () => (
   <footer className="footer">
     <div className="col-footer-info">
       <span className="titulo-principal">RecruIT</span>
@@ -34,5 +34,3 @@ const Footer = () => (
     </div>
   </footer>
 );
-
-export default Footer;

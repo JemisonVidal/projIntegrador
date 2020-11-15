@@ -1,6 +1,6 @@
-import React from "react";
-import { useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import React from 'react';
+import { useState } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 const ProfileCardItem = ({ title, value, formatter }) => {
   return (
@@ -16,7 +16,7 @@ const ProfileCardItem = ({ title, value, formatter }) => {
 };
 
 const Edit = ({ name, data, fields, setData }) => {
-  const [value, setValue] = useState(data.value || "");
+  const [value, setValue] = useState(data.value || '');
 
   const handleOnChange = (e) => {
     e.preventDefault();
@@ -35,7 +35,7 @@ const Edit = ({ name, data, fields, setData }) => {
         </label>
       </Col>
       <Col sm={12} md>
-        {data.type === "textarea" ? (
+        {data.type === 'textarea' ? (
           <textarea
             id={name}
             name={name}
@@ -46,7 +46,7 @@ const Edit = ({ name, data, fields, setData }) => {
         ) : (
           <input
             id={name}
-            type={data.type || "text"}
+            type={data.type || 'text'}
             name={name}
             value={value}
             onChange={handleOnChange}

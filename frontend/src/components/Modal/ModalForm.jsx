@@ -1,9 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import React, { useEffect, useState } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
 
-const defaultOption = { value: "", text: "Escolha uma opção." };
+const defaultOption = {value: '', text: 'Escolha uma opção.'};
 
-const ModalForm = ({ title, schema, show, onHide, onSubmit, values }) => {
+const ModalForm = ({
+  title,
+  schema,
+  show,
+  onHide,
+  onSubmit,
+  values,
+}) => {
   const [validated, setValidated] = useState(false);
   const [data, setData] = useState({});
 
@@ -27,7 +34,7 @@ const ModalForm = ({ title, schema, show, onHide, onSubmit, values }) => {
     else
       setData(
         Object.keys(schema).reduce((acc, k) => {
-          acc[k] = "";
+          acc[k] = '';
           return acc;
         }, {})
       );
@@ -49,22 +56,17 @@ const ModalForm = ({ title, schema, show, onHide, onSubmit, values }) => {
             <Form.Group key={k} controlId={k}>
               <Form.Label>
                 {v.label}
-                {v.required && "*"}
+                {v.required && '*'}
               </Form.Label>
               <Form.Control
-                as={v.as || "input"}
-                type={v.type || "text"}
+                as={v.as || 'input'}
+                type={v.type || 'text'}
                 required={v.required}
                 placeholder={v.placeholder}
-                value={data[k] || ""}
+                value={data[k] || ''}
                 onChange={(e) => handleOnChange(k, e.target.value)}
               >
-                {v.options &&
-                  [defaultOption].concat(v.options).map((o, i) => (
-                    <option key={i} value={o.value}>
-                      {o.text}
-                    </option>
-                  ))}
+                {v.options && [defaultOption].concat(v.options).map((o, i) => <option key={i} value={o.value}>{o.text}</option>)}
               </Form.Control>
               {v.required && (
                 <Form.Control.Feedback type="invalid">

@@ -1,7 +1,7 @@
 export const skillMap = {
-  BASIC: "Básico",
-  INTERMEDIATE: "Intermediário",
-  ADVANCED: "Avançado"
+  BASIC: 'Básico',
+  INTERMEDIATE: 'Intermediário',
+  ADVANCED: 'Avançado',
 };
 
 export const skillOptions = Object.entries(skillMap).reduce(
