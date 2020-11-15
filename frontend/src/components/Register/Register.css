@@ -55,7 +55,8 @@
 }
 
 .sucess-register-img {
-  height: 550px;
+  padding: 20px;
+  height: 530px;
 }
 
 @media (min-width: 576px) {
