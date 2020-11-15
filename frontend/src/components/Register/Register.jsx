@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Button, Spinner } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
 import Input from "../../components/Input/Input";
@@ -9,14 +9,14 @@ import { USER_REGISTER } from "../../APIs/userAPI";
 import "./Register.css";
 
 const UserRegister = () => {
+  const history = useHistory();
   const nome = useForm();
   const email = useForm("email");
-  const senha = useForm();
-  const confirmarSenha = useForm();
+  const senha = useForm("password");
+  const confirmarSenha = useForm("password");
   const tipo = useForm();
-  // const termo = useForm();
+  const [errorSubmit, setErrorSubmit] = useState(null);
   const { loading, error, request } = useFetch();
-  const history = useHistory();
 
   const optionsComboBox = [
     { value: "", text: "Escolha uma opção" },
@@ -45,8 +45,16 @@ const UserRegister = () => {
       tipo.validate() &&
       senha.value === confirmarSenha.value
     ) {
-      const { response } = await registrar(nome, email, senha, tipo);
-      if (response?.ok) return history.push("/login");
+      try {
+        const { response, json } = await registrar(nome, email, senha, tipo);
+        if (response?.ok) {
+          return history.push("/login");
+        } else {
+          setErrorSubmit(json.msg);
+        }
+      } catch (error) {
+        setErrorSubmit("Desculpe, ocorreu uma falha, tente novamente");
+      }
     }
   }
 
@@ -106,7 +114,7 @@ const UserRegister = () => {
               Cadastrar
             </Button>
           )}
-          <Error error={error} />
+          <Error error={errorSubmit} />
           <p id="cadastro">
             Já tem cadastro ?{" "}
             <Link id="login" to="/login">
