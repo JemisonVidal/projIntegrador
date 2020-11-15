@@ -19,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ApplicantProfileDTO extends ProfileDTO {
 
+    private Long id;
     private String name;
     private String locationWanted;
     private Double desiredSalary;

@@ -1,6 +1,5 @@
 package br.com.house.digital.projetointegrador.model;
 
-import br.com.house.digital.projetointegrador.model.profile.CompanyProfile;
 import br.com.house.digital.projetointegrador.model.profile.Profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -15,9 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "opportunities")
@@ -29,7 +26,10 @@ import java.util.Set;
 public class Opportunity extends AbstractEntity<Long> {
 
     @Column(length = 50, nullable = false)
-    private String title;
+    private String name;
+
+    @Column(length = 50, nullable = false)
+    private String location;
 
     @Column(nullable = false)
     private String description;
@@ -60,7 +60,7 @@ public class Opportunity extends AbstractEntity<Long> {
     private Profile company;
 
     @ManyToMany
-    private Set<User> appliedUsers = new HashSet<>();
+    private List<Profile> appliedUsers = new ArrayList<>();
 
     @JsonValue
     public Long getCompanyId() {
@@ -69,6 +69,6 @@ public class Opportunity extends AbstractEntity<Long> {
 
     @JsonValue
     public String getCompanyName() {
-        return ((CompanyProfile) company).getName();
+        return company.getName();
     }
 }

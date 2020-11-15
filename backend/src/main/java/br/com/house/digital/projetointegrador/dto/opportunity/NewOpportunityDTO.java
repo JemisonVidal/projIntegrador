@@ -20,7 +20,10 @@ import java.util.List;
 public class NewOpportunityDTO {
 
     @NotBlank
-    private String title;
+    private String name;
+
+    @NotBlank
+    private String location;
 
     @NotBlank
     private String description;

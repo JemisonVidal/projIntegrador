@@ -6,7 +6,6 @@ import br.com.house.digital.projetointegrador.dto.authentication.TokenDTO;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.service.AuthenticationService;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,11 +23,10 @@ import java.net.URI;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
-    private final ModelMapper modelMapper;
 
     @PostMapping("/register")
     public ResponseEntity<Void> save(@RequestBody @Valid RegisterDTO registerDTO) {
-        final User user = authenticationService.save(modelMapper.map(registerDTO, User.class));
+        final User user = authenticationService.save(registerDTO);
         final ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentContextPath();
         builder.removePathExtension();
         URI uri = builder.path("/v1/api/profile/{type}/{id}").buildAndExpand(user.getType().name().toLowerCase(), user.getProfileId())

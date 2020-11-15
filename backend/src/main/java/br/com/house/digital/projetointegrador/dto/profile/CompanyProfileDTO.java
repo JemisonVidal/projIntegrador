@@ -5,11 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.br.CNPJ;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
 @Getter
@@ -19,14 +18,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class CompanyProfileDTO extends ProfileDTO {
 
-    @NotBlank
-    @Length(max = 100)
-    private String name;
-
-    @CNPJ
-    private String cnpj;
+    private Long id;
 
     @NotNull
+    @PastOrPresent
     private LocalDate startDate;
 
     @NotBlank
