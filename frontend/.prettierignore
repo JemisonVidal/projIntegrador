@@ -1,0 +1,6 @@
+# Ignore artifacts:
+build
+coverage
+*.md
+*.json
+.vscode
