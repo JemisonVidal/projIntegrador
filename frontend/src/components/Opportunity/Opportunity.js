@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, CardDeck, Card, Spinner } from "react-bootstrap";
+import { Container, CardDeck, Card, Spinner, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import Main from "../Template/main/Main";
 import useFetch from "../../Hooks/useFetch";
@@ -7,6 +7,7 @@ import { GET_OPPORTUNITY, POST_APPLY } from "../../APIs/APIs";
 import heart from "../../assets/images/Heart.svg";
 import heartFill from "../../assets/images/FilledHeart.svg";
 import back from "../../assets/images/back.svg";
+import SucessApplySVG from "../../assets/images/opportunity/sucessApply.svg";
 
 import "./Opportunity.css";
 import { currencyFormatter } from "../../utils/formatters";
@@ -14,9 +15,11 @@ import { skillMap } from "../../utils/skills";
 
 const ListOpportunity = ({ id }) => {
   const { request, loading } = useFetch();
+  const fetchApply = useFetch();
   const history = useHistory();
   const [opportunity, setOpportunity] = useState({});
   const [heartCheck, setHeartCheck] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     async function getOpportunity() {
@@ -46,12 +49,20 @@ const ListOpportunity = ({ id }) => {
     const { response } = await apply(opportunity.id);
     if (response?.ok) {
       setHeartCheck(true);
+      setModalOpen(true);
+      setTimeout(() => {
+        setModalOpen(false);
+      }, 3000);
     }
   };
 
   async function apply(id) {
     const { url, options } = POST_APPLY(id);
-    return await request(url, options);
+    return await fetchApply.request(url, options);
+  }
+
+  function onHideModal() {
+    setModalOpen(false);
   }
 
   function renderOpportunity() {
@@ -110,13 +121,30 @@ const ListOpportunity = ({ id }) => {
             disabled={heartCheck}
             className="buttonSelect buttonYes"
           >
-            <img
-              className="heartIco"
-              src={heartCheck ? heartFill : heart}
-              alt="Candidatar"
-            />
+            {fetchApply.loading ? (
+              <Spinner animation="border" />
+            ) : (
+              <img
+                className="heartIco"
+                src={heartCheck ? heartFill : heart}
+                alt="Candidatar"
+              />
+            )}
           </button>
         </div>
+        <Modal
+          show={modalOpen}
+          onHide={onHideModal}
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <p className="sucess-apply">
+            Agora você está participando desta Vaga!
+            <br />
+            <strong>BOA SORTE !</strong>
+          </p>
+          <img className="sucess-apply-img" src={SucessApplySVG}></img>
+        </Modal>
       </Container>
     );
   }

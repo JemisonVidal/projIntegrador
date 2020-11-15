@@ -93,6 +93,19 @@
   fill: var(--color-orange);
 }
 
+.sucess-apply {
+  text-align: center;
+  margin-top: 10px;
+  font-size: larger;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  transition: ease-out;
+}
+
+.sucess-apply-img {
+  padding: 20px;
+  height: 420px;
+}
+
 @media (min-width: 576px) {
   .title-card-opportunity {
     font-size: 28px;

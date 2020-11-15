@@ -46,6 +46,19 @@
   font-weight: bolder;
 }
 
+.sucess-register {
+  text-align: center;
+  margin-top: 10px;
+  font-size: larger;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  transition: ease-out;
+}
+
+.sucess-register-img {
+  padding: 20px;
+  height: 530px;
+}
+
 @media (min-width: 576px) {
   .titulo-registro {
     color: #27187e;

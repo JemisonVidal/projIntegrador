@@ -1,22 +1,24 @@
-import React from "react";
-import { Form, Button, Spinner } from "react-bootstrap";
+import React, { useState } from "react";
+import { Form, Button, Spinner, Modal } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
 import Input from "../../components/Input/Input";
 import Error from "../../components/Helper/Error";
 import useForm from "../../Hooks/useForm";
 import useFetch from "../../Hooks/useFetch";
 import { USER_REGISTER } from "../../APIs/userAPI";
+import SucessSVG from "../../assets/images/register/sucessRegister.svg";
 import "./Register.css";
 
 const UserRegister = () => {
+  const history = useHistory();
   const nome = useForm();
   const email = useForm("email");
-  const senha = useForm();
-  const confirmarSenha = useForm();
+  const senha = useForm("password");
+  const confirmarSenha = useForm("password");
   const tipo = useForm();
-  // const termo = useForm();
-  const { loading, error, request } = useFetch();
-  const history = useHistory();
+  const [errorSubmit, setErrorSubmit] = useState(null);
+  const [messageSucess, setMessageSucess] = useState(false);
+  const { loading, request } = useFetch();
 
   const optionsComboBox = [
     { value: "", text: "Escolha uma opção" },
@@ -45,8 +47,21 @@ const UserRegister = () => {
       tipo.validate() &&
       senha.value === confirmarSenha.value
     ) {
-      const { response } = await registrar(nome, email, senha, tipo);
-      if (response?.ok) return history.push("/login");
+      try {
+        const { response, json } = await registrar(nome, email, senha, tipo);
+        if (response?.ok) {
+          setMessageSucess(true);
+          setTimeout(() => {
+            return history.push("/login");
+          }, 3000);
+        } else {
+          setErrorSubmit(json.msg);
+        }
+      } catch (error) {
+        setErrorSubmit("Desculpe, ocorreu uma falha, tente novamente");
+      }
+    } else {
+      setErrorSubmit("Falha ao validar campos");
     }
   }
 
@@ -106,7 +121,7 @@ const UserRegister = () => {
               Cadastrar
             </Button>
           )}
-          <Error error={error} />
+          <Error error={errorSubmit} />
           <p id="cadastro">
             Já tem cadastro ?{" "}
             <Link id="login" to="/login">
@@ -115,6 +130,19 @@ const UserRegister = () => {
           </p>
         </Form>
       </div>
+      <Modal
+        show={messageSucess}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <p className="sucess-register">
+          Cadastro realizado com <strong>Sucesso!</strong>
+          <br />
+          Você será redicionado ao login em <strong>5 segundos</strong> ;)
+        </p>
+
+        <img className="sucess-register-img" src={SucessSVG}></img>
+      </Modal>
     </div>
   );
 };
