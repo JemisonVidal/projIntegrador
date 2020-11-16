@@ -10,8 +10,6 @@ import br.com.house.digital.projetointegrador.repository.OpportunityRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,14 +21,11 @@ import java.util.stream.Collectors;
 public class OpportunityService extends BaseServiceImpl<Opportunity, Long> {
 
 	private final OpportunityRepository opportunityRepository;
-	private final CompanyProfileService companyProfileService;
 
-    @Autowired
+	@Autowired
     public OpportunityService(OpportunityRepository opportunityRepository,
-							  ModelMapper modelMapper,
-							  CompanyProfileService companyProfileService) {
+							  ModelMapper modelMapper) {
         super(opportunityRepository, modelMapper, Opportunity.class);
-		this.companyProfileService = companyProfileService;
 		this.opportunityRepository = opportunityRepository;
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 	}
@@ -57,12 +52,13 @@ public class OpportunityService extends BaseServiceImpl<Opportunity, Long> {
 		return null;
 	}
 
-	public Page<Opportunity> findAllByCompanyId(Long id, Pageable pageable) {
-    	Profile company = companyProfileService.findById(id);
-    	return this.opportunityRepository.findAllByCompany(company, pageable);
+	public List<OpportunityDTO> findAllByCompanyId(Long id) {
+    	return this.opportunityRepository.findAllByCompany_Id(id).stream()
+			.map(this::mapDTO)
+			.collect(Collectors.toList());
 	}
 
-	public List<OpportunityDTO> findAppliedUsersByProfileId(Long id) {
+	public List<OpportunityDTO> findAppliedOpportunitiesByProfileId(Long id) {
 		return opportunityRepository.findByAppliedUsers_Id(id).stream()
 			.map(this::mapDTO)
 			.collect(Collectors.toList());
