@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
+import Error from '../Helper/Error';
 
 const defaultOption = {value: '', text: 'Escolha uma opção.'};
 
@@ -10,11 +11,18 @@ const ModalForm = ({
   onHide,
   onSubmit,
   values,
+  error
 }) => {
   const [validated, setValidated] = useState(false);
   const [data, setData] = useState({});
 
-  function handleOnChange(key, value) {
+  const handleOnHide = () => {
+    setData({});
+    setValidated(false);
+    onHide();
+  }
+
+  const handleOnChange = (key, value) => {
     data[key] = value;
     setData({ ...data });
   }
@@ -31,19 +39,13 @@ const ModalForm = ({
 
   useEffect(() => {
     if (values) setData({ ...values });
-    else
-      setData(
-        Object.keys(schema).reduce((acc, k) => {
-          acc[k] = '';
-          return acc;
-        }, {})
-      );
+    else setData({});
   }, [values, schema]);
 
   return (
     <Modal
       show={show}
-      onHide={onHide}
+      onHide={handleOnHide}
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
@@ -56,29 +58,31 @@ const ModalForm = ({
             <Form.Group key={k} controlId={k}>
               <Form.Label>
                 {v.label}
-                {v.required && '*'}
+                {v.required && <span className='text-danger'>*</span>}
               </Form.Label>
               <Form.Control
                 as={v.as || 'input'}
                 type={v.type || 'text'}
                 required={v.required}
                 placeholder={v.placeholder}
+                pattern={v.pattern}
                 value={data[k] || ''}
                 onChange={(e) => handleOnChange(k, e.target.value)}
               >
                 {v.options && [defaultOption].concat(v.options).map((o, i) => <option key={i} value={o.value}>{o.text}</option>)}
               </Form.Control>
-              {v.required && (
+              {(v.required || v.feedback) && (
                 <Form.Control.Feedback type="invalid">
-                  Esse campo deve ser preenchido.
+                  {v.feedback ? v.feedback : "Esse campo deve ser preenchido."}
                 </Form.Control.Feedback>
               )}
               {v.text && <Form.Text muted>{v.text}</Form.Text>}
             </Form.Group>
           ))}
+          {error && <Error error={error} />}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={onHide}>Fechar</Button>
+          <Button onClick={handleOnHide}>Fechar</Button>
           <Button type="submit" variant="success">
             Salvar
           </Button>
