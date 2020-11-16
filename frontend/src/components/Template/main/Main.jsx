@@ -3,10 +3,12 @@ import "./Main.css";
 import Footer from "../footer/Footer";
 import Nav from "../nav/Nav";
 
-export default (props) => (
+const Main = (props) => (
   <React.Fragment>
     <Nav />
     <main>{props.children}</main>
     <Footer />
   </React.Fragment>
 );
+
+export default Main;

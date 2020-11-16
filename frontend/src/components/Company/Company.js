@@ -6,7 +6,7 @@ import {
   Button,
   Form,
   FormControl,
-  Spinner,
+  Spinner
 } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import Main from "../../components/Template/main/Main";
@@ -76,13 +76,15 @@ const Company = () => {
           <CardDeck key={index}>
             <Card>
               <Card.Body>
-                <Card.Title className="title-company-search">{company.name}</Card.Title>
+                <Card.Title className="title-company-search">
+                  {company.name}
+                </Card.Title>
                 <Card.Text>
                   <strong>Visão Geral:</strong> {company.about}
                 </Card.Text>
                 <Card.Text>
                   <strong>Localização:</strong>{" "}
-                  <i class="fa fa-map-marker" aria-hidden="true"></i>{" "}
+                  <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
                   {company.location}
                 </Card.Text>
                 <Card.Text>
@@ -122,7 +124,7 @@ const Company = () => {
             className=" form-control"
           />
           <Button className="btn-search ml-2" onClick={handleSearchClick}>
-            <i class="fa fa-search" aria-hidden="true"></i>
+            <i className="fa fa-search" aria-hidden="true"></i>
           </Button>
         </Form>
         {loading ? renderLoading() : renderCompanys()}

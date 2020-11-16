@@ -79,7 +79,7 @@ const ListOpportunity = ({ id }) => {
               </Card.Text>
               <span className="titulo-campo-opportunity">Localização</span>
               <Card.Text>
-                <i class="fa fa-map-marker" aria-hidden="true"></i>{" "}
+                <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
                 {opportunity.location}
               </Card.Text>
               <span className="titulo-campo-opportunity">
@@ -143,7 +143,11 @@ const ListOpportunity = ({ id }) => {
             <br />
             <strong>BOA SORTE !</strong>
           </p>
-          <img className="sucess-apply-img" src={SucessApplySVG}></img>
+          <img
+            className="sucess-apply-img"
+            src={SucessApplySVG}
+            alt="Candidatura registrada com sucesso."
+          ></img>
         </Modal>
       </Container>
     );
