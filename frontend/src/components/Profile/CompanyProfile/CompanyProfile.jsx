@@ -6,7 +6,7 @@ import {
 } from "../../../APIs/profileAPI";
 import { linkFormatter, locationFormatter } from "../../../utils/formatters";
 import StyledCard from "../../StyledCard/StyledCard";
-import { Button, Col, ListGroup, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import ProfileCard from "../ProfileCard/ProfileCard";
 import { Link } from "react-router-dom";
 
