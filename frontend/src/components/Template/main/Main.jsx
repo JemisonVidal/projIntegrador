@@ -2,11 +2,14 @@ import React from "react";
 import "./Main.css";
 import Footer from "../footer/Footer";
 import Nav from "../nav/Nav";
+import { Container } from "react-bootstrap";
 
-export default (props) => (
+const Main = (props) => (
   <React.Fragment>
     <Nav />
-    <main>{props.children}</main>
+    <Container fluid="md" as='main'>{props.children}</Container>
     <Footer />
   </React.Fragment>
 );
+
+export default Main;

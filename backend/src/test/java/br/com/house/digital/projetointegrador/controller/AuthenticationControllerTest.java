@@ -75,7 +75,7 @@ public class AuthenticationControllerTest {
                 "Shield2020",
                 UserType.APPLICANT);
 
-        when(authenticationService.save(any(User.class)))
+        when(authenticationService.save(userDTO))
                 .thenReturn(User.builder()
                     .id(1L)
                     .type(userDTO.getType())
@@ -94,7 +94,7 @@ public class AuthenticationControllerTest {
                 .andReturn()
                 .getResponse();
 
-        verify(authenticationService, times(1)).save(any(User.class));
+        verify(authenticationService, times(1)).save(userDTO);
 
         assertThat(response.getHeader("Location")).isEqualTo("http://localhost/v1/api/profile/applicant/1");
     }
@@ -167,7 +167,6 @@ public class AuthenticationControllerTest {
         User user = User.builder()
                 .id(1L)
                 .email(loginDTO.getEmail())
-                .name("Natasha Romanov")
                 .password(loginDTO.getPassword())
                 .type(UserType.APPLICANT)
                 .build();

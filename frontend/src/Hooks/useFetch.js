@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import { useHistory } from "react-router-dom";
 
 const useFetch = () => {
   const [data, setData] = React.useState(null);
@@ -15,11 +15,10 @@ const useFetch = () => {
       setError(null);
       setLoading(true);
       response = await fetch(url, options);
-      if (response.status === 401) history.push('/login')
+      if (response.status === 401) history.push("/login");
       json = await response.json();
-      if (response.ok === false) throw new Error(json.message);
+      if (response.ok === false) setError(json.msg);
     } catch (err) {
-      json = null;
       setError(err.message);
     } finally {
       setData(json);

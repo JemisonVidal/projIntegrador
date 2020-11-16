@@ -6,7 +6,7 @@ import {
   Button,
   Form,
   FormControl,
-  Spinner,
+  Spinner
 } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import Main from "../../components/Template/main/Main";
@@ -37,7 +37,14 @@ const Company = () => {
     }
   }
 
+  console.log(companys);
+
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
     getCompany();
   }, [pageCurrent]);
 
@@ -53,6 +60,7 @@ const Company = () => {
     return (
       <div className="spinner-load">
         <Spinner animation="border" />
+        <span className="sr-only">Loading...</span>
       </div>
     );
   }
@@ -71,27 +79,30 @@ const Company = () => {
     return (
       companys &&
       companys.map((company, index) => {
-        if (!company.name) return;
         return (
           <CardDeck key={index}>
             <Card>
               <Card.Body>
-                <Card.Title>{company.name}</Card.Title>
+                <Card.Title className="title-company-search">
+                  {company.name}
+                </Card.Title>
                 <Card.Text>
                   <strong>Visão Geral:</strong> {company.about}
                 </Card.Text>
                 <Card.Text>
-                  <strong>local:</strong> {company.location}
+                  <strong>Localização:</strong>{" "}
+                  <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
+                  {company.location}
                 </Card.Text>
                 <Card.Text>
                   <strong>Ramo:</strong>
                   {company.category}
                 </Card.Text>
                 <Card.Text>
-                  <strong>site:</strong> {company.site}
+                  <strong>Site:</strong> {company.site}
                 </Card.Text>
                 <Card.Text>
-                  <strong>linkedin:</strong>
+                  <strong>Linkedin:</strong>
                   {company.linkedin}
                 </Card.Text>
               </Card.Body>
@@ -120,7 +131,7 @@ const Company = () => {
             className=" form-control"
           />
           <Button className="btn-search ml-2" onClick={handleSearchClick}>
-            <i class="fa fa-search" aria-hidden="true"></i>
+            <i className="fa fa-search" aria-hidden="true"></i>
           </Button>
         </Form>
         {loading ? renderLoading() : renderCompanys()}

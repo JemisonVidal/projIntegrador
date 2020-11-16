@@ -21,6 +21,9 @@ import java.time.LocalDateTime;
 @SuperBuilder
 public abstract class Profile extends AbstractEntity<Long> {
 
+    @Column(length = 100, nullable = false)
+    private String name;
+
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(columnDefinition = "TEXT")

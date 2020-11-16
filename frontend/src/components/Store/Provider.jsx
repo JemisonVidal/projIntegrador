@@ -4,7 +4,7 @@ import Context from "./Context";
 import useStorage from "../../utils/useStorage";
 import jwt_decode from "jwt-decode";
 import logo from "../../assets/images/Logo2RecruIT.svg";
-import { GET_AVATAR } from "../../APIs/APIs";
+import { GET_AVATAR } from "../../APIs/profileAPI";
 import useFetch from "../../Hooks/useFetch";
 
 const StoreProvider = ({ children }) => {
@@ -14,6 +14,11 @@ const StoreProvider = ({ children }) => {
 
   let user = {};
   if (apptoken) user = jwt_decode(apptoken);
+
+  const { type, sub, exp } = user;
+  if (!type || !sub || !exp || new Date() > new Date(exp * 1000)) {
+    localStorage.removeItem(apptoken);
+  }
 
   useEffect(() => {
     (async () => {
@@ -32,7 +37,7 @@ const StoreProvider = ({ children }) => {
         apptoken,
         setToken,
         user,
-        avatar,
+        avatar
       }}
     >
       {children}

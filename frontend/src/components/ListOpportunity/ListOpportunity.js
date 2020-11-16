@@ -1,45 +1,48 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, CardDeck, Card, Button, Pagination, Spinner, Form, FormControl } from "react-bootstrap";
-import Main from "../Template/main/Main";
+import {
+  CardDeck,
+  Card,
+  Button,
+  Spinner,
+  Form,
+  FormControl
+} from "react-bootstrap";
 import useFetch from "../../Hooks/useFetch";
 import PaginationPage from "../Pagination/Pagination";
-import { GET_LIST_OPPORTUNITY } from "../../APIs/APIs"
+import { GET_LIST_OPPORTUNITY } from "../../APIs/APIs";
 import { Link } from "react-router-dom";
 
 import "./ListOpportunity.css";
 import { currencyFormatter } from "../../utils/formatters";
 import { skillMap } from "../../utils/skills";
+import { MY_OPPORTUNITYS } from "./listEnum";
 
-const ListOpportunity = () => {
+const ListOpportunity = ({ type }) => {
   const [totalPages, setTotalPages] = useState(0);
   const [pageCurrent, setPageCurrent] = useState(0);
-  const [candidatarCheck, setCandidatarCheck] = useState(null);
-  const {request, loading} = useFetch();
+  const { request, loading } = useFetch();
   const [arrayOpportunity, setArrayOpportunity] = useState([]);
   const searchInput = useRef(null);
 
-  // const handlerCandidatar = (event) => {
-  //   setCandidatarCheck(!candidatarCheck);
-  // }
-
   async function getOpportunity() {
-    const {url, options} = GET_LIST_OPPORTUNITY(
+    const { url, options } = GET_LIST_OPPORTUNITY(
       pageCurrent,
       searchInput.current.value
     );
-    const {json, response} = await request(url, options);
+    const { json, response } = await request(url, options);
     if (response.ok) {
       setArrayOpportunity(json.content);
       setPageCurrent(json.pageable?.pageNumber);
       setTotalPages(json.totalPages);
-      // const mockApply = {...arrayOpportunity};
-      // mockApply.listAppliedIDOpportunity = []
     }
   }
 
-  console.log(arrayOpportunity);
-
-  useEffect(()=>{
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
     getOpportunity();
   }, [pageCurrent]);
 
@@ -55,7 +58,7 @@ const ListOpportunity = () => {
     );
   }
 
-  function renderListOpportunity() {
+  function renderListOpportunity(typeSearch) {
     if (arrayOpportunity && arrayOpportunity.length <= 0) {
       return (
         <p className="messageOps">
@@ -66,25 +69,38 @@ const ListOpportunity = () => {
         </p>
       );
     }
+
     return (
-    arrayOpportunity &&
+      arrayOpportunity &&
       arrayOpportunity.map((opportunity) => {
+        if (typeSearch === MY_OPPORTUNITYS && !opportunity.isApplied)
+          return null;
         return (
           <CardDeck key={opportunity.id}>
             <Card className="card">
               <Card.Body>
                 <Card.Title className="title-card">
-                  {opportunity.title}
+                  {opportunity.name}
                 </Card.Title>
                 <Card.Text>
+                  {opportunity.companyName}
+                </Card.Text>
+                <Card.Text>
                   <span className="titulo-campo">Localização:</span>{" "}
-                  <i class="fa fa-map-marker" aria-hidden="true"></i>{" "}
+                  <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
                   {opportunity.location}
                 </Card.Text>
                 <Card.Text>
                   <span className="titulo-campo">Requisitos:</span>{" "}
                   {opportunity.requirements &&
-                      opportunity.requirements.map((requirement) => `${requirement.name} ${skillMap[requirement.knowledgeLevel]}`).join(", ")}
+                    opportunity.requirements
+                      .map(
+                        (requirement) =>
+                          `${requirement.name} ${
+                            skillMap[requirement.knowledgeLevel]
+                          }`
+                      )
+                      .join(", ")}
                 </Card.Text>
                 <Card.Text>
                   <span className="titulo-campo">Benefícios:</span>{" "}
@@ -95,18 +111,15 @@ const ListOpportunity = () => {
                   {currencyFormatter(opportunity.salary)}
                 </Card.Text>
               </Card.Body>
-              <Link
-                className="linkVaga"
-                to={`/opportunity/${opportunity.id}`}
-              >
+              <Link className="linkVaga" to={`/opportunity/${opportunity.id}`}>
                 <Button
                   // onClick={handlerCandidatar}
-                  id={candidatarCheck ? "buttonGreen" : "buttonBlue"}
+                  id={opportunity.isApplied ? "buttonGreen" : "buttonBlue"}
                   className="buttonVaga"
                   variant="primary"
                   type="button"
                 >
-                  {candidatarCheck ? "Candidatada" : "Candidatar-se"}
+                  {opportunity.isApplied ? "Candidatada" : "Candidatar-se"}
                 </Button>
               </Link>
             </Card>
@@ -117,29 +130,25 @@ const ListOpportunity = () => {
   }
 
   return (
-    <Main>
-      <Container fluid="md" className="py-2">
+    <>
       <Form className="search" inline>
-          <FormControl
-            ref={searchInput}
-            type="text"
-            placeholder="Pesquisar"
-            className=" form-control"
-          />
-          <Button className="btn-search ml-2" onClick={handleSearchClick}>
-            <i class="fa fa-search" aria-hidden="true"></i>
-          </Button>
-        </Form>
-      {loading ? renderLoading() : renderListOpportunity()}
-        {
-          <PaginationPage
-            pageCurrent={pageCurrent}
-            totalPages={totalPages}
-            setPageCurrent={setPageCurrent}
-          />
-        }
-      </Container>
-    </Main>
+        <FormControl
+          ref={searchInput}
+          type="text"
+          placeholder="Pesquisar"
+          className="form-control"
+        />
+        <Button className="btn-search ml-2" onClick={handleSearchClick}>
+          <i className="fa fa-search" aria-hidden="true"></i>
+        </Button>
+      </Form>
+      {loading ? renderLoading() : renderListOpportunity(type)}
+      <PaginationPage
+        pageCurrent={pageCurrent}
+        totalPages={totalPages}
+        setPageCurrent={setPageCurrent}
+      />
+    </>
   );
 };
 

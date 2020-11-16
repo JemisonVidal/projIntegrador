@@ -31,9 +31,6 @@ public class User extends AbstractEntity<Long> implements UserDetails {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(length = 50, nullable = false)
-    private String name;
-
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -54,7 +51,7 @@ public class User extends AbstractEntity<Long> implements UserDetails {
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(this.type.toString()));
+        authorities.add(new SimpleGrantedAuthority(this.type.name()));
         return authorities;
     }
 

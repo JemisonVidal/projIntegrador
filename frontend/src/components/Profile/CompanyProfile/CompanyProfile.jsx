@@ -1,9 +1,79 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import ProfileInfo from '../ProfileInfo';
-import useFetch from '../../../Hooks/useFetch';
-import { PATCH_PROFILE } from '../../../APIs/APIs';
-import { linkFormatter } from '../../../utils/formatters';
+import React, { useState, useEffect } from "react";
+import useFetch from "../../../Hooks/useFetch";
+import {
+  GET_COMPANY_OPPORTUNITIES,
+  PATCH_PROFILE
+} from "../../../APIs/profileAPI";
+import { linkFormatter, locationFormatter } from "../../../utils/formatters";
+import StyledCard from "../../StyledCard/StyledCard";
+import { Button, Col, Row } from "react-bootstrap";
+import ProfileCard from "../ProfileCard/ProfileCard";
+import { Link } from "react-router-dom";
+
+const infoSchema = {
+  about: { label: "Sobre", as: "textarea", required: true },
+  location: {
+    label: "Localização",
+    required: true,
+    placeholder: "São Paulo, SP"
+  },
+  locationWanted: {
+    label: "Disposta a trabalhar em",
+    placeholder: "São Paulo, SP"
+  },
+  category: {
+    label: "Ramo",
+    required: true
+  },
+  site: {
+    label: "Site",
+    type: "url",
+    formatter: linkFormatter,
+    placeholder: "https://sitedaempresa.com.br",
+    feedback: "Por favor digite uma URL válida."
+  },
+  linkedin: {
+    label: "LinkedIn",
+    type: "url",
+    formatter: linkFormatter,
+    placeholder: "https://linkedin.com/company/empresa",
+    feedback: "Por favor digite uma URL válida."
+  }
+};
+
+const Opportunities = ({ id }) => {
+  const { request } = useFetch();
+  const [opportunities, setOpportunities] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const { url, options } = GET_COMPANY_OPPORTUNITIES(id);
+      const { response, json } = await request(url, options);
+      if (response.ok) {
+        setOpportunities(json);
+      }
+    })();
+  }, [id]);
+
+  return (
+    <StyledCard>
+      <StyledCard.Title title="Oportunidades"></StyledCard.Title>
+      <Row>
+        {opportunities.map((opportunity) => (
+          <Col sm={6} lg={4} className="mb-3" key={opportunity.id}>
+            <StyledCard className="h-100">
+              <StyledCard.Title title={opportunity.name}/>
+              <p>{locationFormatter(opportunity.location)}</p>
+              <Link to={`/opportunity/${opportunity.id}`}>
+                <Button>Visualizar vaga</Button>
+              </Link>
+            </StyledCard>
+          </Col>
+        ))}
+      </Row>
+    </StyledCard>
+  );
+};
 
 const CompanyProfile = ({ data, canEdit, profileId }) => {
   const { request } = useFetch();
@@ -15,33 +85,25 @@ const CompanyProfile = ({ data, canEdit, profileId }) => {
   };
 
   useEffect(() => {
-    setInfo({
-      about: { text: "Sobre", value: data.about, type: "textarea" },
-      location: { text: "Localização", value: data.location },
-      category: {text: "Categoria", value: data.category, required: true},
-      site: {
-        text: "Site",
-        value: data.site,
-        formatter: linkFormatter,
-        placeholder: "https://sitedaempresa.com.br",
-      },
-      linkedin: {
-        text: "LinkedIn",
-        value: data.linkedin,
-        formatter: linkFormatter,
-        placeholder: "https://linkedin.com/company/empresa",
-      },
-    });
+    setInfo(
+      Object.entries(data).reduce((acc, [k, v]) => {
+        if (k in infoSchema) acc[k] = v;
+        return acc;
+      }, {})
+    );
   }, [data]);
 
   return (
     <div>
-      <ProfileInfo
+      <ProfileCard.Info
+        title="Informações Gerais"
+        schema={infoSchema}
+        canEdit={canEdit}
+        onSubmit={async (body) => await handleSubmit(body)}
         data={info}
         setData={setInfo}
-        canEdit={canEdit}
-        handleSubmit={handleSubmit}
       />
+      <Opportunities id={profileId} />
     </div>
   );
 };
