@@ -21,7 +21,8 @@
   "rules": {
     "no-unsafe-finally": "off",
     "react/prop-types": "off",
-    "react-hooks/exhaustive-deps": "off"
+    "react-hooks/exhaustive-deps": "off",
+    "no-unused-vars": "warn"
   },
   "settings": {
     "react": {
