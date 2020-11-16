@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import ProfileInfo from '../ProfileInfo';
-import useFetch from '../../../Hooks/useFetch';
-import { PATCH_PROFILE } from '../../../APIs/APIs';
-import ApplicantExperiences from './ApplicantExperiences';
-import ApplicantSkills from './ApplicantSkills';
-import ApplicantCourses from './ApplicantCourses';
-import { currencyFormatter, linkFormatter } from '../../../utils/formatters';
+import React, { useState } from "react";
+import { useEffect } from "react";
+import ProfileInfo from "../ProfileInfo";
+import useFetch from "../../../Hooks/useFetch";
+import { PATCH_PROFILE } from "../../../APIs/profileAPI";
+import ApplicantExperiences from "./ApplicantExperiences";
+import ApplicantSkills from "./ApplicantSkills";
+import ApplicantCourses from "./ApplicantCourses";
+import { currencyFormatter, linkFormatter } from "../../../utils/formatters";
 
 const ApplicantProfile = ({ data, canEdit, profileId }) => {
   const { request } = useFetch();
@@ -26,26 +26,26 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
       location: { text: "Cidade onde mora", value: data.location },
       locationWanted: {
         text: "Disposta a trabalhar em",
-        value: data.locationWanted,
+        value: data.locationWanted
       },
       desiredSalary: {
         text: "Salário desejado",
         value: data.desiredSalary,
         type: "number",
-        formatter: currencyFormatter,
+        formatter: currencyFormatter
       },
       github: {
         text: "Github",
         value: data.github,
         formatter: linkFormatter,
-        placeholder: "https://github.com/usuaria",
+        placeholder: "https://github.com/usuaria"
       },
       linkedin: {
         text: "LinkedIn",
         value: data.linkedin,
         formatter: linkFormatter,
-        placeholder: "https://linkedin.com/in/usuaria",
-      },
+        placeholder: "https://linkedin.com/in/usuaria"
+      }
     });
     setSkills(data.skills || []);
     setCourses(data.courses || []);
