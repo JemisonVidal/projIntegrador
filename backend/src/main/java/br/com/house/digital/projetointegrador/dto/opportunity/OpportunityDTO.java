@@ -13,7 +13,9 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class OpportunityDTO extends NewOpportunityDTO {
 
+    private Long id;
     private Long companyId;
     private String companyName;
+    private Boolean isApplied;
 
 }

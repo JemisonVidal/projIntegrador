@@ -1,17 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  Container,
   CardDeck,
   Card,
   Button,
-  Pagination,
   Spinner,
   Form,
-  FormControl,
-  Tab,
-  Tabs,
+  FormControl
 } from "react-bootstrap";
-import Main from "../Template/main/Main";
 import useFetch from "../../Hooks/useFetch";
 import PaginationPage from "../Pagination/Pagination";
 import { GET_LIST_OPPORTUNITY } from "../../APIs/APIs";
@@ -20,20 +15,19 @@ import { Link } from "react-router-dom";
 import "./ListOpportunity.css";
 import { currencyFormatter } from "../../utils/formatters";
 import { skillMap } from "../../utils/skills";
-import { ALL_OPPORTUNITYS, MY_OPPORTUNITYS } from "./listEnum";
+import { MY_OPPORTUNITYS } from "./listEnum";
 
-const ListOpportunity = () => {
+const ListOpportunity = ({ type }) => {
   const [totalPages, setTotalPages] = useState(0);
   const [pageCurrent, setPageCurrent] = useState(0);
   const { request, loading } = useFetch();
   const [arrayOpportunity, setArrayOpportunity] = useState([]);
-  const [searchInput, setSearchInput] = useState(null);
-  const [key, setKey] = useState("allOpportunity");
+  const searchInput = useRef(null);
 
   async function getOpportunity() {
     const { url, options } = GET_LIST_OPPORTUNITY(
       pageCurrent,
-      searchInput
+      searchInput.current.value
     );
     const { json, response } = await request(url, options);
     if (response.ok) {
@@ -50,8 +44,6 @@ const ListOpportunity = () => {
   async function handleSearchClick(event) {
     await getOpportunity();
   }
-
-  console.log(arrayOpportunity);
 
   function renderLoading() {
     return (
@@ -72,12 +64,12 @@ const ListOpportunity = () => {
         </p>
       );
     }
-  
-    console.log(arrayOpportunity);
+
     return (
       arrayOpportunity &&
       arrayOpportunity.map((opportunity) => {
-        if ((typeSearch === MY_OPPORTUNITYS && !opportunity.isApplied)) return;
+        if (typeSearch === MY_OPPORTUNITYS && !opportunity.isApplied)
+          return null;
         return (
           <CardDeck key={opportunity.id}>
             <Card className="card">
@@ -90,7 +82,7 @@ const ListOpportunity = () => {
                 </Card.Text>
                 <Card.Text>
                   <span className="titulo-campo">Localização:</span>{" "}
-                  <i class="fa fa-map-marker" aria-hidden="true"></i>{" "}
+                  <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
                   {opportunity.location}
                 </Card.Text>
                 <Card.Text>
@@ -132,48 +124,26 @@ const ListOpportunity = () => {
     );
   }
 
-  function renderOpp(typeSearch) {
-    return (
-      <>
-        <Form className="search" inline>
-          <FormControl
-            onChange={(e) => setSearchInput(e.target.value)}
-            type="text"
-            placeholder="Pesquisar"
-            className="form-control"
-          />
-          <Button className="btn-search ml-2" onClick={handleSearchClick}>
-            <i class="fa fa-search" aria-hidden="true"></i>
-          </Button>
-        </Form>
-        {loading ? renderLoading() : renderListOpportunity(typeSearch)}
-        <PaginationPage
-          pageCurrent={pageCurrent}
-          totalPages={totalPages}
-          setPageCurrent={setPageCurrent}
-        />
-        ;
-      </>
-    );
-  }
-
   return (
-    <Main>
-      <Container fluid="md" className="py-2">
-        <Tabs
-          id="controlled-tab-example"
-          activeKey={key}
-          onSelect={(k) => setKey(k)}
-        >
-          <Tab eventKey="allOpportunity" title="Todas Oportunidades">
-            {renderOpp(ALL_OPPORTUNITYS)}
-          </Tab>
-          <Tab eventKey="myOpportunity" title="Minhas Oportunidades">
-            {renderOpp(MY_OPPORTUNITYS)}
-          </Tab>
-        </Tabs>
-      </Container>
-    </Main>
+    <>
+      <Form className="search" inline>
+        <FormControl
+          ref={searchInput}
+          type="text"
+          placeholder="Pesquisar"
+          className="form-control"
+        />
+        <Button className="btn-search ml-2" onClick={handleSearchClick}>
+          <i className="fa fa-search" aria-hidden="true"></i>
+        </Button>
+      </Form>
+      {loading ? renderLoading() : renderListOpportunity(type)}
+      <PaginationPage
+        pageCurrent={pageCurrent}
+        totalPages={totalPages}
+        setPageCurrent={setPageCurrent}
+      />
+    </>
   );
 };
 

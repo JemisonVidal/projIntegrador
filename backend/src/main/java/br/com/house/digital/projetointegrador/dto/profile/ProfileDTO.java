@@ -15,6 +15,9 @@ import org.hibernate.validator.constraints.URL;
 @AllArgsConstructor
 public class ProfileDTO {
 
+    @Length(max = 100)
+    private String name;
+
     @Length(max = 50)
     private String title;
 

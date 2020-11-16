@@ -16,6 +16,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -40,7 +41,7 @@ public class ControllerExceptionHandler {
         return handleResponse(err);
     }
 
-    @ExceptionHandler({DataIntegrityViolationException.class, ConstraintViolationException.class})
+    @ExceptionHandler({DataIntegrityViolationException.class, ConstraintViolationException.class, MissingServletRequestParameterException.class})
     public ResponseEntity<StandardError> handleConstraintViolation(Exception e) {
         StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         return handleResponse(err);

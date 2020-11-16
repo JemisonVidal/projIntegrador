@@ -57,17 +57,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable().cors().and()
-            // don't authenticate this particular request
             .authorizeRequests()
             .antMatchers("/**/api/authenticate", "/**/api/register").permitAll()
+            .antMatchers(HttpMethod.GET, "/**/api/opportunity/{id}").permitAll()
             .antMatchers(HttpMethod.GET, "/**/avatar").permitAll()
-            .antMatchers(HttpMethod.PATCH, "/**/api/profile/{type}/{id}").access("@webSecurityConfig.checkUserId(authentication,#type.toUpperCase(),#id)")
+            .antMatchers(HttpMethod.PATCH, "/**/api/profile/{type}/{id}/**").access("@webSecurityConfig.checkUserId(authentication,#type.toUpperCase(),#id)")
+            .antMatchers(HttpMethod.POST, "/**/api/opportunity").hasAuthority(UserType.COMPANY.name())
+            .antMatchers(HttpMethod.GET, "/**/api/opportunity/applied").hasAuthority(UserType.APPLICANT.name())
+            .antMatchers(HttpMethod.GET, "/**/api/opportunity/{id}/applied").hasAuthority(UserType.COMPANY.name())
+            .antMatchers(HttpMethod.POST, "/**/api/opportunity/{id}/apply").hasAuthority(UserType.APPLICANT.name())
             .antMatchers("/**/api/**").authenticated()
             .antMatchers("/", "/**").permitAll()
             .anyRequest().authenticated()
             .and()
-            // make sure we use stateless session; session won't be used to
-            // store user's state.
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

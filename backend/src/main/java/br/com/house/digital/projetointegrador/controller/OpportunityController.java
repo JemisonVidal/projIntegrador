@@ -1,11 +1,13 @@
 package br.com.house.digital.projetointegrador.controller;
 
+import br.com.house.digital.projetointegrador.configuration.ApiPageable;
 import br.com.house.digital.projetointegrador.dto.opportunity.NewOpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.opportunity.OpportunityDTO;
+import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
 import br.com.house.digital.projetointegrador.model.Opportunity;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.service.impl.OpportunityService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -16,20 +18,23 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/v1/api/opportunity", produces = MediaType.APPLICATION_JSON_VALUE)
-@AllArgsConstructor
-public class OpportunityController {
+public class OpportunityController extends BaseController<Opportunity, OpportunityService, OpportunityDTO> {
 
-    private final OpportunityService opportunityService;
+    @Autowired
+    public OpportunityController(OpportunityService service) {
+        super(service);
+    }
 
     @PostMapping
     public ResponseEntity<Void> create(@Valid @RequestBody NewOpportunityDTO newOpportunityDTO,
                                        @AuthenticationPrincipal User user) {
-        final Opportunity opportunity = this.opportunityService.convertToEntity(newOpportunityDTO);
+        final Opportunity opportunity = this.service.convertToEntity(newOpportunityDTO);
         opportunity.setCompany(user.getProfile());
-        final Opportunity created = this.opportunityService.save(opportunity);
+        final Opportunity created = this.service.save(opportunity);
         URI uri = ServletUriComponentsBuilder
             .fromCurrentRequest()
             .path("/{id}")
@@ -38,32 +43,32 @@ public class OpportunityController {
         return ResponseEntity.created(uri).build();
     }
 
-    @GetMapping
-    public ResponseEntity<Page<OpportunityDTO>> findAll(Pageable pageable) {
-        final Page<OpportunityDTO> page = opportunityService.findAll(pageable)
-            .map(opportunity -> opportunityService.convertFromEntity(opportunity, OpportunityDTO.class));
-        return ResponseEntity.ok(page);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<OpportunityDTO> findById(@PathVariable Long id) {
-        final Opportunity opportunity = this.opportunityService.findById(id);
-        final OpportunityDTO dto = this.opportunityService.convertFromEntity(opportunity, OpportunityDTO.class);
-        return ResponseEntity.ok(dto);
+    @GetMapping(value = "/applied")
+    public ResponseEntity<List<OpportunityDTO>> findAppliedOpportunitiesById(@RequestParam(required = true) Long id) {
+        return ResponseEntity.ok(service.findAppliedUsersByProfileId(id));
     }
 
     @GetMapping("/company/{id}")
+    @ApiPageable
     public ResponseEntity<Page<OpportunityDTO>> findAllByCompanyId(@PathVariable Long id, Pageable pageable) {
-        final Page<Opportunity> opportunities = this.opportunityService.findAllByCompanyId(id, pageable);
-        Page<OpportunityDTO> page = opportunities
-            .map(opportunity -> opportunityService.convertFromEntity(opportunity, OpportunityDTO.class));
-        return ResponseEntity.ok(page);
+        final Page<Opportunity> opportunities = this.service.findAllByCompanyId(id, pageable);;
+        return ResponseEntity.ok(opportunities.map(this::mapDTO));
     }
 
     @PostMapping("/{id}/apply")
     public ResponseEntity<Void> apply(@PathVariable Long id, @AuthenticationPrincipal User user) {
-        this.opportunityService.apply(id, user);
+        this.service.apply(id, user);
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping(value = "/{id}/applied")
+    public ResponseEntity<List<ApplicantProfileDTO>> findAppliedUsersByOpportunityId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findAppliedUsersByOpportunityId(id));
+    }
+
+
+    @Override
+    OpportunityDTO mapDTO(Opportunity entity) {
+        return service.mapDTO(entity);
+    }
 }
