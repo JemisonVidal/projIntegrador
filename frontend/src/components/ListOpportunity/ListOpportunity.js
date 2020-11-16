@@ -38,6 +38,11 @@ const ListOpportunity = ({ type }) => {
   }
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
     getOpportunity();
   }, [pageCurrent]);
 
@@ -77,6 +82,9 @@ const ListOpportunity = ({ type }) => {
                 <Card.Title className="title-card">
                   {opportunity.name}
                 </Card.Title>
+                <Card.Text>
+                  {opportunity.companyName}
+                </Card.Text>
                 <Card.Text>
                   <span className="titulo-campo">Localização:</span>{" "}
                   <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}

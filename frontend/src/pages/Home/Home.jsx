@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Card, CardDeck, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import StoreContext from "../../components/Store/Context";
@@ -18,6 +18,14 @@ import "./Home.css";
 const PagesHome = () => {
   const history = useHistory();
   const { user } = useContext(StoreContext);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, []);
 
   const renderProfileUser = () => {
     function handleOnClick(event) {
