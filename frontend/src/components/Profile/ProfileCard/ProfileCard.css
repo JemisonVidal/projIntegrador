@@ -1,7 +1,3 @@
-.card-profile {
-  padding: 0 0.5rem;
-}
-
 #save-profile {
   margin-top: 0.5em;
   color: var(--color-white);
@@ -15,20 +11,6 @@
 
 #save-profile:hover {
   background-color: var(--color-primary-darker);
-}
-
-.card-profile {
-  background: white;
-  border: 2px solid var(--color-primary-dark);
-  border-radius: 10px;
-  box-shadow: 4px 8px 4px rgba(39, 24, 126, 0.25);
-  color: var(--color-primary-dark);
-  margin-bottom: 0.5em;
-}
-
-.card-profile .card-title {
-  font-weight: bold;
-  font-size: 1.5rem;
 }
 
 .card-profile .profile-item {
