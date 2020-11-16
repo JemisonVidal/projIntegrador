@@ -1,6 +1,5 @@
 package br.com.house.digital.projetointegrador.controller;
 
-import br.com.house.digital.projetointegrador.configuration.ApiPageable;
 import br.com.house.digital.projetointegrador.dto.opportunity.NewOpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.opportunity.OpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
@@ -8,8 +7,6 @@ import br.com.house.digital.projetointegrador.model.Opportunity;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.service.impl.OpportunityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -44,15 +41,13 @@ public class OpportunityController extends BaseController<Opportunity, Opportuni
     }
 
     @GetMapping(value = "/applied")
-    public ResponseEntity<List<OpportunityDTO>> findAppliedOpportunitiesById(@RequestParam(required = true) Long id) {
-        return ResponseEntity.ok(service.findAppliedUsersByProfileId(id));
+    public ResponseEntity<List<OpportunityDTO>> findAppliedOpportunitiesByProfileId(@RequestParam(required = true) Long id) {
+        return ResponseEntity.ok(service.findAppliedOpportunitiesByProfileId(id));
     }
 
     @GetMapping("/company/{id}")
-    @ApiPageable
-    public ResponseEntity<Page<OpportunityDTO>> findAllByCompanyId(@PathVariable Long id, Pageable pageable) {
-        final Page<Opportunity> opportunities = this.service.findAllByCompanyId(id, pageable);;
-        return ResponseEntity.ok(opportunities.map(this::mapDTO));
+    public ResponseEntity<List<OpportunityDTO>> findAllByCompanyId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findAllByCompanyId(id));
     }
 
     @PostMapping("/{id}/apply")
