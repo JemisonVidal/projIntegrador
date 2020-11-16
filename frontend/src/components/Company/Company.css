@@ -12,11 +12,11 @@
   margin: 5px;
 }
 
-/* .form-control {
+.form-control {
   display: flex;
   margin-top: 15px;
   margin-bottom: 25px;
-} */
+}
 
 .img {
   width: 20px;
@@ -117,18 +117,18 @@
     right: 50px;
     top: 72px;
     cursor: pointer;
-    margin-top: 4px;
-    margin-bottom: 15px;
+    margin-top: 25px;
+    margin-bottom: 10px;
     background-color: var(--color-primary-dark);
     border: none;
   }
 
-  /* .form-control {
+  .form-control {
     display: inline-block;
     width: 200px;
-    margin-top: 15px;
-    margin-bottom: 25px;
-  } */
+    margin-top: 25px;
+    margin-bottom: 10px;
+  }
 
   .pagination-company:hover {
     background-color: #27187e;

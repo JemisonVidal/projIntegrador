@@ -22,6 +22,11 @@ const ListOpportunity = ({ id }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
     async function getOpportunity() {
       const { url, options } = GET_OPPORTUNITY(id);
       const { json, response } = await request(url, options);
@@ -35,7 +40,7 @@ const ListOpportunity = ({ id }) => {
 
   function renderLoading() {
     return (
-      <div className="spinner-load">
+      <div className="spinner-load" id="load-opportunity">
         <Spinner animation="border" />
       </div>
     );
@@ -67,10 +72,10 @@ const ListOpportunity = ({ id }) => {
 
   function renderOpportunity() {
     return (
-      <Container>
+      <Container id="container-opportunity">
         <CardDeck key={opportunity.id}>
           <Card className="card">
-            <Card.Body>
+            <Card.Body id="card-opportunity">
               <Card.Title className="title-card-opportunity">
                 {opportunity.name}
               </Card.Title>

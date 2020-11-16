@@ -35,7 +35,7 @@
 .buttonsCandidatar {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 .titulo-campo-opportunity {
@@ -44,7 +44,7 @@
 
 .buttonSelect {
   display: flex;
-  margin: 5% 10%;
+  margin: 0% 0%;
   height: 100px;
   width: 100px;
   align-items: center;
@@ -106,6 +106,18 @@
   height: 420px;
 }
 
+#load-opportunity {
+  height: 82vh;
+}
+
+#card-opportunity {
+  padding: 10px;
+}
+
+#container-opportunity {
+  padding: 0;
+}
+
 @media (min-width: 576px) {
   .title-card-opportunity {
     font-size: 28px;
@@ -115,5 +127,12 @@
   }
   .buttonSelect {
     margin: 2% 5%;
+  }
+  .buttonsCandidatar {
+    justify-content: center;
+  }
+
+  #card-opportunity {
+    padding: 20px;
   }
 }

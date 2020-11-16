@@ -19,6 +19,11 @@ const Profile = ({ type, id }) => {
   const [canEdit, setCanEdit] = useState(false);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
     (async () => {
       const { response, json } = await request(url, options);
       if (response?.ok) {
