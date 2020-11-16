@@ -49,6 +49,10 @@
   background-color: #27187e;
 }
 
+.title-card {
+  margin: 0;
+}
+
 @media (min-width: 576px) {
   .title-card {
     font-size: 28px;

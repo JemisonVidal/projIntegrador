@@ -37,6 +37,8 @@ const Company = () => {
     }
   }
 
+  console.log(companys);
+
   useEffect(() => {
     getCompany();
   }, [pageCurrent]);

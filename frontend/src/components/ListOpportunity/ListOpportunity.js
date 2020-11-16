@@ -86,6 +86,9 @@ const ListOpportunity = () => {
                   {opportunity.name}
                 </Card.Title>
                 <Card.Text>
+                  {opportunity.companyName}
+                </Card.Text>
+                <Card.Text>
                   <span className="titulo-campo">Localização:</span>{" "}
                   <i class="fa fa-map-marker" aria-hidden="true"></i>{" "}
                   {opportunity.location}
