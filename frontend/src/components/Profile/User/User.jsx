@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container } from "react-bootstrap";
+import { Container, ResponsiveEmbed } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { PATCH_AVATAR } from "../../../APIs/profileAPI";
 import logo from "../../../assets/images/Logo2RecruIT.svg";
@@ -11,7 +11,8 @@ import "./User.css";
 const schema = {
   name: {
     label: "Nome",
-    type: "text"
+    type: "text",
+    required: true
   },
   imgSrc: {
     label: "Imagem do perfil",
@@ -56,7 +57,9 @@ const User = ({ type, id, imgSrc, name, title, canEdit }) => {
 
   return (
     <Container className="user text-center mb-3">
-      <img src={imgSrc ? imgSrc : logo} alt={name} id="user-picture" />
+      <ResponsiveEmbed aspectRatio="1by1" id="user-picture">
+        <img src={imgSrc ? imgSrc : logo} alt={name} />
+      </ResponsiveEmbed>
       <h4 id="user-name" className="font-weight-bold">
         {name}
       </h4>
