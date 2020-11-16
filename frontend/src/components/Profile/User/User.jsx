@@ -1,69 +1,58 @@
-import React, { useState } from 'react';
-import { Button, Container, FormControl, InputGroup } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
-import { PATCH_PROFILE } from '../../../APIs/APIs';
-import logo from '../../../assets/images/Logo2RecruIT.svg';
-import useEditMode from '../../../Hooks/useEditMode';
-import useFetch from '../../../Hooks/useFetch';
+import React, { useState } from "react";
+import { Container } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { PATCH_AVATAR } from "../../../APIs/profileAPI";
+import logo from "../../../assets/images/Logo2RecruIT.svg";
+import useFetch from "../../../Hooks/useFetch";
+import ModalForm from "../../Modal/ModalForm";
 
-import './User.css';
+import "./User.css";
 
-const UserEdit = ({ type, id, imgSrc, title }) => {
-  const [newImg, setNewImg] = useState(imgSrc);
-  const [newTitle, setNewTitle] = useState(title);
+const schema = {
+  name: {
+    label: "Nome",
+    type: "text"
+  },
+  imgSrc: {
+    label: "Imagem do perfil",
+    type: "text",
+    placeholder: "https://exemplo.com/imagem.png"
+  },
+  title: {
+    label: "Título",
+    type: "text",
+    placeholder: "Desenvolvedora Full-Stack"
+  }
+};
+
+const User = ({ type, id, imgSrc, name, title, canEdit }) => {
+  const [showModal, setShowModal] = useState(false);
   const history = useHistory();
-
   const { request } = useFetch();
 
-  const handleSave = async () => {
-    const { url, options } = PATCH_PROFILE(type, id, {
-      imgSrc: newImg,
-      title: newTitle,
-    });
+  const handleSubmit = async (body) => {
+    const { url, options } = PATCH_AVATAR(type, id, body);
     const { response } = await request(url, options);
     if (response.ok) history.go();
   };
 
-  return (
-    <div className="user-input">
-      <InputGroup className="my-3">
-        <InputGroup.Prepend>
-          <InputGroup.Text id="input-img">Imagem</InputGroup.Text>
-        </InputGroup.Prepend>
-        <FormControl
-          placeholder="https://exemplo.com/imagem.png"
-          aria-describedby="input-img"
-          value={newImg}
-          onChange={(e) => setNewImg(e.target.value)}
-        />
-      </InputGroup>
-      <InputGroup className="mb-1">
-        <InputGroup.Prepend>
-          <InputGroup.Text id="input-title">Título</InputGroup.Text>
-        </InputGroup.Prepend>
-        <FormControl
-          placeholder="Desenvolvedora Full-Stack"
-          aria-describedby="input-title"
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-        />
-      </InputGroup>
-      <div className="d-flex justify-content-center">
-        <Button
-          id="save-profile"
-          variant="primary"
-          type="submit"
-          onClick={handleSave}
-        >
-          Salvar
-        </Button>
-      </div>
-    </div>
-  );
-};
-
-const User = ({ type, id, imgSrc, name, title, canEdit }) => {
-  const { editing, toggleEditMode } = useEditMode();
+  const renderModal = () => {
+    const values = {
+      imgSrc,
+      name,
+      title
+    };
+    return (
+      <ModalForm
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        onSubmit={handleSubmit}
+        schema={schema}
+        title={"Editar perfil"}
+        values={values}
+      />
+    );
+  };
 
   return (
     <Container className="user text-center mb-3">
@@ -75,13 +64,11 @@ const User = ({ type, id, imgSrc, name, title, canEdit }) => {
         {title}
       </h5>
       {canEdit && (
-        <button className="btn-profile-edit" onClick={toggleEditMode}>
+        <button className="btn-profile-edit" onClick={() => setShowModal(true)}>
           <i className="far fa-edit"></i>
         </button>
       )}
-      {editing && (
-        <UserEdit type={type} id={id} imgSrc={imgSrc} title={title} />
-      )}
+      {canEdit && renderModal()}
     </Container>
   );
 };
