@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, ResponsiveEmbed } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { PATCH_AVATAR } from "../../../APIs/profileAPI";
-import logo from "../../../assets/images/Logo2RecruIT.svg";
+import logo from "../../../assets/images/businesswoman.svg";
 import useFetch from "../../../Hooks/useFetch";
 import ModalForm from "../../Modal/ModalForm";
 
