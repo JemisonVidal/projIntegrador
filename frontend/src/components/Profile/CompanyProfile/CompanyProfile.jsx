@@ -62,7 +62,7 @@ const Opportunities = ({ id }) => {
         {opportunities.map((opportunity) => (
           <Col sm={6} lg={4} className="mb-3" key={opportunity.id}>
             <StyledCard className="h-100">
-              <StyledCard.Title title={opportunity.name}/>
+              <StyledCard.Title title={opportunity.name} />
               <p>{locationFormatter(opportunity.location)}</p>
               <Link to={`/opportunity/${opportunity.id}`}>
                 <Button>Visualizar vaga</Button>

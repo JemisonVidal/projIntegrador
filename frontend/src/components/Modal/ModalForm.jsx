@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
-import Error from '../Helper/Error';
+import React, { useEffect, useState } from "react";
+import { Button, Form, Modal } from "react-bootstrap";
+import Error from "../Helper/Error";
 
-const defaultOption = {value: '', text: 'Escolha uma opção.'};
+const defaultOption = { value: "", text: "Escolha uma opção." };
 
 const ModalForm = ({
   title,
@@ -20,12 +20,12 @@ const ModalForm = ({
     setData({});
     setValidated(false);
     onHide();
-  }
+  };
 
   const handleOnChange = (key, value) => {
     data[key] = value;
     setData({ ...data });
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -58,18 +58,23 @@ const ModalForm = ({
             <Form.Group key={k} controlId={k}>
               <Form.Label>
                 {v.label}
-                {v.required && <span className='text-danger'>*</span>}
+                {v.required && <span className="text-danger">*</span>}
               </Form.Label>
               <Form.Control
-                as={v.as || 'input'}
-                type={v.type || 'text'}
+                as={v.as || "input"}
+                type={v.type || "text"}
                 required={v.required}
                 placeholder={v.placeholder}
                 pattern={v.pattern}
-                value={data[k] || ''}
+                value={data[k] || ""}
                 onChange={(e) => handleOnChange(k, e.target.value)}
               >
-                {v.options && [defaultOption].concat(v.options).map((o, i) => <option key={i} value={o.value}>{o.text}</option>)}
+                {v.options &&
+                  [defaultOption].concat(v.options).map((o, i) => (
+                    <option key={i} value={o.value}>
+                      {o.text}
+                    </option>
+                  ))}
               </Form.Control>
               {(v.required || v.feedback) && (
                 <Form.Control.Feedback type="invalid">

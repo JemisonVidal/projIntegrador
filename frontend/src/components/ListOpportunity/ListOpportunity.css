@@ -53,6 +53,10 @@
   margin: 0;
 }
 
+.deck-opportunity {
+  justify-content: center;
+}
+
 @media (min-width: 576px) {
   .title-card {
     font-size: 28px;

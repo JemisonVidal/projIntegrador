@@ -31,6 +31,6 @@ export function PATCH_AVATAR(type, id, body) {
 
 export function GET_COMPANY_OPPORTUNITIES(id) {
   return requestOptions({
-    url: `/opportunity/company/${id}`,
-  })
+    url: `/opportunity/company/${id}`
+  });
 }

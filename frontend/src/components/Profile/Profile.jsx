@@ -22,7 +22,7 @@ const Profile = ({ type, id }) => {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: 'smooth'
+      behavior: "smooth"
     });
     (async () => {
       const { response, json } = await request(url, options);
