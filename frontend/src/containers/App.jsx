@@ -11,6 +11,7 @@ import Profile from "../pages/Profile/Profile";
 import listOpportunity from "../pages/ListOpportunity/ListOpportunity";
 import Opportunity from "../pages/Opportunity/Opportunity";
 import Company from "../pages/Company/Company";
+import Applicant from "../pages/Applicant/Applicant";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import Contacts from "../pages/Contacts/Contacts";
 import Terms from "../pages/Terms/Terms";
@@ -28,8 +29,9 @@ const PagesRoot = () => (
           <RoutesPrivate path="/listOpportunity" component={listOpportunity} />
           <RoutesPrivate path="/opportunity/:id" component={Opportunity} />
           <RoutesPrivate path="/company" component={Company} />
-          <RoutesPrivate path="/aboutus" component ={AboutUs} />
-          <RoutesPrivate path="/contacts" component ={Contacts} />
+          <RoutesPrivate path="/applicant" component={Applicant} />
+          <RoutesPrivate path="/aboutus" component={AboutUs} />
+          <RoutesPrivate path="/contacts" component={Contacts} />
         </Switch>
       </StoreProvider>
     </BrowserRouter>

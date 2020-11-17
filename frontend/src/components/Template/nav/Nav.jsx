@@ -5,7 +5,6 @@ import StoreContext from "../../Store/Context";
 import "./Nav.css";
 
 const NavBar = () => {
-  //TODO: Confirmar se iremos receber props ou utilizar o context/redux
   const { user, avatar } = useContext(StoreContext);
 
   const handleClick = () => {
@@ -16,11 +15,7 @@ const NavBar = () => {
     <>
       <Navbar className="Navbar" collapseOnSelect expand="lg">
         <Nav className="title">
-          <Link to={`/`}>
-            {/* <Navbar.Brand className="nav-item" href="#home"> */}
-            RecruIT
-            {/* </Navbar.Brand> */}
-          </Link>
+          <Link to={`/`}>RecruIT</Link>
         </Nav>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -30,6 +25,9 @@ const NavBar = () => {
             </Link>
             <Link className="nav-item" to="/company">
               Empresas
+            </Link>
+            <Link className="nav-item" to="/applicant">
+              Candidatas
             </Link>
           </Nav>
           <Nav>
