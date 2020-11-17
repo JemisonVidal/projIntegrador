@@ -12,8 +12,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "external_links")
+//@Entity
+//@Table(name = "external_links")
 @Data
 @SuperBuilder
 @NoArgsConstructor

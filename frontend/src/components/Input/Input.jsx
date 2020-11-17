@@ -34,7 +34,7 @@ const Input = ({
                   setValueModal(e.target.value);
                 }
           }
-          // onBlur={onBlur}
+          onBlur={onBlur}
           required={required}
         />
       ) : (

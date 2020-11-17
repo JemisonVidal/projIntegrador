@@ -11,11 +11,15 @@ public interface BaseService<T, PK> {
 
     T update(T entity);
 
+    T patch(T entity);
+
     T findById(PK id);
 
     List<T> findAll();
 
     Page<T> findAll(Pageable pageable);
+
+    Page<T> findAllByName(String name, Pageable pageable);
 
     void deleteById(PK id);
 

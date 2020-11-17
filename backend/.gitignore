@@ -35,3 +35,6 @@ bin
 
 ### VS Code ###
 .vscode/
+
+### MySQL ###
+db/

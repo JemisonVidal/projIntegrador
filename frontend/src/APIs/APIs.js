@@ -1,47 +1,32 @@
-export const baseURL = 'http://localhost:8080';
-// TODO arrumar o CORS no back, por enquanto ta usando o proxy no ambiente dev
-//export const baseURL = '';
+import { requestOptions } from "./configAPI";
 
-const requestOptions = ({url, method = 'GET', body, jwt}) => {
-  return {
-    url: baseURL + url,
-    options: {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: jwt ? 'Bearer ' + jwt : undefined,
-      },
-      body: body ? JSON.stringify(body) : undefined
-    }
+export function GET_OPPORTUNITY(id) {
+  return requestOptions({
+    url: `/opportunity/${id}`
+  });
+}
+
+export function GET_LIST_OPPORTUNITY(page = 0, name = "") {
+  let uri = `/opportunity/?page=${page}&size=6`;
+  if (name) {
+    uri += `&name=${name}`;
   }
+
+  return requestOptions({
+    url: uri
+  });
 }
 
-export function USER_REGISTER(body) {
+export function GET_MY_OPPORTUNITY(id) {
+  let uri = `/opportunity/applied?id=${id}`;
   return requestOptions({
-    url: '/v1/api/register',
-    method: 'POST',
-    body
-  })
+    url: uri
+  });
 }
 
-export function USER_LOGIN(body) {
+export function POST_APPLY(id) {
   return requestOptions({
-    url: '/v1/api/authenticate',
-    method: 'POST',
-    body
-  })
-}
-
-export function GET_PROFILE(type, id, jwt) {
-  const url = `/v1/api/profile/${type}/${id}`
-  return requestOptions({
-    url,
-    jwt
-  })
-}
-
-export function GET_SEARCH(search) {
-  return requestOptions({
-    url: `/v1/api/search/${search}`
-  })
+    url: `/opportunity/${id}/apply`,
+    method: "POST"
+  });
 }

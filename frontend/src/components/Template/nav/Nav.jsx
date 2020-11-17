@@ -1,13 +1,16 @@
-import React from "react";
-import { Navbar, Nav, Image } from "react-bootstrap";
+import React, { useContext } from "react";
+import { Navbar, Nav, Image, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import StoreContext from "../../Store/Context";
 import "./Nav.css";
 
-const NavBar = ({ avatar, type, id }) => {
+const NavBar = () => {
   //TODO: Confirmar se iremos receber props ou utilizar o context/redux
-  const mockPropAtavar = `http://placekitten.com/300/300`;
-  type = `user`;
-  id = 1;
+  const { user, avatar } = useContext(StoreContext);
+
+  const handleClick = () => {
+    window.localStorage.removeItem("apptoken");
+  };
 
   return (
     <>
@@ -22,17 +25,38 @@ const NavBar = ({ avatar, type, id }) => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <Link className="nav-item" to="/opportunity">
+            <Link className="nav-item" to="/listOpportunity">
               Oportunidades
             </Link>
             <Link className="nav-item" to="/company">
               Empresas
             </Link>
           </Nav>
-          <Nav className="ml-auto">
-            <Link to={`/profile/${type}/${id}`}>
-              <Image className="avatar" src={mockPropAtavar} rounded />
-            </Link>
+          <Nav>
+            {user.pid ? (
+              <Dropdown alignRight>
+                <Dropdown.Toggle
+                  className="dropdown"
+                  menuAlign="left"
+                  id="dropdown-menu-align-right"
+                >
+                  <Image id="image-avatar" className="avatar" src={avatar} />
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item href={`/profile/${user.type}/${user.pid}`}>
+                    Meu Perfil
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handleClick} href="/login">
+                    Logout
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            ) : (
+              <Link className="nav-item" to="/login">
+                Login
+              </Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

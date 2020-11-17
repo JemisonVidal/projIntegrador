@@ -1,132 +1,145 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Container, CardDeck, Card, Button, Pagination, Form, FormControl } from "react-bootstrap";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Container,
+  CardDeck,
+  Card,
+  Button,
+  Form,
+  FormControl,
+  Spinner
+} from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import Main from "../../components/Template/main/Main";
-import Img from "../../../src/assets/images/mdi_search.png";
 import useFetch from "../../Hooks/useFetch";
-import { GET_SEARCH } from "../../APIs/APIs";
-import StoreContext from "../../components/Store/Context";
+import PaginationPage from "../Pagination/Pagination";
+import { GET_COMPANYS } from "../../APIs/companyAPI";
 import "./Company.css";
-
-
-const mockCompany = [
-  
-  {
-    id: 1,
-    descricao: "Empresa 1",
-    visao:
-      "Mussum Ipsum, cacilds vidis litro abertis, Nec orci ornare consequat. Praesent lacinia ultrices consectetur. Sed non ipsum felis. Praesent malesuada urna nisi, quis volutpat erat hendrerit non",
-    local: "Itu/SP",
-    ramoCategoria: "tecnolgia / ERP",
-    site: "https://mussumipsum.com/",
-    Linkedin: "https://linkedin/mussumipsum",
-  },
-  {
-    id: 2,
-    descricao: "Empresa 2",
-    visao:
-      "Mauris nec dolor in eros commodo tempor. Aenean aliquam molestie leo",
-    local: "São Paulo/SP",
-    ramoCategoria: "Software house",
-    site: "https://mussumipsum.com/",
-    Linkedin: "https://linkedin/mussumipsum",
-  },
-  {
-    id: 3,
-    descricao: "Empresa 3",
-    visao:
-      "Quem manda na minha terra sou euzis! Paisis, filhis, espiritis santis",
-    local: "Rio de Janeiro/SP",
-    ramoCategoria: "Software house - web",
-    site: "https://mussumipsum.com/",
-    linkedin: "https://linkedin/mussumipsum",
-  },
-  
-];
 
 const Company = () => {
   const history = useHistory();
-  const [totalPages, setTotalPages] = useState(1)
-  const {request, loading} = useFetch();
-  const {appToken} = useContext(StoreContext);
-  
-  useEffect(async ()=>{
-    //usar dependência
-    async function getPagination(){
-      const {url, options} = GET_SEARCH(appToken);
-      const {json, response} = await request(url, options);
-      console.log(response, json);
+  const [totalPages, setTotalPages] = useState(0);
+  const [pageCurrent, setPageCurrent] = useState(0);
+  const [companys, setCompanys] = useState(null);
+  const searchInput = useRef(null);
+
+  const { request, loading } = useFetch();
+
+  async function getCompany() {
+    const { url, options } = GET_COMPANYS(
+      pageCurrent,
+      searchInput.current.value
+    );
+    const { json, response } = await request(url, options);
+    if (response.ok) {
+      setCompanys(json.content);
+      setPageCurrent(json.pageable?.pageNumber);
+      setTotalPages(json.totalPages);
     }
-    getPagination();
-  }, []);
+  }
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
+    getCompany();
+  }, [pageCurrent]);
 
   function handleVerPerfilClick(event) {
     return history.push(`/profile/company/${event.target.id}`);
-  } 
+  }
 
-const paginationBasic = () => {
-    let active = 1;
-    let items = [];
-  for (let number = 1; number <= totalPages; number++) {
-  items.push(
-    <Pagination.Item  key={number} active={number === active}>
-      {number}
-    </Pagination.Item>,
-  );
-}
+  async function handleSearchClick(event) {
+    await getCompany();
+  }
 
-  return(
-  <div>
-    <Pagination className = "pagination-company" size="sm">{items}</Pagination>
-  </div>
-)
+  function renderLoading() {
+    return (
+      <div className="spinner-load">
+        <Spinner animation="border" />
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
+
+  function renderCompanys() {
+    if (companys && companys.length <= 0) {
+      return (
+        <p className="messageOps">
+          Ops... Não encontramos nenhuma empresa com esse nome.
+          <br /> :(
+          <br />
+          Tente novamente !
+        </p>
+      );
     }
-
-
-//fazer o get aqui
-//setTotalPages(coloca o get aqui);
+    return (
+      companys &&
+      companys.map((company, index) => {
+        return (
+          <CardDeck key={index}>
+            <Card>
+              <Card.Body>
+                <Card.Title className="title-company-search">
+                  {company.name}
+                </Card.Title>
+                <Card.Text>
+                  <strong>Visão Geral:</strong> {company.about}
+                </Card.Text>
+                <Card.Text>
+                  <strong>Localização:</strong>{" "}
+                  <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
+                  {company.location}
+                </Card.Text>
+                <Card.Text>
+                  <strong>Ramo:</strong>
+                  {company.category}
+                </Card.Text>
+                <Card.Text>
+                  <strong>Site:</strong> {company.site}
+                </Card.Text>
+                <Card.Text>
+                  <strong>Linkedin:</strong>
+                  {company.linkedin}
+                </Card.Text>
+              </Card.Body>
+              <Button
+                id={company.id}
+                variant="primary"
+                onClick={handleVerPerfilClick}
+              >
+                Ver Perfil
+              </Button>
+            </Card>
+          </CardDeck>
+        );
+      })
+    );
+  }
 
   return (
     <Main>
       <Container fluid="md" className="py-2">
-        
-          <Form className="search" inline>
-            <FormControl type="text" placeholder="Pesquisar" className=" form-control" />
-            <Button className ="btn-search" type="submit">
-              <img className = "img-search" src={Img} alt="Procurar"/>
-            </Button>
-          </Form>
-
-        {mockCompany &&
-          mockCompany.map((mockCompany) => {
-            return (
-              <CardDeck key={mockCompany.id}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>{mockCompany.descricao}</Card.Title>
-                    <Card.Text>Visão Geral: {mockCompany.visao}</Card.Text>
-                    <Card.Text>local: {mockCompany.local}</Card.Text>
-                    <Card.Text>Ramo:{mockCompany.ramoCategoria}</Card.Text>
-                    <Card.Text>site: {mockCompany.site}</Card.Text>
-                    <Card.Text>linkedin:{mockCompany.linkedin}</Card.Text>
-                  </Card.Body>
-                  <Button
-                    id={mockCompany.id}
-                    variant="primary"
-                    type="submit"
-                    onClick={handleVerPerfilClick}
-                  >
-                    Ver Perfil
-                  </Button>
-                  
-                </Card>
-
-                
-              </CardDeck>
-              
-            );
-          })}
-          {paginationBasic()}
+        <Form className="search" inline>
+          <FormControl
+            ref={searchInput}
+            type="text"
+            placeholder="Pesquisar"
+            className=" form-control"
+          />
+          <Button className="btn-search ml-2" onClick={handleSearchClick}>
+            <i className="fa fa-search" aria-hidden="true"></i>
+          </Button>
+        </Form>
+        {loading ? renderLoading() : renderCompanys()}
+        {
+          <PaginationPage
+            pageCurrent={pageCurrent}
+            totalPages={totalPages}
+            setPageCurrent={setPageCurrent}
+          />
+        }
       </Container>
     </Main>
   );

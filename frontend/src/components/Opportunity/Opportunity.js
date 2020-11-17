@@ -1,73 +1,203 @@
-import React from "react";
-import { Container, CardDeck, Card, Button } from "react-bootstrap";
-import Main from "../../components/Template/main/Main";
+import React, { useState, useEffect, useContext } from "react";
+import { Container, CardDeck, Card, Spinner, Modal } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import StoreContext from "../../components/Store/Context";
+import Main from "../Template/main/Main";
+import useFetch from "../../Hooks/useFetch";
+import { GET_OPPORTUNITY, POST_APPLY } from "../../APIs/APIs";
+import heart from "../../assets/images/Heart.svg";
+import heartFill from "../../assets/images/FilledHeart.svg";
+import back from "../../assets/images/back.svg";
+import SucessApplySVG from "../../assets/images/opportunity/sucessApply.svg";
+import ConfirmationSVG from "../../assets/images/opportunity/confirmation.svg";
 
 import "./Opportunity.css";
+import { currencyFormatter } from "../../utils/formatters";
+import { skillMap } from "../../utils/skills";
 
-const mockOpportunity = [
-  {
-    id: 1,
-    idEmpresa: 1,
-    tituloVaga: "Programadora Node Js",
-    descricao: "Desenvolver novas features em Node Js",
-    beneficios: "beneficios",
-    salario: 5000,
-    textoLivre: "texto livre",
-    status: "aberta",
-  },
-  {
-    id: 2,
-    idEmpresa: 2,
-    tituloVaga: "Programadora React",
-    descricao: "Executar manutenções e novas features em react",
-    beneficios: "beneficios",
-    salario: 6000,
-    textoLivre: "texto livre",
-    status: "aberta",
-  },
-  {
-    id: 3,
-    idEmpresa: 3,
-    tituloVaga: "Programadora full stack",
-    descricao: "Desenvolver novas features em Node Js e React",
-    beneficios: "beneficios",
-    salario: 8000,
-    textoLivre: "texto livre",
-    status: "aberta",
-  },
-];
+const ListOpportunity = ({ id }) => {
+  const { user } = useContext(StoreContext);
+  const { request, loading } = useFetch();
+  const fetchApply = useFetch();
+  const history = useHistory();
+  const [opportunity, setOpportunity] = useState({});
+  const [heartCheck, setHeartCheck] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [typeMessage, setTypeMessage] = useState(false);
 
-const Opportunity = () => {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
+
+    async function getOpportunity() {
+      const { url, options } = GET_OPPORTUNITY(id);
+      const { json, response } = await request(url, options);
+      if (response.ok) {
+        setOpportunity(json);
+        setHeartCheck(json.isApplied);
+        setTypeMessage(heartCheck);
+      }
+    }
+
+    getOpportunity();
+  }, [request]);
+
+  function renderLoading() {
+    return (
+      <div className="spinner-load" id="load-opportunity">
+        <Spinner animation="border" />
+      </div>
+    );
+  }
+
+  const handlerBackClick = () => {
+    history.push("/listOpportunity");
+  };
+
+  const handlerHeartClick = async () => {
+    if (typeMessage) {
+      return setModalOpen(true);
+    }
+
+    const { response } = await apply(opportunity.id);
+    if (response?.ok) {
+      setModalOpen(true);
+      setHeartCheck(true);
+      setTypeMessage(heartCheck);
+
+      setTimeout(() => {
+        setModalOpen(false);
+      }, 3000);
+    }
+  };
+
+  async function apply(id) {
+    const { url, options } = POST_APPLY(id);
+    return await fetchApply.request(url, options);
+  }
+
+  function onHideModal() {
+    setModalOpen(false);
+  }
+
+  function renderOpportunity() {
+    return (
+      <Container id="container-opportunity">
+        <CardDeck key={opportunity.id}>
+          <Card className="card">
+            <Card.Body id="card-opportunity">
+              <Card.Title className="title-card-opportunity">
+                {opportunity.name}
+              </Card.Title>
+              <Card.Text className="title-empresa-opportunity">
+                {opportunity.companyName}
+              </Card.Text>
+              <span className="titulo-campo-opportunity">Localização</span>
+              <Card.Text>
+                <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
+                {opportunity.location}
+              </Card.Text>
+              <span className="titulo-campo-opportunity">
+                Descrição da vaga
+              </span>
+              <Card.Text>{opportunity.description}</Card.Text>
+              <span className="titulo-campo-opportunity">Requisitos</span>
+              <Card.Text>
+                {opportunity.requirements &&
+                  opportunity.requirements
+                    .map(
+                      (requirement) =>
+                        `${requirement.name} ${
+                          skillMap[requirement.knowledgeLevel]
+                        }`
+                    )
+                    .join(", ")}
+              </Card.Text>
+              <span className="titulo-campo-opportunity">Salário</span>
+              <Card.Text>
+                {" "}
+                {opportunity.salary && currencyFormatter(opportunity.salary)}
+              </Card.Text>
+              <span className="titulo-campo-opportunity">Benefícios</span>
+              <Card.Text>{opportunity.benefits}</Card.Text>
+              <span className="titulo-campo-opportunity">
+                Informações Adicionais
+              </span>
+              <Card.Text>{opportunity.text}</Card.Text>
+            </Card.Body>
+          </Card>
+        </CardDeck>
+        <div className="buttonsCandidatar">
+          <button onClick={handlerBackClick} className="buttonSelect buttonNo">
+            <img className="xIco" src={back} alt="Retornar" />
+          </button>
+          {user.type === "applicant" && (
+            <button
+              onClick={handlerHeartClick}
+              className="buttonSelect buttonYes"
+            >
+              {fetchApply.loading ? (
+                <Spinner animation="border" />
+              ) : (
+                <img
+                  className="heartIco"
+                  src={heartCheck ? heartFill : heart}
+                  alt="Candidatar"
+                />
+              )}
+            </button>
+          )}
+        </div>
+        <Modal
+          show={modalOpen}
+          onHide={onHideModal}
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          {typeMessage ? (
+            <>
+              <p className="sucess-apply">
+                <strong>Você ja está participando dessa vaga!</strong>
+                <br />
+                Infelizmente não será possível cancelar a inscrição, seus dados
+                ja foram enviados ao recrutador.
+                <br />
+              </p>
+              <img
+                className="sucess-apply-img"
+                src={ConfirmationSVG}
+                alt="Candidatura registrada com sucesso."
+              />
+            </>
+          ) : (
+            <>
+              <p className="sucess-apply">
+                Agora você está participando desta Vaga!
+                <br />
+                <strong>BOA SORTE !</strong>
+              </p>
+              <img
+                className="sucess-apply-img"
+                src={SucessApplySVG}
+                alt="Candidatura registrada com sucesso."
+              />
+            </>
+          )}
+        </Modal>
+      </Container>
+    );
+  }
+
   return (
     <Main>
       <Container fluid="md" className="py-2">
-        {mockOpportunity &&
-          mockOpportunity.map((opportunity) => {
-            return (
-              <CardDeck key={opportunity.id}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>{opportunity.tituloVaga}</Card.Title>
-                    <Card.Text>Descrição: {opportunity.descricao}</Card.Text>
-                    <Card.Text>Benefícios: {opportunity.beneficios}</Card.Text>
-                    <Card.Text>
-                      Salário:{" "}
-                      {opportunity.salario.toLocaleString("pt-br", {
-                        style: "currency",
-                        currency: "BRL",
-                      })}
-                    </Card.Text>
-                  </Card.Body>
-                  <Button variant="primary" type="submit">
-                    Candidatar-se
-                  </Button>
-                </Card>
-              </CardDeck>
-            );
-          })}
+        {loading ? renderLoading() : renderOpportunity()}
       </Container>
     </Main>
   );
 };
 
-export default Opportunity;
+export default ListOpportunity;
