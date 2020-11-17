@@ -1,0 +1,80 @@
+.Container {
+    overflow: auto;
+  }
+
+.card-about-us{
+    margin: 20px 0;
+    border: 2px solid var(--color-primary-dark);
+    border-radius: 10px;
+    box-shadow: 4px 8px 4px rgba(39, 24, 126, 0.25);
+    color: var(--color-primary-dark);
+    padding: 15px 15px;
+}
+
+.title-about-us{
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+
+}
+
+.text-about-us{
+    width: 80%;
+    display: flex;
+    align-self: center;
+}
+
+.logo-about-us{
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-self:center ;
+}
+
+
+.text-about-us{
+    display: flex;
+    align-self: center;
+}
+
+.title-card-about-us{
+    display: flex;
+    text-align: center;
+
+}
+
+.about-us{
+    padding:30px 30px;
+    display: flex;
+    align-self: center;
+    
+}
+
+.cards{
+    
+    border-radius: 10%;
+    border: 5px solid var(--color-white);
+    margin-bottom: 0.5rem;
+    margin-right: 30px;
+}
+
+.card-body{
+    padding:0.70rem;
+
+}
+
+@media (min-width: 768px){
+    .container-about-us{
+        width: 100%;
+        justify-items: start;
+        grid-template-columns: 1fr 150px max-content 1fr;
+        max-height: 100%;
+    }
+
+   
+    .title-card-about-us{
+        display: block;
+    
+    }
+    
+}
