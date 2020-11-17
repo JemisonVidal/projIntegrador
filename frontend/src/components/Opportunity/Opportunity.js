@@ -54,7 +54,9 @@ const ListOpportunity = ({ id }) => {
   }
 
   const handlerHeartClick = async () => {
-    if (typeMessage) {
+    if (heartCheck) {
+      setTypeMessage(heartCheck);
+
       return setModalOpen(true);
     }
 
