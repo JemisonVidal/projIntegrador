@@ -10,6 +10,7 @@ import Login from "../pages/Login/Login";
 import Profile from "../pages/Profile/Profile";
 import Opportunity from "../pages/Opportunity/Opportunity";
 import Company from "../pages/Company/Company";
+<<<<<<< Updated upstream
 
 const PagesRoot = () => (
   <BrowserRouter>
@@ -24,6 +25,31 @@ const PagesRoot = () => (
       </Switch>
     </StoreProvider>
   </BrowserRouter>
+=======
+import AboutUs from "../pages/AboutUs/AboutUs";
+import Contacts from "../pages/Contacts/Contacts";
+import Terms from "../pages/Terms/Terms";
+import "./App.css";
+
+const PagesRoot = () => (
+  <div className="app">
+    <BrowserRouter>
+      <StoreProvider>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <RoutesPrivate path="/" component={Home} exact />
+          <RoutesPrivate path="/profile/:type/:id" component={Profile} />
+          <RoutesPrivate path="/listOpportunity" component={listOpportunity} />
+          <RoutesPrivate path="/opportunity/:id" component={Opportunity} />
+          <RoutesPrivate path="/company" component={Company} />
+          <RoutesPrivate path="/aboutus" component ={AboutUs} />
+          <RoutesPrivate path="/contacts" component ={Contacts} />
+        </Switch>
+      </StoreProvider>
+    </BrowserRouter>
+  </div>
+>>>>>>> Stashed changes
 );
 
 export default PagesRoot;
