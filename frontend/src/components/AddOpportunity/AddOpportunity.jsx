@@ -1,37 +1,56 @@
-import React from 'react';
-import ProfileCard from '../Profile/ProfileCard/ProfileCard';
-
-const title = 'Cadastrar oportunidade';
+import React, { useState } from "react";
+import FormComponent from "../FormComponent/FormComponent";
+import { Form } from "react-bootstrap";
 
 const schema = {
-  title: {
-    label: 'Título',
-    required: true,
-    type: 'text'
+  name: {
+    label: "Nome",
+    type: "text",
+    required: true
   },
-  descricao: {
-    label: 'Descrição',
+  location: {
+    label: "Localização",
+    type: "text",
+    required: true
+  },
+  description: {
+    label: "Descrição",
+    type: "text",
     required: true,
-    type: 'text'
+    as: "textarea"
+  },
+  benefits: {
+    label: "Benefícios",
+    type: "text",
+    required: true
+  },
+  salary: {
+    label: "Salário",
+    type: "number",
+    required: true
+  },
+  freeText: {
+    label: "Texto livre",
+    type: "text",
+    as: "textarea"
   }
 };
 
-
-const AddOpportunity = (data, setData, canEdit, handleSubmit) => {
-  const onSubmit = async (body, i) => {};
-
-  const onRemove = async i => {};
+const AddOpportunity = (props) => {
+  const [error, setError] = useState(null);
 
   return (
-    <ProfileCard.List
-      title={title}
+    <FormComponent
+      title="Adicionar oportunidade"
       schema={schema}
-      canEdit={canEdit}
-      onAdd={onSubmit}
-      onSubmit={onSubmit}
-      onRemove={onRemove}
-      items={data}
-    />
+      onSubmit={(valor) => {
+        valor.active = true;
+        console.log(valor);
+      }}
+      error={error}
+    >
+      <Form.Check type="checkbox" label="Status" id="status"></Form.Check>
+    </FormComponent>
   );
 };
 

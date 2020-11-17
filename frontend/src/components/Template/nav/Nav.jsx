@@ -27,6 +27,9 @@ const NavBar = () => {
             <Link className="nav-item" to="/company">
               Empresas
             </Link>
+            <Link className="nav-item" to="/addOpportunity">
+              Adicionar oportunidade
+            </Link>
           </Nav>
           <Nav>
             {user.pid ? (

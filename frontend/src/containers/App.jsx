@@ -11,6 +11,7 @@ import Profile from "../pages/Profile/Profile";
 import listOpportunity from "../pages/ListOpportunity/ListOpportunity";
 import Opportunity from "../pages/Opportunity/Opportunity";
 import Company from "../pages/Company/Company";
+import AddOpportunity from "../pages/AddOpportunity/AddOpportunity";
 import "./App.css";
 
 const PagesRoot = () => (
@@ -25,6 +26,7 @@ const PagesRoot = () => (
           <RoutesPrivate path="/listOpportunity" component={listOpportunity} />
           <RoutesPrivate path="/opportunity/:id" component={Opportunity} />
           <RoutesPrivate path="/company" component={Company} />
+          <RoutesPrivate path="/addOpportunity" component={AddOpportunity} />
         </Switch>
       </StoreProvider>
     </BrowserRouter>
