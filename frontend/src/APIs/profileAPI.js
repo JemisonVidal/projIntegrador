@@ -34,3 +34,13 @@ export function GET_COMPANY_OPPORTUNITIES(id) {
     url: `/opportunity/company/${id}`
   });
 }
+
+export function GET_ALL_APPLICANT(page = 0, name = "") {
+  let uri = `/profile/applicant/?page=${page}&size=6`;
+  if (name) {
+    uri += `&name=${name}`;
+  }
+  return requestOptions({
+    url: uri
+  });
+}
