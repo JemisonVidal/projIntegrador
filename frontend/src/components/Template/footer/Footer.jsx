@@ -6,7 +6,7 @@ import linkedinLogo from "../../../assets/images/linkedin.png";
 import twitterLogo from "../../../assets/images/twitter.png";
 import { Link } from "react-router-dom";
 
-const footer = () => (
+const Footer = () => (
     <footer className="footer">
     <div className="col-footer-info">
       <span className="titulo-principal">RecruIT</span>
