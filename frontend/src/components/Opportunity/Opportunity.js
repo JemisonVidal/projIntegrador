@@ -53,10 +53,6 @@ const ListOpportunity = ({ id }) => {
     );
   }
 
-  const handlerBackClick = () => {
-    history.push("/listOpportunity");
-  };
-
   const handlerHeartClick = async () => {
     if (typeMessage) {
       return setModalOpen(true);
@@ -131,7 +127,10 @@ const ListOpportunity = ({ id }) => {
           </Card>
         </CardDeck>
         <div className="buttonsCandidatar">
-          <button onClick={handlerBackClick} className="buttonSelect buttonNo">
+          <button
+            onClick={() => history.goBack()}
+            className="buttonSelect buttonNo"
+          >
             <img className="xIco" src={back} alt="Retornar" />
           </button>
           {user.type === "applicant" && (
