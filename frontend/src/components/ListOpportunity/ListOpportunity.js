@@ -99,7 +99,9 @@ const ListOpportunity = ({ type }) => {
                 <Card.Title className="title-card">
                   {opportunity.name}
                 </Card.Title>
-                <Card.Text>{opportunity.companyName}</Card.Text>
+                <Card.Text className="title-card-company">
+                  {opportunity.companyName}
+                </Card.Text>
                 <Card.Text>
                   <span className="titulo-campo">Localização:</span>{" "}
                   <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}

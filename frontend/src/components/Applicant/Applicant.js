@@ -88,7 +88,7 @@ const Applicant = () => {
                   </Card.Title>
                 </div>
                 <Card.Text>
-                  <strong>Área de interesse:</strong> {applicant.title}
+                  <strong>Cargo de interesse:</strong> {applicant.title}
                 </Card.Text>
                 <Card.Text>
                   <strong>Sobre mim:</strong> {applicant.about}

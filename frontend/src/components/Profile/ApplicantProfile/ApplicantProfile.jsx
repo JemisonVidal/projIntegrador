@@ -62,7 +62,11 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
   }, [data]);
 
   if (loading) {
-    return <Spinner animation="border" />;
+    return (
+      <div className="spinner-load">
+        <Spinner animation="border" />
+      </div>
+    );
   }
 
   return (
