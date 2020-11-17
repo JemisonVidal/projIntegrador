@@ -8,10 +8,10 @@
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: auto;
   grid-template-areas:
-    'none picture edit'
-    'none name edit'
-    'none title edit'
-    'input input input';
+    "none picture edit"
+    "none name edit"
+    "none title edit"
+    "input input input";
 }
 
 .user #user-picture {
@@ -55,9 +55,9 @@
     justify-items: start;
     grid-template-columns: 1fr 150px max-content 1fr;
     grid-template-areas:
-      'none picture name edit'
-      'none picture title edit'
-      'input input input input';
+      "none picture name edit"
+      "none picture title edit"
+      "input input input input";
   }
 
   .user #user-picture {

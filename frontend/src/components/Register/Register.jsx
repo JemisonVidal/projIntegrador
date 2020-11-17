@@ -60,6 +60,8 @@ const UserRegister = () => {
       } catch (error) {
         setErrorSubmit("Desculpe, ocorreu uma falha, tente novamente");
       }
+    } else if (senha.value !== confirmarSenha.value) {
+      setErrorSubmit("As senhas não conferem.");
     } else {
       setErrorSubmit("Falha ao validar campos");
     }

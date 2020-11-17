@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { Spinner } from "react-bootstrap";
 import useFetch from "../../../Hooks/useFetch";
 import { PATCH_PROFILE } from "../../../APIs/profileAPI";
 import ApplicantExperiences from "./ApplicantExperiences";
@@ -37,7 +38,7 @@ const infoSchema = {
 };
 
 const ApplicantProfile = ({ data, canEdit, profileId }) => {
-  const { request } = useFetch();
+  const { request, loading } = useFetch();
   const [info, setInfo] = useState({});
   const [skills, setSkills] = useState([]);
   const [courses, setCourses] = useState([]);
@@ -60,9 +61,14 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
     setWorkExperiences(data.workExperiences || []);
   }, [data]);
 
+  if (loading) {
+    return <Spinner animation="border" />;
+  }
+
   return (
     <div>
       <ProfileCard.Info
+        id="info"
         title="Informações Gerais"
         schema={infoSchema}
         canEdit={canEdit}

@@ -12,26 +12,26 @@ import { useHistory } from "react-router-dom";
 import Main from "../../components/Template/main/Main";
 import useFetch from "../../Hooks/useFetch";
 import PaginationPage from "../Pagination/Pagination";
-import { GET_COMPANYS } from "../../APIs/companyAPI";
-import "./Company.css";
+import { GET_ALL_APPLICANT } from "../../APIs/profileAPI";
+import "./Applicant.css";
 
-const Company = () => {
+const Applicant = () => {
   const history = useHistory();
   const [totalPages, setTotalPages] = useState(0);
   const [pageCurrent, setPageCurrent] = useState(0);
-  const [companys, setCompanys] = useState(null);
+  const [applicants, setApplicants] = useState(null);
   const searchInput = useRef(null);
 
   const { request, loading } = useFetch();
 
   async function getCompany() {
-    const { url, options } = GET_COMPANYS(
+    const { url, options } = GET_ALL_APPLICANT(
       pageCurrent,
       searchInput.current.value
     );
     const { json, response } = await request(url, options);
     if (response.ok) {
-      setCompanys(json.content);
+      setApplicants(json.content);
       setPageCurrent(json.pageable?.pageNumber);
       setTotalPages(json.totalPages);
     }
@@ -47,7 +47,7 @@ const Company = () => {
   }, [pageCurrent]);
 
   function handleVerPerfilClick(event) {
-    return history.push(`/profile/company/${event.target.id}`);
+    return history.push(`/profile/applicant/${event.target.id}`);
   }
 
   async function handleSearchClick(event) {
@@ -64,7 +64,7 @@ const Company = () => {
   }
 
   function renderCompanys() {
-    if (companys && companys.length <= 0) {
+    if (applicants && applicants.length <= 0) {
       return (
         <p className="messageOps">
           Ops... Não encontramos nenhuma empresa com esse nome.
@@ -75,45 +75,55 @@ const Company = () => {
       );
     }
     return (
-      companys &&
-      companys.map((company, index) => {
+      applicants &&
+      applicants.map((applicant, index) => {
         return (
           <CardDeck key={index}>
             <Card>
               <Card.Body>
-                <Card.Title className="title-company-search">
-                  {company.name}
-                </Card.Title>
+                <div className="container-card-perfil">
+                  <img src={applicant.imgSrc} />
+                  <Card.Title className="title-applicant-search">
+                    {applicant.name}
+                  </Card.Title>
+                </div>
                 <Card.Text>
-                  <strong>Visão Geral:</strong> {company.about}
+                  <strong>Área de interesse:</strong> {applicant.title}
+                </Card.Text>
+                <Card.Text>
+                  <strong>Sobre mim:</strong> {applicant.about}
                 </Card.Text>
                 <Card.Text>
                   <strong>Localização:</strong>{" "}
                   <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
-                  {company.location}
+                  {applicant.location}
                 </Card.Text>
                 <Card.Text>
-                  <strong>Ramo:</strong> {company.category}
+                  <strong>Telefone:</strong> {applicant.phoneNumber}
                 </Card.Text>
                 <Card.Text>
-                  <strong>Site:</strong>{" "}
-                  <a className="link-perfil" href={company.site} target="blank">
-                    {company.site}
+                  <strong>Github:</strong>{" "}
+                  <a
+                    className="link-perfil"
+                    href={applicant.github}
+                    target="blank"
+                  >
+                    {applicant.github}
                   </a>
                 </Card.Text>
                 <Card.Text>
                   <strong>Linkedin:</strong>{" "}
                   <a
                     className="link-perfil"
-                    href={company.linkedin}
+                    href={applicant.linkedin}
                     target="blank"
                   >
-                    {company.linkedin}
+                    {applicant.linkedin}
                   </a>
                 </Card.Text>
               </Card.Body>
               <Button
-                id={company.id}
+                id={applicant.id}
                 variant="primary"
                 onClick={handleVerPerfilClick}
               >
@@ -153,4 +163,4 @@ const Company = () => {
   );
 };
 
-export default Company;
+export default Applicant;

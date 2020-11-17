@@ -1,0 +1,88 @@
+.Container {
+  overflow: auto;
+}
+
+.card-about-us {
+  margin: 20px 0;
+  border: 2px solid var(--color-primary-dark);
+  border-radius: 10px;
+  box-shadow: 4px 8px 4px rgba(39, 24, 126, 0.25);
+  color: var(--color-primary-dark);
+  padding: 5px 5px;
+}
+
+.title-about-us {
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+}
+
+.title-principal {
+  font-size: 32px;
+  margin: 0 0px 40px 0px;
+}
+
+.text-about-us {
+  width: 80%;
+  display: flex;
+  align-self: center;
+}
+
+.logo-about-us {
+  width: 125px;
+  height: 125px;
+  display: flex;
+  align-self: center;
+}
+
+.text-about-us {
+  display: flex;
+  align-self: center;
+}
+
+.title-card-about-us {
+  display: flex;
+  text-align: center;
+}
+
+.about-us {
+  padding: 30px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.cards {
+  height: 300px;
+  flex: 1 1 0;
+  border-radius: 10%;
+  border: 5px solid var(--color-primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.card-body {
+  padding: 0.7rem;
+}
+
+@media (min-width: 768px) {
+  .container-about-us {
+    width: 100%;
+    justify-items: start;
+    grid-template-columns: 1fr 150px max-content 1fr;
+    max-height: 100%;
+  }
+
+  .title-card-about-us {
+    display: block;
+  }
+
+  .about-us {
+    padding: 30px 30px;
+    display: flex;
+    align-items: space-around;
+    justify-content: space-around;
+    flex-direction: row;
+  }
+}

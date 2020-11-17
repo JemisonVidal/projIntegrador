@@ -99,6 +99,7 @@
   font-size: larger;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   transition: ease-out;
+  padding: 20px;
 }
 
 .sucess-apply-img {
@@ -116,6 +117,10 @@
 
 #container-opportunity {
   padding: 0;
+}
+
+.linkToCompany {
+  color: var(--color-primary);
 }
 
 @media (min-width: 576px) {

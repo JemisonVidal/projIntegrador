@@ -7,7 +7,9 @@ import { Container } from "react-bootstrap";
 const Main = (props) => (
   <React.Fragment>
     <Nav />
-    <Container fluid="md" as='main'>{props.children}</Container>
+    <Container fluid="md" as="main">
+      {props.children}
+    </Container>
     <Footer />
   </React.Fragment>
 );

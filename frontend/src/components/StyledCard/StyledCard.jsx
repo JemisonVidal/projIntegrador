@@ -2,13 +2,13 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import "./StyledCard.css";
 
-const StyledCard = ({ children, className }) => {
+const StyledCard = ({ children, className, id }) => {
   let classCustom = "card-custom px-0";
   if (className) {
     classCustom += ` ${className}`;
   }
   return (
-    <Card className={classCustom}>
+    <Card className={classCustom} id={id}>
       <Card.Body>{children}</Card.Body>
     </Card>
   );

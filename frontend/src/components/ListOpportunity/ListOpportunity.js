@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   CardDeck,
   Card,
@@ -9,9 +9,9 @@ import {
 } from "react-bootstrap";
 import useFetch from "../../Hooks/useFetch";
 import PaginationPage from "../Pagination/Pagination";
-import { GET_LIST_OPPORTUNITY } from "../../APIs/APIs";
+import { GET_LIST_OPPORTUNITY, GET_MY_OPPORTUNITY } from "../../APIs/APIs";
 import { Link } from "react-router-dom";
-
+import StoreContext from "../../components/Store/Context";
 import "./ListOpportunity.css";
 import { currencyFormatter } from "../../utils/formatters";
 import { skillMap } from "../../utils/skills";
@@ -23,17 +23,33 @@ const ListOpportunity = ({ type }) => {
   const { request, loading } = useFetch();
   const [arrayOpportunity, setArrayOpportunity] = useState([]);
   const searchInput = useRef(null);
+  const { user } = useContext(StoreContext);
 
   async function getOpportunity() {
-    const { url, options } = GET_LIST_OPPORTUNITY(
-      pageCurrent,
-      searchInput.current.value
-    );
+    let url;
+    let options;
+    if (type === MY_OPPORTUNITYS) {
+      const payloadMyOpportunity = GET_MY_OPPORTUNITY(user.pid);
+      url = payloadMyOpportunity.url;
+      options = payloadMyOpportunity.options;
+    } else {
+      const payloadAllOpportunity = GET_LIST_OPPORTUNITY(
+        pageCurrent,
+        searchInput.current.value
+      );
+      url = payloadAllOpportunity.url;
+      options = payloadAllOpportunity.options;
+    }
+
     const { json, response } = await request(url, options);
     if (response.ok) {
-      setArrayOpportunity(json.content);
-      setPageCurrent(json.pageable?.pageNumber);
-      setTotalPages(json.totalPages);
+      if (type === MY_OPPORTUNITYS) {
+        setArrayOpportunity(json);
+      } else {
+        setArrayOpportunity(json?.content);
+        setPageCurrent(json?.pageable?.pageNumber);
+        setTotalPages(json?.totalPages);
+      }
     }
   }
 
@@ -41,7 +57,7 @@ const ListOpportunity = ({ type }) => {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: 'smooth'
+      behavior: "smooth"
     });
     getOpportunity();
   }, [pageCurrent]);
@@ -75,16 +91,15 @@ const ListOpportunity = ({ type }) => {
       arrayOpportunity.map((opportunity) => {
         if (typeSearch === MY_OPPORTUNITYS && !opportunity.isApplied)
           return null;
+
         return (
-          <CardDeck key={opportunity.id}>
+          <div key={opportunity.id}>
             <Card className="card">
               <Card.Body>
                 <Card.Title className="title-card">
                   {opportunity.name}
                 </Card.Title>
-                <Card.Text>
-                  {opportunity.companyName}
-                </Card.Text>
+                <Card.Text>{opportunity.companyName}</Card.Text>
                 <Card.Text>
                   <span className="titulo-campo">Localização:</span>{" "}
                   <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
@@ -123,7 +138,7 @@ const ListOpportunity = ({ type }) => {
                 </Button>
               </Link>
             </Card>
-          </CardDeck>
+          </div>
         );
       })
     );
@@ -142,7 +157,13 @@ const ListOpportunity = ({ type }) => {
           <i className="fa fa-search" aria-hidden="true"></i>
         </Button>
       </Form>
-      {loading ? renderLoading() : renderListOpportunity(type)}
+      {loading ? (
+        renderLoading()
+      ) : (
+        <CardDeck className="deck-opportunity">
+          {renderListOpportunity(type)}
+        </CardDeck>
+      )}
       <PaginationPage
         pageCurrent={pageCurrent}
         totalPages={totalPages}
