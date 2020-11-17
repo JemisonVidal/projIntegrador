@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Card, CardDeck, Button } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import StoreContext from "../../components/Store/Context";
 import Main from "../../components/Template/main/Main";
 import imageMain from "../../assets/images/main-photo.jpg";
@@ -23,15 +23,11 @@ const PagesHome = () => {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: 'smooth'
+      behavior: "smooth"
     });
   }, []);
 
   const renderProfileUser = () => {
-    function handleOnClick(event) {
-      return history.push(`/profile/applicant/${user.pid}`);
-    }
-
     return (
       <section className="data-profile">
         <CardDeck>
@@ -43,9 +39,9 @@ const PagesHome = () => {
                 Acessar minhas habilidades(Pensar em uma frase)
               </Card.Text>
             </Card.Body>
-            <Button variant="primary" onClick={handleOnClick}>
-              Acessar minhas habilidades
-            </Button>
+            <Link to={`/profile/applicant/${user.pid}#skills`}>
+              <Button variant="primary">Adicionar uma habilidade</Button>
+            </Link>
           </Card>
           <Card>
             <Card.Title>Cursos</Card.Title>
@@ -53,9 +49,9 @@ const PagesHome = () => {
             <Card.Body>
               <Card.Text>Acessar meus cursos(Pensar em uma frase)</Card.Text>
             </Card.Body>
-            <Button variant="primary" onClick={handleOnClick}>
-              Acessar meus cursos
-            </Button>
+            <Link to={`/profile/applicant/${user.pid}#courses`}>
+              <Button variant="primary">Adicionar um curso</Button>
+            </Link>
           </Card>
         </CardDeck>
         <CardDeck>
@@ -67,9 +63,9 @@ const PagesHome = () => {
                 Acessar meus links externos (Pensar em uma frase)
               </Card.Text>
             </Card.Body>
-            <Button variant="primary" onClick={handleOnClick}>
-              Acessar meus links externos
-            </Button>
+            <Link to={`/profile/applicant/${user.pid}#info`}>
+              <Button variant="primary">Acessar meus links externos</Button>
+            </Link>
           </Card>
           <Card>
             <Card.Title>Experiências</Card.Title>
@@ -79,9 +75,9 @@ const PagesHome = () => {
                 Acessar minhas Experiências(Pensar em uma frase)
               </Card.Text>
             </Card.Body>
-            <Button variant="primary" onClick={handleOnClick}>
-              Acessar minhas Experiências
-            </Button>
+            <Link to={`/profile/applicant/${user.pid}#experiences`}>
+              <Button variant="primary">Adicionar uma experiência</Button>
+            </Link>
           </Card>
         </CardDeck>
       </section>
@@ -136,8 +132,8 @@ const PagesHome = () => {
   return (
     <Main>
       <div className="div-banner-home">
-        <img className="image-banner-home" src={imageMain} alt='Banner' />
-        <img className="logo-banner-home" src={logo} alt='Logo RecruIT' />
+        <img className="image-banner-home" src={imageMain} alt="Banner" />
+        <img className="logo-banner-home" src={logo} alt="Logo RecruIT" />
         <h1>
           Recru<span>IT</span>
         </h1>

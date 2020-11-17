@@ -1,8 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, ListGroup, Row } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import ModalForm from "../../Modal/ModalForm";
 import StyledCard from "../../StyledCard/StyledCard";
 import "./ProfileCard.css";
+
+const checkHash = (hash, id) => hash && hash === id;
+
+const showHashModal = (hash, id, setShow) => {
+  if (checkHash(hash, id)) {
+    setShow(true);
+    document.getElementById(hash).scrollIntoView();
+  }
+};
+
+const replaceHash = (history) => {
+  if (history.location?.hash) history.replace(history.location.pathname);
+};
 
 const ProfileCard = ({ title, canEdit, handleClick, children }) => {
   const renderIcon = () => (
@@ -35,6 +49,7 @@ const Item = ({ title, value, formatter }) => {
 ProfileCard.Item = Item;
 
 const Info = ({
+  id,
   title,
   schema,
   canEdit,
@@ -45,6 +60,7 @@ const Info = ({
 }) => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const history = useHistory();
 
   const handleError = (error) => {
     if (error?.msg === "Validation Errors") {
@@ -65,7 +81,7 @@ const Info = ({
     const { response, json } = await onSubmit(body);
     if (response.ok) {
       setData({ ...body });
-      setShowModal(false);
+      replaceHash(history);
     } else {
       handleError(json);
     }
@@ -100,8 +116,14 @@ const Info = ({
     </button>
   );
 
+  useEffect(() => {
+    const hash = history.location?.hash.substring(1);
+    if (showModal && !hash) onHide();
+    showHashModal(hash, id, setShowModal);
+  }, [data]);
+
   return (
-    <StyledCard className="card-profile">
+    <StyledCard className="card-profile" id={id}>
       <StyledCard.Title title={title}>
         {canEdit && renderIcon()}
       </StyledCard.Title>
@@ -120,6 +142,7 @@ const Info = ({
 ProfileCard.Info = Info;
 
 const List = ({
+  id,
   title,
   schema,
   canEdit,
@@ -132,6 +155,7 @@ const List = ({
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [editIndex, setEditIndex] = useState(undefined);
+  const history = useHistory();
 
   const handleError = (error) => {
     if (error?.msg === "Validation Errors") {
@@ -154,6 +178,7 @@ const List = ({
     const { response, json } = await onSubmit(items);
     if (response.ok) {
       setItems([...items]);
+      if (history.location?.hash) history.replace(history.location.pathname);
     } else {
       handleError(json);
     }
@@ -175,6 +200,7 @@ const List = ({
     if (editIndex >= 0) setEditIndex(undefined);
     setShowModal(false);
     setError(undefined);
+    replaceHash(history);
   };
 
   const renderAddButton = () => (
@@ -203,11 +229,13 @@ const List = ({
   };
 
   useEffect(() => {
-    onHide();
+    const hash = history.location?.hash.substring(1);
+    if (showModal && !hash) onHide();
+    showHashModal(hash, id, setShowModal);
   }, [items]);
 
   return (
-    <StyledCard className="card-profile">
+    <StyledCard className="card-profile" id={id}>
       <StyledCard.Title title={title}>
         {canEdit && renderAddButton()}
       </StyledCard.Title>

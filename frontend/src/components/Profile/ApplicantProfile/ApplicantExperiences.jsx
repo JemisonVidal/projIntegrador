@@ -63,6 +63,7 @@ const ApplicantExperiences = ({ data, setData, canEdit, handleSubmit }) => {
 
   return (
     <ProfileCard.List
+      id="experiences"
       title={title}
       schema={schema}
       canEdit={canEdit}
