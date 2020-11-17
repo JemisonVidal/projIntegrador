@@ -63,6 +63,7 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
   return (
     <div>
       <ProfileCard.Info
+        id="info"
         title="Informações Gerais"
         schema={infoSchema}
         canEdit={canEdit}

@@ -45,6 +45,7 @@ const ApplicantSkills = ({ data, setData, canEdit, handleSubmit }) => {
 
   return (
     <ProfileCard.List
+      id="skills"
       title={title}
       schema={schema}
       canEdit={canEdit}
