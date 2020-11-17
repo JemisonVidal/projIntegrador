@@ -38,7 +38,10 @@ const NavBar = () => {
                   menuAlign="left"
                   id="dropdown-menu-align-right"
                 >
-                  <Image id="image-avatar" className="avatar" src={avatar} />
+                  <div className="avatar-div">
+                    <Image id="image-avatar" className="avatar" src={avatar} />
+                    <p className="eu-avatar">Eu</p>
+                  </div>
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>

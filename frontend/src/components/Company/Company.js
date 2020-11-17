@@ -93,15 +93,23 @@ const Company = () => {
                   {company.location}
                 </Card.Text>
                 <Card.Text>
-                  <strong>Ramo:</strong>
-                  {company.category}
+                  <strong>Ramo:</strong> {company.category}
                 </Card.Text>
                 <Card.Text>
-                  <strong>Site:</strong> {company.site}
+                  <strong>Site:</strong>{" "}
+                  <a className="link-perfil" href={company.site} target="blank">
+                    {company.site}
+                  </a>
                 </Card.Text>
                 <Card.Text>
-                  <strong>Linkedin:</strong>
-                  {company.linkedin}
+                  <strong>Linkedin:</strong>{" "}
+                  <a
+                    className="link-perfil"
+                    href={company.linkedin}
+                    target="blank"
+                  >
+                    {company.linkedin}
+                  </a>
                 </Card.Text>
               </Card.Body>
               <Button

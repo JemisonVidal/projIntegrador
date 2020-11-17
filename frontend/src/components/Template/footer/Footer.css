@@ -68,6 +68,10 @@
   width: 25px;
 }
 
+.texto-footer {
+  color: white;
+}
+
 @media (min-width: 576px) {
   .footer {
     /* border-radius: 0 0 25px 25px; */

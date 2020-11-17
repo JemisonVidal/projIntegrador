@@ -88,7 +88,7 @@ const Applicant = () => {
                   </Card.Title>
                 </div>
                 <Card.Text>
-                  <strong>Bucando por vaga de:</strong> {applicant.title}
+                  <strong>Área de interesse:</strong> {applicant.title}
                 </Card.Text>
                 <Card.Text>
                   <strong>Sobre mim:</strong> {applicant.about}
@@ -99,15 +99,27 @@ const Applicant = () => {
                   {applicant.location}
                 </Card.Text>
                 <Card.Text>
-                  <strong>Telefone:</strong>
-                  {applicant.phoneNumber}
+                  <strong>Telefone:</strong> {applicant.phoneNumber}
                 </Card.Text>
                 <Card.Text>
-                  <strong>Github:</strong> {applicant.github}
+                  <strong>Github:</strong>{" "}
+                  <a
+                    className="link-perfil"
+                    href={applicant.github}
+                    target="blank"
+                  >
+                    {applicant.github}
+                  </a>
                 </Card.Text>
                 <Card.Text>
-                  <strong>Linkedin:</strong>
-                  {applicant.linkedin}
+                  <strong>Linkedin:</strong>{" "}
+                  <a
+                    className="link-perfil"
+                    href={applicant.linkedin}
+                    target="blank"
+                  >
+                    {applicant.linkedin}
+                  </a>
                 </Card.Text>
               </Card.Body>
               <Button

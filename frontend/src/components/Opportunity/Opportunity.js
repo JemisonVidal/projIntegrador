@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Container, CardDeck, Card, Spinner, Modal } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import StoreContext from "../../components/Store/Context";
 import Main from "../Template/main/Main";
 import useFetch from "../../Hooks/useFetch";
@@ -79,6 +79,8 @@ const ListOpportunity = ({ id }) => {
     setModalOpen(false);
   }
 
+  const linkCompany = `/profile/company/${opportunity.companyId}`;
+
   function renderOpportunity() {
     return (
       <Container id="container-opportunity">
@@ -89,7 +91,9 @@ const ListOpportunity = ({ id }) => {
                 {opportunity.name}
               </Card.Title>
               <Card.Text className="title-empresa-opportunity">
-                {opportunity.companyName}
+                <Link className="linkToCompany" to={linkCompany}>
+                  {opportunity.companyName}
+                </Link>
               </Card.Text>
               <span className="titulo-campo-opportunity">Localização</span>
               <Card.Text>
@@ -156,6 +160,7 @@ const ListOpportunity = ({ id }) => {
           aria-labelledby="contained-modal-title-vcenter"
           centered
         >
+          <Modal.Header closeButton></Modal.Header>
           {typeMessage ? (
             <>
               <p className="sucess-apply">

@@ -93,10 +93,11 @@
 
 .container-card-perfil {
   display: flex;
+  margin-bottom: 20px;
 }
 
 .container-card-perfil > img {
-  width: 100px;
+  width: 85px;
   border-radius: 50%;
 }
 
@@ -107,6 +108,10 @@
   margin-bottom: 15px;
   align-self: center;
   margin-left: 10px;
+}
+
+.link-perfil {
+  color: var(--color-primary-dark);
 }
 
 @media (max-width: 600px) {

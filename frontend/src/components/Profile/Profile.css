@@ -31,3 +31,13 @@
   border-color: var(--color-primary-darker);
   background-color: var(--color-primary-darker);
 }
+
+.card-body > .profile-item > div > a {
+  color: var(--color-primary-dark);
+}
+
+@media (max-width: 768px) {
+  .container-profile > div {
+    padding: 12px;
+  }
+}

@@ -88,8 +88,22 @@
   background-color: red;
 }
 
+.avatar-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eu-avatar {
+  margin: 10px 5px;
+}
+
 @media (min-width: 991px) {
   #avatar {
     margin-left: auto;
+  }
+
+  .eu-avatar {
+    display: none;
   }
 }

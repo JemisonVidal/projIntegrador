@@ -119,6 +119,10 @@
   padding: 0;
 }
 
+.linkToCompany {
+  color: var(--color-primary);
+}
+
 @media (min-width: 576px) {
   .title-card-opportunity {
     font-size: 28px;
