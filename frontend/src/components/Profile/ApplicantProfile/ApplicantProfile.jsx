@@ -1,12 +1,40 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import ProfileInfo from '../ProfileInfo';
-import useFetch from '../../../Hooks/useFetch';
-import { PATCH_PROFILE } from '../../../APIs/APIs';
-import ApplicantExperiences from './ApplicantExperiences';
-import ApplicantSkills from './ApplicantSkills';
-import ApplicantCourses from './ApplicantCourses';
-import { currencyFormatter, linkFormatter } from '../../../utils/formatters';
+import React, { useState } from "react";
+import { useEffect } from "react";
+import useFetch from "../../../Hooks/useFetch";
+import { PATCH_PROFILE } from "../../../APIs/profileAPI";
+import ApplicantExperiences from "./ApplicantExperiences";
+import ApplicantSkills from "./ApplicantSkills";
+import ApplicantCourses from "./ApplicantCourses";
+import { currencyFormatter, linkFormatter } from "../../../utils/formatters";
+import ProfileCard from "../ProfileCard/ProfileCard";
+
+const infoSchema = {
+  about: { label: "Sobre", as: "textarea" },
+  location: { label: "Cidade onde mora", placeholder: "São Paulo, SP" },
+  locationWanted: {
+    label: "Disposta a trabalhar em",
+    placeholder: "São Paulo, SP"
+  },
+  desiredSalary: {
+    label: "Salário desejado",
+    type: "number",
+    formatter: currencyFormatter
+  },
+  github: {
+    label: "Github",
+    type: "url",
+    formatter: linkFormatter,
+    placeholder: "https://github.com/usuaria",
+    feedback: "Por favor digite uma URL válida."
+  },
+  linkedin: {
+    label: "LinkedIn",
+    type: "url",
+    formatter: linkFormatter,
+    placeholder: "https://linkedin.com/in/usuaria",
+    feedback: "Por favor digite uma URL válida."
+  }
+};
 
 const ApplicantProfile = ({ data, canEdit, profileId }) => {
   const { request } = useFetch();
@@ -21,32 +49,12 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
   };
 
   useEffect(() => {
-    setInfo({
-      about: { text: "Sobre", value: data.about, type: "textarea" },
-      location: { text: "Cidade onde mora", value: data.location },
-      locationWanted: {
-        text: "Disposta a trabalhar em",
-        value: data.locationWanted,
-      },
-      desiredSalary: {
-        text: "Salário desejado",
-        value: data.desiredSalary,
-        type: "number",
-        formatter: currencyFormatter,
-      },
-      github: {
-        text: "Github",
-        value: data.github,
-        formatter: linkFormatter,
-        placeholder: "https://github.com/usuaria",
-      },
-      linkedin: {
-        text: "LinkedIn",
-        value: data.linkedin,
-        formatter: linkFormatter,
-        placeholder: "https://linkedin.com/in/usuaria",
-      },
-    });
+    setInfo(
+      Object.entries(data).reduce((acc, [k, v]) => {
+        if (k in infoSchema) acc[k] = v;
+        return acc;
+      }, {})
+    );
     setSkills(data.skills || []);
     setCourses(data.courses || []);
     setWorkExperiences(data.workExperiences || []);
@@ -54,11 +62,13 @@ const ApplicantProfile = ({ data, canEdit, profileId }) => {
 
   return (
     <div>
-      <ProfileInfo
+      <ProfileCard.Info
+        title="Informações Gerais"
+        schema={infoSchema}
+        canEdit={canEdit}
+        onSubmit={async (body) => await handleSubmit(body)}
         data={info}
         setData={setInfo}
-        canEdit={canEdit}
-        handleSubmit={handleSubmit}
       />
       <ApplicantSkills
         data={skills}

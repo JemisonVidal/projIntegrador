@@ -1,34 +1,16 @@
-.card-profile {
-  padding: 0 0.5rem;
-}
-
 #save-profile {
   margin-top: 0.5em;
   color: var(--color-white);
   font-weight: bold;
   width: 100%;
-  border-color:var(--color-primary-dark);
-  background-color:var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  background-color: var(--color-primary-dark);
   border-radius: 0.5em;
   transition: background-color 0.1s linear;
 }
 
 #save-profile:hover {
   background-color: var(--color-primary-darker);
-}
-
-.card-profile {
-  background: white;
-  border: 2px solid var(--color-primary-dark);
-  border-radius: 10px;
-  box-shadow: 4px 8px 4px rgba(39, 24, 126, 0.25);
-  color: var(--color-primary-dark);
-  margin-bottom: 0.5em;
-}
-
-.card-profile .card-title {
-  font-weight: bold;
-  font-size: 1.5rem;
 }
 
 .card-profile .profile-item {
@@ -43,7 +25,8 @@
   font-size: 16.5px;
 }
 
-.card-profile input, textarea {
+.card-profile input,
+textarea {
   width: 100%;
   border: none;
   border-bottom: 1px solid var(--color-primary);
@@ -51,7 +34,8 @@
   transition: border 0.1s ease-in-out;
 }
 
-.card-profile input:focus, textarea:focus {
+.card-profile input:focus,
+textarea:focus {
   outline: none;
   border-bottom: 2px solid var(--color-primary-dark);
   color: var(--color-primary-dark);
@@ -67,7 +51,8 @@
   background-color: var(--color-primary-dark);
 }
 
-.card-profile .btn-profile-edit-item, .btn-profile-remove {
+.card-profile .btn-profile-edit-item,
+.btn-profile-remove {
   max-height: 3em;
 }
 

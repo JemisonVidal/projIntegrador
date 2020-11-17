@@ -1,0 +1,14 @@
+.card-custom {
+  background: white;
+  border: 2px solid var(--color-primary-dark);
+  border-radius: 10px;
+  box-shadow: 4px 8px 4px rgba(39, 24, 126, 0.25);
+  color: var(--color-primary-dark);
+  margin-bottom: 0.5em;
+  padding: 0 0.5rem;
+}
+
+.card-custom .card-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+}

@@ -202,18 +202,15 @@ public class OpportunityControllerTest {
     @Test
     @DisplayName("Should return opportunities from a company")
     void findAllByCompanyIdTest() throws Exception {
-        Opportunity opportunity = Opportunity.builder().name("Teste").build();
-        OpportunityDTO opportunityDTO = OpportunityDTO.builder().name(opportunity.getName()).build();
-        Page<Opportunity> opportunities = new PageImpl<>(Arrays.asList(opportunity, opportunity));
-        when(opportunityService.findAllByCompanyId(anyLong() ,any(Pageable.class))).thenReturn(opportunities);
-        when(opportunityService.convertFromEntity(any(Opportunity.class), any())).thenReturn(opportunityDTO);
+        OpportunityDTO opportunityDTO = OpportunityDTO.builder().name("Teste").build();
+        List<OpportunityDTO> opportunities = Arrays.asList(opportunityDTO, opportunityDTO);
+        when(opportunityService.findAllByCompanyId(anyLong())).thenReturn(opportunities);
 
         RequestBuilder request = get("/v1/api/opportunity/company/1")
             .accept(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.numberOfElements", is(2)))
             .andReturn()
             .getResponse();
     }
