@@ -96,7 +96,7 @@ const PagesHome = () => {
             <Card.Title>Adicionar Vaga</Card.Title>
             <Card.Img variant="top" src={opportunitySvg} />
             <Card.Body>
-              <Card.Text>Adicionar vaga(Pensar em uma frase)</Card.Text>
+              <Card.Text>Adicionar vaga</Card.Text>
             </Card.Body>
             <Button variant="primary" onClick={handleOnClick}>
               Adicionar Vaga
@@ -106,7 +106,7 @@ const PagesHome = () => {
             <Card.Title>Procurar candidata</Card.Title>
             <Card.Img variant="top" src={searchSvg} />
             <Card.Body>
-              <Card.Text>Procurar candidata(Pensar em uma frase)</Card.Text>
+              <Card.Text>Procurar candidata</Card.Text>
             </Card.Body>
             <Button variant="primary" onClick={handleOnClick}>
               Procurar Candidata
@@ -118,7 +118,7 @@ const PagesHome = () => {
             <Card.Title>Sobre</Card.Title>
             <Card.Img variant="top" src={aboutSvg} />
             <Card.Body>
-              <Card.Text>Acessar sobre(Pensar em uma frase)</Card.Text>
+              <Card.Text>Acessar sobre</Card.Text>
             </Card.Body>
             <Button variant="primary" onClick={handleOnClick}>
               Sobre
