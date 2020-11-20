@@ -7,6 +7,7 @@ import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.enums.UserType;
 import br.com.house.digital.projetointegrador.model.profile.Profile;
 import br.com.house.digital.projetointegrador.repository.OpportunityRepository;
+import br.com.house.digital.projetointegrador.service.exceptions.UserForbiddenException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +65,12 @@ public class OpportunityService extends BaseServiceImpl<Opportunity, Long> {
 			.collect(Collectors.toList());
 	}
 
-	public List<ApplicantProfileDTO> findAppliedUsersByOpportunityId(Long id) {
-		final List<Profile> users = findById(id).getAppliedUsers();
+	public List<ApplicantProfileDTO> findAppliedUsersByOpportunityId(Long id, User user) {
+		final Opportunity opportunity = findById(id);
+		if (!opportunity.getCompanyId().equals(user.getProfileId())) {
+			throw new UserForbiddenException("Resource access is not authorized for this user.");
+		}
+		final List<Profile> users = opportunity.getAppliedUsers();
 		return users.stream().map(u -> this.modelMapper.map(u, ApplicantProfileDTO.class)).collect(Collectors.toList());
 	}
 

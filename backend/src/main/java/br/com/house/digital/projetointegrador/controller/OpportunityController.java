@@ -57,8 +57,8 @@ public class OpportunityController extends BaseController<Opportunity, Opportuni
     }
 
     @GetMapping(value = "/{id}/applied")
-    public ResponseEntity<List<ApplicantProfileDTO>> findAppliedUsersByOpportunityId(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findAppliedUsersByOpportunityId(id));
+    public ResponseEntity<List<ApplicantProfileDTO>> findAppliedUsersByOpportunityId(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(service.findAppliedUsersByOpportunityId(id, user));
     }
 
 
