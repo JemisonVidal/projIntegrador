@@ -23,7 +23,7 @@ const UserLogin = () => {
   async function login(email, senha) {
     const { url, options } = USER_LOGIN({
       email: email.value,
-      password: senha.value,
+      password: senha.value
     });
     return await request(url, options);
   }
@@ -55,6 +55,7 @@ const UserLogin = () => {
             namelabel="Email"
             type="email"
             placeholder="Email"
+            className="form-register-login"
             required
             {...email}
           />
@@ -62,6 +63,7 @@ const UserLogin = () => {
             namelabel="Senha"
             type="password"
             placeholder="Senha"
+            className="form-register-login"
             required
             {...senha}
           />
@@ -72,7 +74,8 @@ const UserLogin = () => {
           />
           {loading ? (
             <Button id="entrarBtn" variant="primary" disabled>
-              <Spinner className="spinner-login"
+              <Spinner
+                className="spinner-login"
                 as="span"
                 animation="border"
                 size="sm"
