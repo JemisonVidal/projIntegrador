@@ -1,14 +1,23 @@
 package br.com.house.digital.projetointegrador.dto.profile;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UpdateAvatarDTO {
 
-    @URL String imgSrc;
-    @Length(max = 100) String name;
-    @Length(max = 50) String title;
+    @URL
+    private String imgSrc;
+    @Length(max = 100)
+    private String name;
+    @Length(max = 50)
+    private String title;
 
 }
