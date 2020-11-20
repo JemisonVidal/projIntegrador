@@ -1,8 +1,10 @@
 package br.com.house.digital.projetointegrador.controller;
 
 import br.com.house.digital.projetointegrador.annotation.WithMockCustomUser;
+import br.com.house.digital.projetointegrador.controller.exception.ControllerExceptionHandler;
 import br.com.house.digital.projetointegrador.dto.opportunity.NewOpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.opportunity.OpportunityDTO;
+import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
 import br.com.house.digital.projetointegrador.model.Opportunity;
 import br.com.house.digital.projetointegrador.model.Requirement;
 import br.com.house.digital.projetointegrador.model.User;
@@ -12,15 +14,16 @@ import br.com.house.digital.projetointegrador.security.JWTAuthenticationEntryPoi
 import br.com.house.digital.projetointegrador.security.JWTRequestFilter;
 import br.com.house.digital.projetointegrador.security.JWTUtil;
 import br.com.house.digital.projetointegrador.security.WebSecurityConfig;
+import br.com.house.digital.projetointegrador.service.exceptions.ObjectNotFoundException;
 import br.com.house.digital.projetointegrador.service.impl.OpportunityService;
 import br.com.house.digital.projetointegrador.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -31,15 +34,16 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -48,18 +52,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@SpringJUnitWebConfig
 @ActiveProfiles({"test"})
-@WebMvcTest(controllers = AuthenticationController.class)
+@WebMvcTest(controllers = OpportunityController.class)
 @Import(OpportunityController.class)
-@AutoConfigureMockMvc
 @WithMockCustomUser(type = UserType.COMPANY)
 @ContextConfiguration(classes = {
     JWTAuthenticationEntryPoint.class,
     WebSecurityConfig.class,
     JWTRequestFilter.class,
     JWTUtil.class,
-    ModelMapper.class
+    ModelMapper.class,
+    ControllerExceptionHandler.class
 })
 public class OpportunityControllerTest {
 
@@ -76,18 +80,16 @@ public class OpportunityControllerTest {
 
     @Test
     @DisplayName("Should create an opportunity successfully and return status 201")
+    @WithMockCustomUser(type = UserType.COMPANY)
     void createOpportunityTest() throws Exception {
-        List<Requirement> requirements = new ArrayList<>();
-        requirements.add(Requirement.builder()
-            .name("Requerimento")
-            .knowledgeLevel(KnowledgeLevel.BASIC)
-            .build());
-
         NewOpportunityDTO dto = NewOpportunityDTO.builder()
             .name("Vaga para teste")
             .location("São Paulo, SP")
             .description("Descrição da vaga")
-            .requirements(requirements)
+            .requirements(Collections.singletonList(Requirement.builder()
+                .name("Requerimento")
+                .knowledgeLevel(KnowledgeLevel.BASIC)
+                .build()))
             .build();
 
         Opportunity opportunity = Opportunity.builder()
@@ -100,42 +102,61 @@ public class OpportunityControllerTest {
         when(opportunityService.convertToEntity(any(NewOpportunityDTO.class))).thenReturn(opportunity);
         when(opportunityService.save(any(Opportunity.class))).thenReturn(opportunity);
 
-        String json = objectMapper.writeValueAsString(dto);
-
         RequestBuilder request = post("/v1/api/opportunity")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
-            .content(json);
+            .content(objectMapper.writeValueAsString(dto));
 
         MockHttpServletResponse response = mvc.perform(request)
             .andExpect(status().isCreated())
             .andReturn()
             .getResponse();
 
-        verify(opportunityService, times(1)).save(any(Opportunity.class));
+        verify(opportunityService, times(1)).save(opportunity);
         assertThat(response.getHeader("Location")).isEqualTo("http://localhost/v1/api/opportunity/1");
     }
 
-    @Test
+    @ParameterizedTest
+    @NullAndEmptySource
     @DisplayName("Should not create on invalid input and return status 400")
-    void createInvalidOpportunityTest() throws Exception {
+    void createInvalidOpportunityTest(String string) throws Exception {
         NewOpportunityDTO dto = NewOpportunityDTO.builder()
-            .name("")
-            .description("")
+            .name(string)
+            .description(string)
             .requirements(null)
             .build();
-
-        String json = objectMapper.writeValueAsString(dto);
 
         RequestBuilder request = post("/v1/api/opportunity")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
-            .content(json);
+            .content(objectMapper.writeValueAsString(dto));
 
         mvc.perform(request)
-            .andExpect(status().isBadRequest())
-            .andReturn()
-            .getResponse();
+            .andExpect(status().isBadRequest());
+
+        verify(opportunityService, never()).save(any(Opportunity.class));
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @DisplayName("Should not create on invalid requirement and return status 400")
+    void createInvalidRequirementOpportunityTest(String name) throws Exception {
+        NewOpportunityDTO dto = NewOpportunityDTO.builder()
+            .name("Teste")
+            .description("Teste")
+            .requirements(Collections.singletonList(Requirement.builder()
+                .name(name)
+                .knowledgeLevel(KnowledgeLevel.BASIC)
+                .build()))
+            .build();
+
+        RequestBuilder request = post("/v1/api/opportunity")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(dto));
+
+        mvc.perform(request)
+            .andExpect(status().isBadRequest());
 
         verify(opportunityService, never()).save(any(Opportunity.class));
     }
@@ -144,25 +165,18 @@ public class OpportunityControllerTest {
     @DisplayName("Should apply user to opportunity and return status 204")
     @WithMockCustomUser
     void applyToOpportunityTest() throws Exception {
-        RequestBuilder request = post("/v1/api/opportunity/1/apply")
-            .accept(MediaType.APPLICATION_JSON);
-
-        mvc.perform(request)
+        mvc.perform(post("/v1/api/opportunity/1/apply"))
             .andExpect(status().isNoContent());
-
+        doNothing().when(opportunityService).apply(anyLong(), any(User.class));
         verify(opportunityService, times(1)).apply(anyLong(), any(User.class));
     }
 
     @Test
-    @DisplayName("Should apply company to opportunity and return status 403")
+    @DisplayName("Should not apply company to opportunity and return status 403")
     @WithMockCustomUser(type = UserType.COMPANY)
     void applyCompanyToOpportunityTest() throws Exception {
-        RequestBuilder request = post("/v1/api/opportunity/1/apply")
-            .accept(MediaType.APPLICATION_JSON);
-
-        mvc.perform(request)
+        mvc.perform(post("/v1/api/opportunity/1/apply"))
             .andExpect(status().isForbidden());
-
         verify(opportunityService, never()).apply(anyLong(), any(User.class));
     }
 
@@ -172,12 +186,24 @@ public class OpportunityControllerTest {
         Long id = 1L;
         Opportunity opportunity = Opportunity.builder().id(id).build();
         when(opportunityService.findById(id)).thenReturn(opportunity);
-        when(opportunityService.convertFromEntity(opportunity, OpportunityDTO.class)).thenReturn(new OpportunityDTO());
+        when(opportunityService.mapDTO(opportunity)).thenReturn(OpportunityDTO.builder().id(id).build());
         RequestBuilder request = get("/v1/api/opportunity/1")
             .accept(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("id", is(1)));
+    }
+
+    @Test
+    @DisplayName("Should return 404 on id not found")
+    void findById404Test() throws Exception {
+        when(opportunityService.findById(anyLong())).thenThrow(new ObjectNotFoundException("Object not found with id: 1"));
+        RequestBuilder request = get("/v1/api/opportunity/1")
+            .accept(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request)
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -187,16 +213,14 @@ public class OpportunityControllerTest {
         OpportunityDTO opportunityDTO = OpportunityDTO.builder().name(opportunity.getName()).build();
         Page<Opportunity> opportunities = new PageImpl<>(Arrays.asList(opportunity, opportunity));
         when(opportunityService.findAll(any(Pageable.class))).thenReturn(opportunities);
-        when(opportunityService.convertFromEntity(any(Opportunity.class), any())).thenReturn(opportunityDTO);
+        when(opportunityService.mapDTO(any(Opportunity.class))).thenReturn(opportunityDTO);
 
         RequestBuilder request = get("/v1/api/opportunity/")
             .accept(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.numberOfElements", is(2)))
-            .andReturn()
-            .getResponse();
+            .andExpect(jsonPath("$.numberOfElements", is(2)));
     }
 
     @Test
@@ -211,7 +235,33 @@ public class OpportunityControllerTest {
 
         mvc.perform(request)
             .andExpect(status().isOk())
-            .andReturn()
-            .getResponse();
+            .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    @DisplayName("Should return list of applied users in opportunity")
+    void findAppliedUsersByOpportunityIdTest() throws Exception {
+        ApplicantProfileDTO dto = ApplicantProfileDTO.builder().id(1L).name("Boba Fett").build();
+        when(opportunityService.findAppliedUsersByOpportunityId(anyLong(), any(User.class))).thenReturn(Arrays.asList(dto, dto));
+        mvc.perform(get("/v1/api/opportunity/1/applied").accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    @DisplayName("Should return list of applied opportunities for the profile")
+    void findAppliedOpportunitiesByProfileIdTest() throws Exception {
+        final OpportunityDTO dto = OpportunityDTO.builder().id(1L).name("Pod Racer").build();
+        when(opportunityService.findAppliedOpportunitiesByProfileId(anyLong())).thenReturn(Arrays.asList(dto, dto));
+        mvc.perform(get("/v1/api/opportunity/applied?id=1").accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    @DisplayName("Should return bad request when id param is missing")
+    void findAppliedOpportunitiesByProfileIdNoParamTest() throws Exception {
+        mvc.perform(get("/v1/api/opportunity/applied"))
+            .andExpect(status().isBadRequest());
     }
 }
