@@ -71,10 +71,9 @@ const AddOpportunity = (props) => {
     if (response?.ok) {
       setMessageSucess(true);
       setData({ active: true });
-      setTimeout(() => {
-        setMessageSucess(false);
-        history.push("/listOpportunity");
-      }, 3000);
+      const location = response.headers.get("Location");
+      const codigoVaga = location.substring(42, location.length);
+      history.push(`/opportunity/${codigoVaga}`);
     } else {
       setError(json);
     }
