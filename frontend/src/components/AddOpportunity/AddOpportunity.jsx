@@ -40,7 +40,7 @@ const AddOpportunity = (props) => {
   );
 
   const renderModal = () => (
-    <Modal show={() => setShowModal(true)} onHide={() => setShowModal(false)}>
+    <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>
         <Modal.Header>Adicionar requisito</Modal.Header>
       </Modal.Header>
@@ -146,6 +146,7 @@ const AddOpportunity = (props) => {
             <Card.Title className="d-flex justify-content-between align-items-center">
               Requisitos {renderAddButton()}
             </Card.Title>
+            {renderModal()}
             <Button type="submit" variant="primary">
               Salvar
             </Button>{" "}
