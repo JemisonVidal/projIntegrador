@@ -206,7 +206,7 @@ const List = ({
   const renderAddButton = () => (
     <Button
       variant="outline-primary"
-      className="btn-profile-add"
+      className="btn-profile-add mb-1"
       onClick={() => setShowModal(true)}
     >
       <i className="fas fa-plus mr-1"></i>

@@ -16,6 +16,7 @@ import AboutUs from "../pages/AboutUs/AboutUs";
 import Contacts from "../pages/Contacts/Contacts";
 import Terms from "../pages/Terms/Terms";
 import "./App.css";
+import AddOpportunity from "../pages/AddOpportunity/AddOpportunity";
 
 const PagesRoot = () => (
   <div className="app">
@@ -32,6 +33,7 @@ const PagesRoot = () => (
           <RoutesPrivate path="/applicant" component={Applicant} />
           <RoutesPrivate path="/aboutus" component={AboutUs} />
           <RoutesPrivate path="/contacts" component={Contacts} />
+          <RoutesPrivate path="/addOpportunity" component={AddOpportunity} />
         </Switch>
       </StoreProvider>
     </BrowserRouter>
