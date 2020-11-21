@@ -1,16 +1,22 @@
 package br.com.house.digital.projetointegrador.dto.authentication;
 
 import lombok.AllArgsConstructor;
-import lombok.Value;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
-@Value
+@Data
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class LoginDTO {
 
-    @NotBlank String email;
+    @NotBlank
+    private String email;
 
-    @NotBlank String password;
+    @NotBlank
+    private String password;
 
 }
