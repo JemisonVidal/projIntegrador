@@ -3,16 +3,7 @@ import { Card, Col, Form, Row, Button } from "react-bootstrap";
 
 const AddOpportunity = (props) => {
   const [validated, setValidated] = useState(false);
-  const [data, setData] = useState({
-    name: null,
-    location: null,
-    description: null,
-    benefits: null,
-    salary: null,
-    text: null,
-    active: false,
-    requirements: []
-  });
+  const [data, setData] = useState({});
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
