@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Card, Col, Form, Row, Button } from "react-bootstrap";
 
 const AddOpportunity = (props) => {
