@@ -3,6 +3,7 @@ import { useHistory, Link } from "react-router-dom";
 import StoreContext from "../../components/Store/Context";
 import { Form, Button, Spinner } from "react-bootstrap";
 import logo from "../../assets/images/LogoRecruIT.png";
+import eye from "../../assets/images/eye-solid.svg";
 import Input from "../Input/Input";
 import Checkbox from "../Checkbox/Checkbox";
 import useFetch from "../../Hooks/useFetch";
