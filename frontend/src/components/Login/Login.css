@@ -85,6 +85,15 @@
     width: 10vw;
   }
 
+  .container-box-login {
+    color: var(--color-primary-dark);
+    background: linear-gradient(
+      var(--color-primary-dark),
+      var(--color-primary)
+    );
+    background-size: 180%;
+  }
+
   .container-box-login h2 {
     color: var(--color-primary-dark);
   }

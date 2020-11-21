@@ -67,6 +67,15 @@
 }
 
 @media (min-width: 576px) {
+  .container-box {
+    color: var(--color-primary-dark);
+    background: linear-gradient(
+      var(--color-primary-dark),
+      var(--color-primary)
+    );
+    background-size: 180%;
+  }
+
   .titulo-registro {
     color: #27187e;
     text-align: justify;

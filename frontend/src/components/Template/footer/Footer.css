@@ -83,3 +83,12 @@
     text-align: right;
   }
 }
+
+@media (min-width: 900px) {
+  .col-footer-logo {
+    text-align: right;
+  }
+  .col-footer-direitos {
+    text-align: right;
+  }
+}
