@@ -46,12 +46,12 @@
 }
 
 .about-us {
-  padding: 30px 30px;
+  padding: 30px 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 30px;
+  gap: 50px;
 }
 
 .cards {
@@ -64,6 +64,10 @@
 
 .card-body {
   padding: 0.7rem;
+}
+
+.about-us > .card-img-top {
+  max-width: 450px;
 }
 
 @media (min-width: 768px) {

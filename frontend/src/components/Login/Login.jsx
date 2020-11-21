@@ -3,6 +3,7 @@ import { useHistory, Link } from "react-router-dom";
 import StoreContext from "../../components/Store/Context";
 import { Form, Button, Spinner } from "react-bootstrap";
 import logo from "../../assets/images/LogoRecruIT.png";
+import eye from "../../assets/images/eye-solid.svg";
 import Input from "../Input/Input";
 import Checkbox from "../Checkbox/Checkbox";
 import useFetch from "../../Hooks/useFetch";
@@ -23,7 +24,7 @@ const UserLogin = () => {
   async function login(email, senha) {
     const { url, options } = USER_LOGIN({
       email: email.value,
-      password: senha.value,
+      password: senha.value
     });
     return await request(url, options);
   }
@@ -55,6 +56,7 @@ const UserLogin = () => {
             namelabel="Email"
             type="email"
             placeholder="Email"
+            className="form-register-login"
             required
             {...email}
           />
@@ -62,6 +64,7 @@ const UserLogin = () => {
             namelabel="Senha"
             type="password"
             placeholder="Senha"
+            className="form-register-login"
             required
             {...senha}
           />
@@ -72,7 +75,8 @@ const UserLogin = () => {
           />
           {loading ? (
             <Button id="entrarBtn" variant="primary" disabled>
-              <Spinner className="spinner-login"
+              <Spinner
+                className="spinner-login"
                 as="span"
                 animation="border"
                 size="sm"

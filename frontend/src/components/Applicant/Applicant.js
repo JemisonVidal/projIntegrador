@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import Main from "../../components/Template/main/Main";
 import useFetch from "../../Hooks/useFetch";
 import PaginationPage from "../Pagination/Pagination";
+import womanLogo from "../../assets/images/businesswoman-blue.svg";
 import { GET_ALL_APPLICANT } from "../../APIs/profileAPI";
 import "./Applicant.css";
 
@@ -36,6 +37,8 @@ const Applicant = () => {
       setTotalPages(json.totalPages);
     }
   }
+
+  console.log(applicants);
 
   useEffect(() => {
     window.scrollTo({
@@ -82,7 +85,11 @@ const Applicant = () => {
             <Card>
               <Card.Body>
                 <div className="container-card-perfil">
-                  <img src={applicant.imgSrc} />
+                  {(applicant.imgSrc == null) | (applicant.imgSrc == "") ? (
+                    <img src={womanLogo} />
+                  ) : (
+                    <img src={applicant.imgSrc} />
+                  )}
                   <Card.Title className="title-applicant-search">
                     {applicant.name}
                   </Card.Title>

@@ -10,7 +10,10 @@
   align-items: center;
   min-height: 100vh;
   width: 100vw;
-  background-image: linear-gradient(#27187e, #758bfd);
+  background: url("../../assets/images/Logo2\ RecruIT\ FullOpacity.png") -15% 70%
+      no-repeat,
+    linear-gradient(var(--color-primary-dark), var(--color-primary));
+  background-size: 180%;
 }
 
 .container-image-background-cadastro {
@@ -59,11 +62,25 @@
   height: 530px;
 }
 
+.form-box > Input {
+  width: 100%;
+}
+
 @media (min-width: 576px) {
+  .container-box {
+    color: var(--color-primary-dark);
+    background: linear-gradient(
+      var(--color-primary-dark),
+      var(--color-primary)
+    );
+    background-size: 180%;
+  }
+
   .titulo-registro {
     color: #27187e;
     text-align: justify;
   }
+
   .form-box {
     background-color: white;
     box-shadow: 1px 5px 30px black;
