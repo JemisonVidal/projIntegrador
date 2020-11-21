@@ -30,3 +30,11 @@ export function POST_APPLY(id) {
     method: "POST"
   });
 }
+
+export function CREATE_OPPORTUNITY(body) {
+  return requestOptions({
+    url: `/opportunity`,
+    method: "POST",
+    body
+  });
+}

@@ -11,7 +11,9 @@ const ModalForm = ({
   onHide,
   onSubmit,
   values,
-  error
+  error,
+  list,
+  setList
 }) => {
   const [validated, setValidated] = useState(false);
   const [data, setData] = useState({});
@@ -34,7 +36,12 @@ const ModalForm = ({
     if (form.checkValidity() === false) {
       return event.stopPropagation();
     }
-    onSubmit(data);
+    if (onSubmit) {
+      onSubmit(data);
+    } else {
+      setList([...list, data]);
+      handleOnHide();
+    }
   };
 
   useEffect(() => {
