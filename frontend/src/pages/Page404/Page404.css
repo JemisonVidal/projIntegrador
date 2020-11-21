@@ -1,0 +1,11 @@
+.paginaErro {
+  color: white;
+  text-align: center;
+  width: 60%;
+  margin: 0 auto;
+  padding: 25% 0 0 0;
+}
+
+.buttonHome404 {
+  background-color: var(--color-primary-dark);
+}

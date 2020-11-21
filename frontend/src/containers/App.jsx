@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import StoreProvider from "../components/Store/Provider";
 import RoutesPrivate from "../Routes/PrivateRoute";
 import Home from "../pages/Home/Home";
@@ -14,6 +14,7 @@ import Company from "../pages/Company/Company";
 import Applicant from "../pages/Applicant/Applicant";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import Contacts from "../pages/Contacts/Contacts";
+import Page404 from "../pages/Page404/Page404";
 import Terms from "../pages/Terms/Terms";
 import "./App.css";
 
@@ -32,6 +33,8 @@ const PagesRoot = () => (
           <RoutesPrivate path="/applicant" component={Applicant} />
           <RoutesPrivate path="/aboutus" component={AboutUs} />
           <RoutesPrivate path="/contacts" component={Contacts} />
+          <RoutesPrivate path="/404" component={Page404} />
+          <Redirect to="/404" />
         </Switch>
       </StoreProvider>
     </BrowserRouter>
