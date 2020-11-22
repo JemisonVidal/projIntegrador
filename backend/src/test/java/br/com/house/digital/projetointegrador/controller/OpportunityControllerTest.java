@@ -101,8 +101,7 @@ public class OpportunityControllerTest {
             .id(1L)
             .build();
 
-        when(opportunityService.convertToEntity(any(NewOpportunityDTO.class))).thenReturn(opportunity);
-        when(opportunityService.save(any(Opportunity.class))).thenReturn(opportunity);
+        when(opportunityService.save(any(NewOpportunityDTO.class), any(User.class))).thenReturn(opportunity);
 
         RequestBuilder request = post(URL_PREFIX)
             .contentType(MediaType.APPLICATION_JSON)
@@ -114,7 +113,7 @@ public class OpportunityControllerTest {
             .andReturn()
             .getResponse();
 
-        verify(opportunityService, times(1)).save(opportunity);
+        verify(opportunityService, times(1)).save(any(NewOpportunityDTO.class), any(User.class));
         assertThat(response.getHeader("Location")).isEqualTo("http://localhost" + URL_PREFIX + "/1");
     }
 
@@ -292,5 +291,36 @@ public class OpportunityControllerTest {
         mvc.perform(patch(URL_PREFIX + "/1/active"))
             .andExpect(status().isForbidden());
         verify(opportunityService).toggleActive(1L);
+    }
+
+    @Test
+    @DisplayName("Should patch and return status 200")
+    void patchByIdTest() throws Exception {
+        NewOpportunityDTO dto = NewOpportunityDTO.builder()
+            .name("Vaga para teste")
+            .location("São Paulo, SP")
+            .description("Descrição da vaga")
+            .requirements(Collections.singletonList(Requirement.builder()
+                .name("Requerimento")
+                .knowledgeLevel(KnowledgeLevel.BASIC)
+                .build()))
+            .build();
+
+        Opportunity opportunity = Opportunity.builder()
+            .name(dto.getName())
+            .location(dto.getLocation())
+            .description(dto.getDescription())
+            .requirements(dto.getRequirements())
+            .id(1L)
+            .build();
+
+        when(opportunityService.patch(anyLong(), any(NewOpportunityDTO.class))).thenReturn(opportunity);
+
+        mvc.perform(patch(URL_PREFIX + "/1")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isOk());
+
     }
 }

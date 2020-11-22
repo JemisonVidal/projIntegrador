@@ -29,9 +29,7 @@ public class OpportunityController extends BaseController<Opportunity, Opportuni
     @PostMapping
     public ResponseEntity<Void> create(@Valid @RequestBody NewOpportunityDTO newOpportunityDTO,
                                        @AuthenticationPrincipal User user) {
-        final Opportunity opportunity = this.service.convertToEntity(newOpportunityDTO);
-        opportunity.setCompany(user.getProfile());
-        final Opportunity created = this.service.save(opportunity);
+        final Opportunity created = this.service.save(newOpportunityDTO, user);
         URI uri = ServletUriComponentsBuilder
             .fromCurrentRequest()
             .path("/{id}")
@@ -71,6 +69,12 @@ public class OpportunityController extends BaseController<Opportunity, Opportuni
     public ResponseEntity<Void> toggleActive(@PathVariable Long id) {
         service.toggleActive(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<OpportunityDTO> patchOpportunityById(@PathVariable Long id, @Valid @RequestBody NewOpportunityDTO dto) {
+        Opportunity opportunity = service.patch(id, dto);
+        return ResponseEntity.ok(this.mapDTO(opportunity));
     }
 
     @Override

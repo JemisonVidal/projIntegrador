@@ -1,5 +1,6 @@
 package br.com.house.digital.projetointegrador.service.impl;
 
+import br.com.house.digital.projetointegrador.dto.opportunity.NewOpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.opportunity.OpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
 import br.com.house.digital.projetointegrador.model.Opportunity;
@@ -15,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +26,21 @@ public class OpportunityService extends BaseServiceImpl<Opportunity, Long> {
 	private final OpportunityRepository opportunityRepository;
 
 	@Autowired
-    public OpportunityService(OpportunityRepository opportunityRepository,
+	public OpportunityService(OpportunityRepository opportunityRepository,
 							  ModelMapper modelMapper) {
-        super(opportunityRepository, modelMapper, Opportunity.class);
+		super(opportunityRepository, modelMapper, Opportunity.class);
 		this.opportunityRepository = opportunityRepository;
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		modelMapper.typeMap(NewOpportunityDTO.class, Opportunity.class)
+			.addMappings(mapper -> mapper.skip(Opportunity::setRequirements));
+	}
+
+	@Transactional
+	public Opportunity save(NewOpportunityDTO dto, User user) {
+		Opportunity opportunity = this.convertToEntity(dto);
+		opportunity.setCompany(user.getProfile());
+		super.replaceList(dto.getRequirements(), opportunity.getRequirements());
+		return super.save(opportunity);
 	}
 
 	public void apply(Long id, User user) {
@@ -37,16 +49,18 @@ public class OpportunityService extends BaseServiceImpl<Opportunity, Long> {
 		save(opportunity);
 	}
 
-	public OpportunityDTO mapDTO (Opportunity opportunity) {
-    	OpportunityDTO dto = super.convertFromEntity(opportunity, OpportunityDTO.class);
-    	dto.setIsApplied(isApplied(opportunity.getId()));
-    	return dto;
+	public OpportunityDTO mapDTO(Opportunity opportunity) {
+		OpportunityDTO dto = super.convertFromEntity(opportunity, OpportunityDTO.class);
+		dto.setIsApplied(isApplied(opportunity.getId()));
+		return dto;
 	}
 
 	public Boolean isApplied(Long id) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null &&
-			authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(UserType.APPLICANT.name()))) {
+			authentication.getAuthorities()
+				.stream()
+				.anyMatch(a -> a.getAuthority().equals(UserType.APPLICANT.name()))) {
 			final User user = (User) authentication.getPrincipal();
 			return opportunityRepository.existsByIdAndAppliedUsers_Id(id, user.getProfileId());
 		}
@@ -85,4 +99,14 @@ public class OpportunityService extends BaseServiceImpl<Opportunity, Long> {
 		opportunity.setActive(!opportunity.getActive());
 		this.save(opportunity);
 	}
+
+	@Transactional
+	public Opportunity patch(Long id, NewOpportunityDTO partial) {
+		Opportunity opportunity = this.findByIdAndCheckOwner(id);
+		if (partial.getRequirements() != null) {
+			replaceList(partial.getRequirements(), opportunity.getRequirements());
+		}
+		return super.patch(partial, opportunity);
+	}
+
 }

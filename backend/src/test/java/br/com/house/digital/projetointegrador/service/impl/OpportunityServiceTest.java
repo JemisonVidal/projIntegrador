@@ -1,10 +1,13 @@
 package br.com.house.digital.projetointegrador.service.impl;
 
 import br.com.house.digital.projetointegrador.annotation.WithMockCustomUser;
+import br.com.house.digital.projetointegrador.dto.opportunity.NewOpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.opportunity.OpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
 import br.com.house.digital.projetointegrador.model.Opportunity;
+import br.com.house.digital.projetointegrador.model.Requirement;
 import br.com.house.digital.projetointegrador.model.User;
+import br.com.house.digital.projetointegrador.model.enums.KnowledgeLevel;
 import br.com.house.digital.projetointegrador.model.enums.UserType;
 import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
 import br.com.house.digital.projetointegrador.model.profile.CompanyProfile;
@@ -21,10 +24,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -56,8 +56,37 @@ class OpportunityServiceTest {
             .name("Pod Racing Pilot")
             .company(company)
             .appliedUsers(new ArrayList<>())
+            .requirements(new ArrayList<>())
             .active(true)
             .build();
+    }
+
+    @Test
+    @DisplayName("Should save new opportunity")
+    void saveOpportunityTest() {
+        NewOpportunityDTO dto = NewOpportunityDTO.builder()
+            .name("Vaga para teste")
+            .location("São Paulo, SP")
+            .description("Descrição da vaga")
+            .requirements(Collections.singletonList(Requirement.builder()
+                .name("Requerimento")
+                .knowledgeLevel(KnowledgeLevel.BASIC)
+                .build()))
+            .build();
+        User user = User.builder()
+            .profile(CompanyProfile.builder().id(1L).build())
+            .build();
+
+        given(opportunityRepository.save(any(Opportunity.class))).willAnswer(invocation -> invocation.getArguments()[0]);
+
+        Opportunity created = opportunityService.save(dto, user);
+
+        assertThat(created.getName()).isEqualTo(dto.getName());
+        assertThat(created.getLocation()).isEqualTo(dto.getLocation());
+        assertThat(created.getDescription()).isEqualTo(dto.getDescription());
+        assertThat(created.getRequirements()).isEqualTo(dto.getRequirements());
+        assertThat(created.getCompanyId()).isEqualTo(user.getProfileId());
+        verify(opportunityRepository).save(any(Opportunity.class));
     }
 
     @Test
@@ -157,5 +186,37 @@ class OpportunityServiceTest {
         opportunityService.toggleActive(opportunity.getId());
         assertThat(opportunity.getActive()).isFalse();
         verify(opportunityRepository).save(opportunity);
+    }
+
+    @Test
+    @DisplayName("Should update opportunity")
+    @WithMockCustomUser(type = UserType.COMPANY)
+    void patchByIdTest() {
+        given(opportunityRepository.findById(anyLong())).willReturn(Optional.of(opportunity));
+        given(opportunityRepository.save(any(Opportunity.class))).willAnswer(invocation -> invocation.getArguments()[0]);
+        NewOpportunityDTO dto = NewOpportunityDTO.builder()
+            .name("Cyberspace Security Analyst")
+            .build();
+        Opportunity updated = opportunityService.patch(this.opportunity.getId(), dto);
+        assertThat(updated.getName()).isEqualTo(dto.getName());
+        verify(opportunityRepository).save(any(Opportunity.class));
+    }
+
+    @Test
+    @DisplayName("Should update opportunity and requirements list")
+    @WithMockCustomUser(type = UserType.COMPANY)
+    void patchByIdWithRequirementsTest() {
+        given(opportunityRepository.findById(anyLong())).willReturn(Optional.of(opportunity));
+        given(opportunityRepository.save(any(Opportunity.class))).willAnswer(invocation -> invocation.getArguments()[0]);
+        NewOpportunityDTO dto = NewOpportunityDTO.builder()
+            .name("Cyberspace Security Analyst")
+            .requirements(Collections.singletonList(Requirement.builder()
+                .name("Requerimento")
+                .knowledgeLevel(KnowledgeLevel.BASIC)
+                .build()))
+            .build();
+        Opportunity updated = opportunityService.patch(this.opportunity.getId(), dto);
+        assertThat(updated.getRequirements()).isEqualTo(dto.getRequirements());
+        verify(opportunityRepository).save(any(Opportunity.class));
     }
 }
