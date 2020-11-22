@@ -40,7 +40,7 @@ public class OpportunityController extends BaseController<Opportunity, Opportuni
         return ResponseEntity.created(uri).build();
     }
 
-    @GetMapping(value = "/applied")
+    @GetMapping("/applied")
     public ResponseEntity<List<OpportunityDTO>> findAppliedOpportunitiesByProfileId(@RequestParam Long id) {
         return ResponseEntity.ok(service.findAppliedOpportunitiesByProfileId(id));
     }
@@ -56,9 +56,15 @@ public class OpportunityController extends BaseController<Opportunity, Opportuni
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/{id}/applied")
+    @GetMapping("/{id}/applied")
     public ResponseEntity<List<ApplicantProfileDTO>> findAppliedUsersByOpportunityId(@PathVariable Long id, @AuthenticationPrincipal User user) {
         return ResponseEntity.ok(service.findAppliedUsersByOpportunityId(id, user));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Override

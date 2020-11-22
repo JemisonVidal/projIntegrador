@@ -30,6 +30,8 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles({"test"})
@@ -133,5 +135,15 @@ class OpportunityServiceTest {
             .profile(CompanyProfile.builder().id(2L).build())
             .build()));
         assertThat(exception).isInstanceOf(UserForbiddenException.class);
+    }
+
+    @Test
+    @DisplayName("Should delete opportunity by existing id")
+    void deleteByIdTest() {
+        given(opportunityRepository.findById(anyLong())).willReturn(Optional.of(opportunity));
+        doNothing().when(opportunityRepository).delete(any(Opportunity.class));
+        opportunityService.deleteById(opportunity.getId());
+        verify(opportunityRepository).findById(opportunity.getId());
+        verify(opportunityRepository).delete(opportunity);
     }
 }
