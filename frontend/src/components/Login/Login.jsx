@@ -1,7 +1,13 @@
 import React, { useState, useContext } from "react";
 import { useHistory, Link } from "react-router-dom";
 import StoreContext from "../../components/Store/Context";
-import { Form, Button, Spinner } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Spinner,
+  InputGroup,
+  FormControl
+} from "react-bootstrap";
 import logo from "../../assets/images/LogoRecruIT.png";
 import Input from "../Input/Input";
 import Checkbox from "../Checkbox/Checkbox";
@@ -23,7 +29,7 @@ const UserLogin = () => {
   async function login(email, senha) {
     const { url, options } = USER_LOGIN({
       email: email.value,
-      password: senha.value,
+      password: senha.value
     });
     return await request(url, options);
   }
@@ -72,7 +78,8 @@ const UserLogin = () => {
           />
           {loading ? (
             <Button id="entrarBtn" variant="primary" disabled>
-              <Spinner className="spinner-login"
+              <Spinner
+                className="spinner-login"
                 as="span"
                 animation="border"
                 size="sm"

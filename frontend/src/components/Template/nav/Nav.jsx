@@ -45,7 +45,7 @@ const NavBar = () => {
                 >
                   <div className="avatar-div">
                     <Image id="image-avatar" className="avatar" src={avatar} />
-                    <p className="eu-avatar">Eu</p>
+                    <p className="eu-avatar">Meu Perfil</p>
                   </div>
                 </Dropdown.Toggle>
 

@@ -12,10 +12,11 @@ import PaginationPage from "../Pagination/Pagination";
 import { GET_LIST_OPPORTUNITY, GET_MY_OPPORTUNITY } from "../../APIs/APIs";
 import { Link } from "react-router-dom";
 import StoreContext from "../../components/Store/Context";
-import "./ListOpportunity.css";
 import { currencyFormatter } from "../../utils/formatters";
 import { skillMap } from "../../utils/skills";
 import { MY_OPPORTUNITYS } from "./listEnum";
+
+import "./ListOpportunity.css";
 
 const ListOpportunity = ({ type }) => {
   const [totalPages, setTotalPages] = useState(0);
@@ -134,7 +135,7 @@ const ListOpportunity = ({ type }) => {
                   variant="primary"
                   type="button"
                 >
-                  {opportunity.isApplied ? "Candidatada" : "Candidatar-se"}
+                  {opportunity.isApplied ? "Candidatada" : "Ver Oportunidade"}
                 </Button>
               </Link>
             </Card>

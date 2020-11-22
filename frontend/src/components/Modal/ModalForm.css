@@ -1,0 +1,8 @@
+@media (max-width: 600px) {
+  .labelModal {
+    display: block;
+  }
+  .groupModal > .inputModal {
+    width: 100%;
+  }
+}
