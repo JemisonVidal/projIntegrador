@@ -15,6 +15,7 @@ import br.com.house.digital.projetointegrador.security.JWTRequestFilter;
 import br.com.house.digital.projetointegrador.security.JWTUtil;
 import br.com.house.digital.projetointegrador.security.WebSecurityConfig;
 import br.com.house.digital.projetointegrador.service.exceptions.ObjectNotFoundException;
+import br.com.house.digital.projetointegrador.service.exceptions.UserForbiddenException;
 import br.com.house.digital.projetointegrador.service.impl.OpportunityService;
 import br.com.house.digital.projetointegrador.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -243,7 +244,7 @@ public class OpportunityControllerTest {
     @DisplayName("Should return list of applied users in opportunity")
     void findAppliedUsersByOpportunityIdTest() throws Exception {
         ApplicantProfileDTO dto = ApplicantProfileDTO.builder().id(1L).name("Boba Fett").build();
-        when(opportunityService.findAppliedUsersByOpportunityId(anyLong(), any(User.class))).thenReturn(Arrays.asList(dto, dto));
+        when(opportunityService.findAppliedUsersByOpportunityId(anyLong())).thenReturn(Arrays.asList(dto, dto));
         mvc.perform(get(URL_PREFIX + "/1/applied").accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(2)));
@@ -267,11 +268,29 @@ public class OpportunityControllerTest {
     }
 
     @Test
-    @DisplayName("Should delete opportunity given an id")
+    @DisplayName("Should return status 204 when delete is successful")
     void deleteOpportunityByIdTest() throws Exception {
         doNothing().when(opportunityService).deleteById(anyLong());
         mvc.perform(delete(URL_PREFIX + "/1"))
             .andExpect(status().isNoContent());
         verify(opportunityService).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("Should return status 204 when toggle active is successful")
+    void toggleActiveTest() throws Exception {
+        doNothing().when(opportunityService).toggleActive(anyLong());
+        mvc.perform(patch(URL_PREFIX + "/1/active"))
+            .andExpect(status().isNoContent());
+        verify(opportunityService).toggleActive(1L);
+    }
+
+    @Test
+    @DisplayName("Should return forbidden when user does not own the opportunity")
+    void userForbiddenTest() throws Exception {
+        doThrow(UserForbiddenException.class).when(opportunityService).toggleActive(anyLong());
+        mvc.perform(patch(URL_PREFIX + "/1/active"))
+            .andExpect(status().isForbidden());
+        verify(opportunityService).toggleActive(1L);
     }
 }

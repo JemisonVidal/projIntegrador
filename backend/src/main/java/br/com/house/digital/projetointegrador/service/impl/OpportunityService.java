@@ -65,13 +65,24 @@ public class OpportunityService extends BaseServiceImpl<Opportunity, Long> {
 			.collect(Collectors.toList());
 	}
 
-	public List<ApplicantProfileDTO> findAppliedUsersByOpportunityId(Long id, User user) {
-		final Opportunity opportunity = findById(id);
-		if (!opportunity.getCompanyId().equals(user.getProfileId())) {
-			throw new UserForbiddenException("Resource access is not authorized for this user.");
-		}
+	public List<ApplicantProfileDTO> findAppliedUsersByOpportunityId(Long id) {
+		final Opportunity opportunity = findByIdAndCheckOwner(id);
 		final List<Profile> users = opportunity.getAppliedUsers();
 		return users.stream().map(u -> this.modelMapper.map(u, ApplicantProfileDTO.class)).collect(Collectors.toList());
 	}
 
+	private Opportunity findByIdAndCheckOwner(Long id) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		final Opportunity opportunity = findById(id);
+		if (!opportunity.getCompanyId().equals(user.getProfileId())) {
+			throw new UserForbiddenException("Resource access is not authorized for this user.");
+		}
+		return opportunity;
+	}
+
+	public void toggleActive(Long id) {
+		Opportunity opportunity = this.findByIdAndCheckOwner(id);
+		opportunity.setActive(!opportunity.getActive());
+		this.save(opportunity);
+	}
 }

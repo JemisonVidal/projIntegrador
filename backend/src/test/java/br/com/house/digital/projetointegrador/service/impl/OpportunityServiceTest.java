@@ -5,6 +5,7 @@ import br.com.house.digital.projetointegrador.dto.opportunity.OpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
 import br.com.house.digital.projetointegrador.model.Opportunity;
 import br.com.house.digital.projetointegrador.model.User;
+import br.com.house.digital.projetointegrador.model.enums.UserType;
 import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
 import br.com.house.digital.projetointegrador.model.profile.CompanyProfile;
 import br.com.house.digital.projetointegrador.repository.OpportunityRepository;
@@ -55,6 +56,7 @@ class OpportunityServiceTest {
             .name("Pod Racing Pilot")
             .company(company)
             .appliedUsers(new ArrayList<>())
+            .active(true)
             .build();
     }
 
@@ -117,23 +119,22 @@ class OpportunityServiceTest {
 
     @Test
     @DisplayName("Should return list of applied user in the opportunity.")
+    @WithMockCustomUser(type = UserType.COMPANY)
     void findAppliedUsersByOpportunityIdTest() {
         opportunity.getAppliedUsers().add(ApplicantProfile.builder().id(1L).build());
         given(opportunityRepository.findById(anyLong())).willReturn(Optional.of(opportunity));
-        List<ApplicantProfileDTO> list = opportunityService.findAppliedUsersByOpportunityId(1L, User.builder()
-            .profile(company)
-            .build());
+        List<ApplicantProfileDTO> list = opportunityService.findAppliedUsersByOpportunityId(1L);
         assertThat(list).isNotNull();
         assertThat(list.size()).isEqualTo(1);
     }
 
     @Test
     @DisplayName("Should throw exception when opportunity does not belong to the user.")
+    @WithMockCustomUser(type = UserType.COMPANY)
     void findAppliedUsersByOpportunityIdForbiddenUserTest() {
         given(opportunityRepository.findById(anyLong())).willReturn(Optional.of(opportunity));
-        Throwable exception = catchThrowable(() -> opportunityService.findAppliedUsersByOpportunityId(1L, User.builder()
-            .profile(CompanyProfile.builder().id(2L).build())
-            .build()));
+        opportunity.getCompany().setId(2L);
+        Throwable exception = catchThrowable(() -> opportunityService.findAppliedUsersByOpportunityId(1L));
         assertThat(exception).isInstanceOf(UserForbiddenException.class);
     }
 
@@ -145,5 +146,16 @@ class OpportunityServiceTest {
         opportunityService.deleteById(opportunity.getId());
         verify(opportunityRepository).findById(opportunity.getId());
         verify(opportunityRepository).delete(opportunity);
+    }
+
+    @Test
+    @DisplayName("Should toggle active state")
+    @WithMockCustomUser(type = UserType.COMPANY)
+    void toggleActiveTest() {
+        given(opportunityRepository.findById(anyLong())).willReturn(Optional.of(opportunity));
+        given(opportunityRepository.save(any(Opportunity.class))).willAnswer(invocation -> invocation.getArguments()[0]);
+        opportunityService.toggleActive(opportunity.getId());
+        assertThat(opportunity.getActive()).isFalse();
+        verify(opportunityRepository).save(opportunity);
     }
 }

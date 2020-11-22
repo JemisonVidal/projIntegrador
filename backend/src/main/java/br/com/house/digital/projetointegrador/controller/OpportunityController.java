@@ -57,13 +57,19 @@ public class OpportunityController extends BaseController<Opportunity, Opportuni
     }
 
     @GetMapping("/{id}/applied")
-    public ResponseEntity<List<ApplicantProfileDTO>> findAppliedUsersByOpportunityId(@PathVariable Long id, @AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(service.findAppliedUsersByOpportunityId(id, user));
+    public ResponseEntity<List<ApplicantProfileDTO>> findAppliedUsersByOpportunityId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findAppliedUsersByOpportunityId(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/active")
+    public ResponseEntity<Void> toggleActive(@PathVariable Long id) {
+        service.toggleActive(id);
         return ResponseEntity.noContent().build();
     }
 
