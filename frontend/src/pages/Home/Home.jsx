@@ -36,7 +36,7 @@ const PagesHome = () => {
             <Card.Img variant="top" src={skillSvg} />
             <Card.Body>
               <Card.Text>
-                Acessar minhas habilidades(Pensar em uma frase)
+                Acessar minhas habilidades
               </Card.Text>
             </Card.Body>
             <Link to={`/profile/applicant/${user.pid}#skills`}>
@@ -47,7 +47,7 @@ const PagesHome = () => {
             <Card.Title>Cursos</Card.Title>
             <Card.Img variant="top" src={courseSvg} />
             <Card.Body>
-              <Card.Text>Acessar meus cursos(Pensar em uma frase)</Card.Text>
+              <Card.Text>Acessar meus cursos</Card.Text>
             </Card.Body>
             <Link to={`/profile/applicant/${user.pid}#courses`}>
               <Button variant="primary">Adicionar um curso</Button>
@@ -60,7 +60,7 @@ const PagesHome = () => {
             <Card.Img variant="top" src={linkSvg} />
             <Card.Body>
               <Card.Text>
-                Acessar meus links externos (Pensar em uma frase)
+                Acessar meus links externos
               </Card.Text>
             </Card.Body>
             <Link to={`/profile/applicant/${user.pid}#info`}>
@@ -72,7 +72,7 @@ const PagesHome = () => {
             <Card.Img variant="top" src={workSvg} />
             <Card.Body>
               <Card.Text>
-                Acessar minhas Experiências(Pensar em uma frase)
+                Acessar minhas Experiências
               </Card.Text>
             </Card.Body>
             <Link to={`/profile/applicant/${user.pid}#experiences`}>
@@ -96,7 +96,7 @@ const PagesHome = () => {
             <Card.Title>Adicionar Vaga</Card.Title>
             <Card.Img variant="top" src={opportunitySvg} />
             <Card.Body>
-              <Card.Text>Adicionar vaga(Pensar em uma frase)</Card.Text>
+              <Card.Text>Adicionar vaga</Card.Text>
             </Card.Body>
             <Button variant="primary" onClick={handleOnClick}>
               Adicionar Vaga
@@ -106,7 +106,7 @@ const PagesHome = () => {
             <Card.Title>Procurar candidata</Card.Title>
             <Card.Img variant="top" src={searchSvg} />
             <Card.Body>
-              <Card.Text>Procurar candidata(Pensar em uma frase)</Card.Text>
+              <Card.Text>Procurar candidata</Card.Text>
             </Card.Body>
             <Button variant="primary" onClick={handleOnClick}>
               Procurar Candidata
@@ -118,7 +118,7 @@ const PagesHome = () => {
             <Card.Title>Sobre</Card.Title>
             <Card.Img variant="top" src={aboutSvg} />
             <Card.Body>
-              <Card.Text>Acessar sobre(Pensar em uma frase)</Card.Text>
+              <Card.Text>Acessar sobre</Card.Text>
             </Card.Body>
             <Button variant="primary" onClick={handleOnClick}>
               Sobre

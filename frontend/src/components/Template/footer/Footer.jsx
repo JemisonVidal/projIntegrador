@@ -13,7 +13,7 @@ const Footer = () => (
       <Link to="/aboutus">
         <p className="texto-footer">Sobre nós</p>
       </Link>
-      <Link to="/">
+      <Link to="/contacts">
         <p className="texto-footer">Contatos</p>
       </Link>
       <Link to="/">

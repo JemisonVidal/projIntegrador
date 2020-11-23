@@ -17,10 +17,6 @@ const infoSchema = {
     required: true,
     placeholder: "São Paulo, SP"
   },
-  locationWanted: {
-    label: "Disposta a trabalhar em",
-    placeholder: "São Paulo, SP"
-  },
   category: {
     label: "Ramo",
     required: true

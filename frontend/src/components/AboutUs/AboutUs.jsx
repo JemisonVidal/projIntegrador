@@ -64,10 +64,7 @@ const AboutUs = () => {
           </Card.Text>
 
           <Container className="about-us">
-            <Card
-              className="cards card-mission card-img-top"
-              style={{ width: "15rem" }}
-            >
+            <Card className="cards card-mission card-img-top">
               <Card.Body className="col-md-12">
                 <Card.Title className="title-card-about-us">Missão</Card.Title>
                 <Card.Text className="card-text-about">
@@ -77,10 +74,7 @@ const AboutUs = () => {
               </Card.Body>
             </Card>
 
-            <Card
-              className="cards card-vision card-img-top"
-              style={{ width: "15rem" }}
-            >
+            <Card className="cards card-vision card-img-top">
               <Card.Body className="col-md-12">
                 <Card.Title className="title-card-about-us">Visão</Card.Title>
                 <Card.Text className="card-text-about">
@@ -91,10 +85,7 @@ const AboutUs = () => {
               </Card.Body>
             </Card>
 
-            <Card
-              className="cards card- card-img-top"
-              style={{ width: "15rem" }}
-            >
+            <Card className="cards card- card-img-top">
               <Card.Body className="col-md-12">
                 <Card.Title className="title-card-about-us">Valores</Card.Title>
                 <Card.Text className="card-text-about">

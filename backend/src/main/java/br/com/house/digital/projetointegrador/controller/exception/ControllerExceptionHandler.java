@@ -3,6 +3,7 @@ package br.com.house.digital.projetointegrador.controller.exception;
 import br.com.house.digital.projetointegrador.service.exceptions.DataIntegrityException;
 import br.com.house.digital.projetointegrador.service.exceptions.EmailExistsException;
 import br.com.house.digital.projetointegrador.service.exceptions.ObjectNotFoundException;
+import br.com.house.digital.projetointegrador.service.exceptions.UserForbiddenException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -83,6 +84,12 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<StandardError> handleUserNotFound(UsernameNotFoundException e) {
         StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        return handleResponse(err);
+    }
+
+    @ExceptionHandler(UserForbiddenException.class)
+    public ResponseEntity<StandardError> handleForbiddenResource(UserForbiddenException e) {
+        StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage());
         return handleResponse(err);
     }
 

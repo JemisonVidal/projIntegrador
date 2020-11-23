@@ -57,6 +57,10 @@
   justify-content: center;
 }
 
+.title-card-company {
+  text-align: center;
+}
+
 @media (min-width: 576px) {
   .title-card {
     font-size: 28px;
@@ -67,5 +71,8 @@
   }
   .card-deck .card {
     margin: 30px 32px;
+  }
+  .title-card-company {
+    text-align: justify;
   }
 }

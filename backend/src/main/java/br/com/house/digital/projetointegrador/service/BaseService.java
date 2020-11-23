@@ -9,8 +9,6 @@ public interface BaseService<T, PK> {
 
     T save(T entity);
 
-    T update(T entity);
-
     T patch(T entity);
 
     T findById(PK id);
@@ -20,8 +18,6 @@ public interface BaseService<T, PK> {
     Page<T> findAll(Pageable pageable);
 
     Page<T> findAllByName(String name, Pageable pageable);
-
-    void deleteById(PK id);
 
     T convertToEntity(Object dto);
 

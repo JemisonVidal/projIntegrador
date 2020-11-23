@@ -32,12 +32,6 @@ public abstract class BaseServiceImpl<T extends AbstractEntity<PK>, PK extends S
     }
 
     @Override
-    public T update(T entity) {
-        findById(entity.getId());
-        return save(entity);
-    }
-
-    @Override
     public T patch(T partial) {
         final T entity = findById(partial.getId());
         modelMapper.map(partial, entity);
@@ -68,12 +62,6 @@ public abstract class BaseServiceImpl<T extends AbstractEntity<PK>, PK extends S
     @Override
     public Page<T> findAllByName(String name, Pageable pageable) {
         return repository.findByNameContainingIgnoreCase(name, pageable);
-    }
-
-    @Override
-    public void deleteById(PK id) {
-        final T entity = findById(id);
-        repository.delete(entity);
     }
 
     @Override

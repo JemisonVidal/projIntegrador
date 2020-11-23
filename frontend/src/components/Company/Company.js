@@ -134,7 +134,7 @@ const Company = () => {
             ref={searchInput}
             type="text"
             placeholder="Pesquisar"
-            className=" form-control"
+            className="form-control"
           />
           <Button className="btn-search ml-2" onClick={handleSearchClick}>
             <i className="fa fa-search" aria-hidden="true"></i>

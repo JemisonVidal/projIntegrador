@@ -1,4 +1,4 @@
-package br.com.house.digital.projetointegrador.service;
+package br.com.house.digital.projetointegrador.service.impl;
 
 import br.com.house.digital.projetointegrador.dto.authentication.LoginDTO;
 import br.com.house.digital.projetointegrador.dto.authentication.RegisterDTO;
@@ -8,20 +8,21 @@ import br.com.house.digital.projetointegrador.model.enums.UserType;
 import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
 import br.com.house.digital.projetointegrador.repository.UserRepository;
 import br.com.house.digital.projetointegrador.security.JWTUtil;
+import br.com.house.digital.projetointegrador.service.AuthenticationService;
+import br.com.house.digital.projetointegrador.service.exceptions.DataIntegrityException;
 import br.com.house.digital.projetointegrador.service.exceptions.EmailExistsException;
-import br.com.house.digital.projetointegrador.service.impl.AuthenticationServiceImpl;
-import br.com.house.digital.projetointegrador.service.impl.UserDetailsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -60,28 +61,31 @@ public class AuthenticationServiceTest {
     @BeforeEach
     public void setUp() {
         authenticationService = new AuthenticationServiceImpl(userRepository,
-                authenticationManager,
-                passwordEncoder,
-                jwtUtil);
+            authenticationManager,
+            passwordEncoder,
+            jwtUtil);
     }
 
-    @Test
+    @ParameterizedTest
+    @EnumSource(UserType.class)
     @DisplayName("Should register a user on database")
-    public void registerUserTest() {
+    public void registerUserTest(UserType type) {
 
         RegisterDTO user = RegisterDTO.builder()
-                .name("Natasha Romanov")
-                .email("natasha_romanov@shield.com")
-                .password("Shield2020")
-                .type(UserType.APPLICANT)
-                .build();
+            .name("Natasha Romanov")
+            .email("natasha_romanov@shield.com")
+            .password("Shield2020")
+            .type(type)
+            .build();
+
+        given(userRepository.existsByEmail(user.getEmail())).willReturn(false);
 
         given(userRepository.save(any(User.class))).willReturn(User.builder()
-                .id(1L)
-                .email(user.getEmail())
-                .password(UUID.randomUUID().toString())
-                .type(user.getType())
-                .build());
+            .id(1L)
+            .email(user.getEmail())
+            .password(UUID.randomUUID().toString())
+            .type(user.getType())
+            .build());
 
         User entity = authenticationService.save(user);
 
@@ -93,7 +97,28 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    @DisplayName("Should return null when try to register an existent user")
+    @DisplayName("Should throw an exception on register with null user type")
+    public void registerUserNullTypeTest() {
+
+        RegisterDTO user = RegisterDTO.builder()
+            .name("Natasha Romanov")
+            .email("natasha_romanov@shield.com")
+            .password("Shield2020")
+            .type(null)
+            .build();
+
+        given(userRepository.existsByEmail(user.getEmail())).willReturn(false);
+
+        Throwable exception = catchThrowable(() -> authenticationService.save(user));
+
+        assertThat(exception).isInstanceOf(DataIntegrityException.class);
+
+        verify(userRepository, never()).save(any(User.class));
+        verify(userRepository, times(1)).existsByEmail(user.getEmail());
+    }
+
+    @Test
+    @DisplayName("Should throw an exception when trying to register with existing email")
     public void registerExistentUserTest() {
 
         RegisterDTO user = RegisterDTO.builder()
@@ -108,7 +133,7 @@ public class AuthenticationServiceTest {
         Throwable exception = catchThrowable(() -> authenticationService.save(user));
 
         assertThat(exception).isInstanceOf(EmailExistsException.class)
-                .hasMessage("Email: natasha_romanov@shield.com already exists in the database.");
+            .hasMessage("Email: natasha_romanov@shield.com already exists in the database.");
 
         verify(userRepository, never()).save(any(User.class));
         verify(userRepository, times(1)).existsByEmail(user.getEmail());
@@ -121,12 +146,12 @@ public class AuthenticationServiceTest {
         Authentication authentication = mock(Authentication.class);
 
         User user = User.builder()
-                .id(2L)
-                .email("natasha_romanov@shield.com")
-                .password("Shield2020")
-                .type(UserType.APPLICANT)
-                .profile(ApplicantProfile.builder().id(1L).build())
-                .build();
+            .id(2L)
+            .email("natasha_romanov@shield.com")
+            .password("Shield2020")
+            .type(UserType.APPLICANT)
+            .profile(ApplicantProfile.builder().id(1L).build())
+            .build();
 
         given(authenticationManager.authenticate(any())).willReturn(authentication);
         given(authentication.getPrincipal()).willReturn(user);
@@ -144,12 +169,12 @@ public class AuthenticationServiceTest {
 
         given(userRepository.findByEmail(loginDTO.getEmail())).willReturn(Optional.empty());
         given(authenticationManager.authenticate(any()))
-                .will(invocation -> userDetailsService.loadUserByUsername(loginDTO.getEmail()));
+            .will(invocation -> userDetailsService.loadUserByUsername(loginDTO.getEmail()));
 
         Throwable exception = catchThrowable(() -> authenticationService.authenticate(loginDTO));
 
         assertThat(exception).isInstanceOf(UsernameNotFoundException.class)
-                .hasMessage("User not found with email: " + loginDTO.getEmail());
+            .hasMessage("User not found with email: " + loginDTO.getEmail());
         verify(authenticationManager, times(1)).authenticate(any());
         verify(userRepository, times(1)).findByEmail(loginDTO.getEmail());
     }

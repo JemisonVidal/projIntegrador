@@ -9,6 +9,7 @@ import {
   FormControl
 } from "react-bootstrap";
 import logo from "../../assets/images/LogoRecruIT.png";
+import eye from "../../assets/images/eye-solid.svg";
 import Input from "../Input/Input";
 import Checkbox from "../Checkbox/Checkbox";
 import useFetch from "../../Hooks/useFetch";
@@ -61,6 +62,7 @@ const UserLogin = () => {
             namelabel="Email"
             type="email"
             placeholder="Email"
+            className="form-register-login"
             required
             {...email}
           />
@@ -68,6 +70,7 @@ const UserLogin = () => {
             namelabel="Senha"
             type="password"
             placeholder="Senha"
+            className="form-register-login"
             required
             {...senha}
           />
