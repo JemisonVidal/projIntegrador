@@ -22,8 +22,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -57,11 +57,14 @@ public class AuthenticationControllerIntegrationTest {
             .type(UserType.APPLICANT)
             .build();
 
-        mvc.perform(post("/v1/api/register")
+        String location = mvc.perform(post("/v1/api/register")
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(dto)))
             .andExpect(status().isCreated())
-            .andExpect(header().string("Location", "http://localhost/v1/api/profile/applicant/1"));
+            .andReturn().getResponse().getHeader("Location");
+
+        assertThat(location).isNotNull();
+        assertThat(location.contains("/v1/api/profile/applicant")).isTrue();
 
         Optional<User> userOptional = repository.findByEmail(dto.getEmail());
 
@@ -72,6 +75,30 @@ public class AuthenticationControllerIntegrationTest {
         assertThat(user.getType()).isEqualTo(UserType.APPLICANT);
         assertThat(user.getPassword()).isNotEqualTo(dto.getPassword());
         assertThat(user.getProfile().getName()).isEqualTo(dto.getName());
+    }
+
+    @Test
+    @DisplayName("Should not register when email exists and return status 400")
+    void registerExistingEmailTest() throws Exception {
+        repository.save(User.builder()
+            .email(EMAIL)
+            .password(passwordEncoder.encode(PASSWORD))
+            .type(UserType.APPLICANT)
+            .profile(ApplicantProfile.builder().name(NAME).build())
+            .build());
+
+        RegisterDTO dto = RegisterDTO.builder()
+            .name(NAME)
+            .email(EMAIL)
+            .password(PASSWORD)
+            .type(UserType.APPLICANT)
+            .build();
+
+        mvc.perform(post("/v1/api/register")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsString(dto)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.msg").value("Email: " + EMAIL + " already exists in the database."));
     }
 
     @Test
@@ -114,7 +141,6 @@ public class AuthenticationControllerIntegrationTest {
         mvc.perform(post("/v1/api/authenticate")
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(dto)))
-            .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.msg").value("Wrong email or password."));
     }
