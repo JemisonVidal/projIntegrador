@@ -260,13 +260,6 @@ public class OpportunityControllerTest {
     }
 
     @Test
-    @DisplayName("Should return bad request when id param is missing")
-    void findAppliedOpportunitiesByProfileIdNoParamTest() throws Exception {
-        mvc.perform(get(URL_PREFIX + "/applied"))
-            .andExpect(status().isBadRequest());
-    }
-
-    @Test
     @DisplayName("Should return status 204 when delete is successful")
     void deleteOpportunityByIdTest() throws Exception {
         doNothing().when(opportunityService).deleteById(anyLong());
