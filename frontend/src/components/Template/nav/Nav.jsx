@@ -50,20 +50,37 @@ const NavBar = () => {
             Candidatas
           </Link>
         </Nav>
-        <Nav>
-          {user.pid ? (
-            <Dropdown alignRight>
-              <Dropdown.Toggle
-                className="dropdown"
-                menuAlign="left"
-                id="dropdown-menu-align-right"
-              >
-                <div className="avatar-div">
-                  <Image id="image-avatar" className="avatar" src={avatar} />
-                  <p className="eu-avatar">Eu</p>
-                </div>
-              </Dropdown.Toggle>
-
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Link className="nav-item" to="/listOpportunity">
+              Oportunidades
+            </Link>
+            <Link className="nav-item" to="/company">
+              Empresas
+            </Link>
+            <Link className="nav-item" to="/applicant">
+              Candidatas
+            </Link>
+            {user?.type !== "applicant" && (
+              <Link className="nav-item" to="/addOpportunity">
+                Adicionar oportunidade
+              </Link>
+            )}
+          </Nav>
+          <Nav>
+            {user.pid ? (
+              <Dropdown alignRight>
+                <Dropdown.Toggle
+                  className="dropdown"
+                  menuAlign="left"
+                  id="dropdown-menu-align-right"
+                >
+                  <div className="avatar-div">
+                    <Image id="image-avatar" className="avatar" src={avatar} />
+                    <p className="eu-avatar">Meu Perfil</p>
+                  </div>
+                </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item href={`/profile/${user.type}/${user.pid}`}>
                   Meu Perfil

@@ -1,0 +1,136 @@
+.cardAddOportunity {
+  margin: 100px;
+}
+
+.card-requirements {
+  border: solid 2px #27187e;
+  min-height: 100px;
+}
+
+.titleAddOportunity {
+  text-align: center;
+  font-size: 30px;
+  margin: 10px 0 30px;
+  font-weight: bold;
+}
+
+.groupAddOpportunity {
+  margin: 0 0 30px 0;
+}
+
+.divRequisitos .btn-outline-primary {
+  background-color: white !important;
+  color: var(--color-primary-dark);
+  border: var(--color-primary-dark) 1px solid !important;
+  font-size: 15px;
+}
+
+.divRequisitos .btn-outline-primary:hover {
+  color: var(--color-white);
+  background-color: var(--color-primary-dark) !important;
+}
+
+.divRequisitos {
+  vertical-align: bottom;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 17px;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+}
+
+.titleGroup {
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.groupAddOpportunity > .inputAddOpportunity {
+  margin: 0;
+  border: 2px solid #27187e;
+  color: #27187e;
+}
+
+.groupAddOpportunity > .inputAddOpportunity::placeholder {
+  color: #27187e;
+}
+
+.editRequisitos .btn-profile-edit-item {
+  background-color: white !important;
+  border: var(--color-primary-dark) 1px solid !important;
+}
+
+.editRequisitos .btn-profile-edit-item:hover {
+  color: var(--color-white);
+  background-color: var(--color-primary-dark) !important;
+}
+
+.editRequisitos .btn-profile-edit-item > i {
+  margin-right: -4px;
+}
+
+.editRequisitos .btn-profile-remove {
+  background-color: white !important;
+  border: #dc3545 1px solid !important;
+}
+
+.editRequisitos .btn-profile-remove:hover {
+  color: var(--color-white);
+  background-color: #dc3545 !important;
+}
+
+.groupExperience {
+  padding: 20px;
+}
+
+.groupExperience > p,
+.groupExperience > div {
+  margin: 0 10px;
+}
+
+.buttonSave {
+  margin: 0 45% !important;
+}
+
+@media (max-width: 991px) {
+  .buttonSave {
+    margin: 0 44% !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .buttonSave {
+    margin: 0 42% !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .buttonSave {
+    margin: 0 39% !important;
+  }
+
+  .titleAddOportunity {
+    text-align: center;
+    font-size: 25px;
+    margin: 10px 0 20px;
+  }
+
+  .titleGroup {
+    display: block;
+  }
+
+  .tituloRequisitos {
+    align-self: center;
+    margin-bottom: 0;
+  }
+
+  .groupAddOpportunity > .inputAddOpportunity {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .buttonSave {
+    margin: 0 38% !important;
+  }
+}

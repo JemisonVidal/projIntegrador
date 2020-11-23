@@ -1,7 +1,13 @@
 import React, { useState, useContext } from "react";
 import { useHistory, Link } from "react-router-dom";
 import StoreContext from "../../components/Store/Context";
-import { Form, Button, Spinner } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Spinner,
+  InputGroup,
+  FormControl
+} from "react-bootstrap";
 import logo from "../../assets/images/LogoRecruIT.png";
 import eye from "../../assets/images/eye-solid.svg";
 import Input from "../Input/Input";

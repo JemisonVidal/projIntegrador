@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import Error from "../Helper/Error";
 
+import "./ModalForm.css";
+
 const defaultOption = { value: "", text: "Escolha uma opção." };
 
 const ModalForm = ({
@@ -11,7 +13,9 @@ const ModalForm = ({
   onHide,
   onSubmit,
   values,
-  error
+  error,
+  list,
+  setList
 }) => {
   const [validated, setValidated] = useState(false);
   const [data, setData] = useState({});
@@ -34,7 +38,12 @@ const ModalForm = ({
     if (form.checkValidity() === false) {
       return event.stopPropagation();
     }
-    onSubmit(data);
+    if (onSubmit) {
+      onSubmit(data);
+    } else {
+      setList([...list, data]);
+      handleOnHide();
+    }
   };
 
   useEffect(() => {
@@ -55,12 +64,13 @@ const ModalForm = ({
         </Modal.Header>
         <Modal.Body>
           {Object.entries(schema).map(([k, v]) => (
-            <Form.Group key={k} controlId={k}>
-              <Form.Label>
+            <Form.Group className="groupModal" key={k} controlId={k}>
+              <Form.Label className="labelModal">
                 {v.label}
                 {v.required && <span className="text-danger">*</span>}
               </Form.Label>
               <Form.Control
+                className="inputModal"
                 as={v.as || "input"}
                 type={v.type || "text"}
                 required={v.required}
