@@ -95,7 +95,7 @@ const ListOpportunity = ({ type }) => {
 
         return (
           <div key={opportunity.id}>
-            <Card className="card">
+            <Card className="card h-100">
               <Card.Body>
                 <Card.Title className="title-card">
                   {opportunity.name}
