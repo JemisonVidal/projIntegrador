@@ -69,7 +69,10 @@ const NavBar = () => {
                 </div>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item href={`/profile/${user.type}/${user.pid}`}>
+                <Dropdown.Item
+                  as={Link}
+                  to={`/profile/${user.type}/${user.pid}`}
+                >
                   Meu Perfil
                 </Dropdown.Item>
                 <Dropdown.Item onClick={handleClick} href="/login">
