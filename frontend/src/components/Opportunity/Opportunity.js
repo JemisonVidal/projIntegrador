@@ -45,7 +45,7 @@ const mockApplicants = [
     imgSrc:
       "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
   },
-  { id: 5, name: "Josilaine Bastos Medeiros" },
+  { id: 5, name: "Josilaine Bastos Medeiros", location: "São Paulo" },
   {
     id: 6,
     name: "teste",
@@ -290,6 +290,14 @@ const ListOpportunity = ({ id }) => {
                 </div>
                 <div className="informationApplicants">
                   <h6 className="nameApplicants">{applicant.name}</h6>
+                  <p className="descriptionApplicants">{applicant.location}</p>
+                  <div className="divButtonApplicants">
+                    <a href="" className="footerLink">
+                      <img className="logoFooterPng" src={linkedinLogo} />
+                    </a>
+                    <button>Oi</button>
+                    <button>Oi</button>
+                  </div>
                 </div>
               </div>
             </Card>

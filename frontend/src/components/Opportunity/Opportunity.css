@@ -131,8 +131,7 @@
 }
 
 .imgApplicants {
-  width: 70px;
-  height: 70px;
+  width: 80px;
   border-radius: 100%;
 }
 
@@ -151,15 +150,30 @@
 
 .cardApplicants > div {
   display: flex;
+  align-items: center;
 }
 
 .cardApplicants > div > .informationApplicants {
+  width: 100%;
   margin: 5px 15px 0;
 }
 
 .cardApplicants > div > .informationApplicants > .nameApplicants {
   font-weight: bold;
   font-size: 20px;
+}
+
+.divButtonApplicants {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.divButtonApplicants > button {
+  margin: 0 !important;
+  padding: 0;
 }
 
 @media (min-width: 576px) {
@@ -182,6 +196,5 @@
 
   .deck-opportunity .cardApplicants {
     width: 300px;
-    height: 150px;
   }
 }
