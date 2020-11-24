@@ -148,7 +148,7 @@ const ListOpportunity = ({ id }) => {
               </span>
               <Card.Text>{opportunity.text}</Card.Text>
             </Card.Body>
-            {renderApplicants()}
+            {user.pid === opportunity.companyId && renderApplicants()}
           </Card>
         </CardDeck>
         <div className="buttonsCandidatar">
@@ -219,7 +219,7 @@ const ListOpportunity = ({ id }) => {
   function renderApplicants() {
     return (
       <Container id="container-opportunity">
-        <h2 className="applicants-opportunity">Candidatas</h2>
+        <h2 className="applicants-opportunity">Candidatas inscritas</h2>
         <CardDeck className="deck-opportunity">
           {renderApplicantCard()}
         </CardDeck>
@@ -291,8 +291,6 @@ const ListOpportunity = ({ id }) => {
       })
     );
   }
-
-  console.log(applicants);
 
   return (
     <Main>
