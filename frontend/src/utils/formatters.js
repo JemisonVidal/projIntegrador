@@ -19,3 +19,6 @@ export const locationFormatter = (v) => (
     {v}
   </span>
 );
+
+export const phoneFormatter = (v) =>
+  v && `+55 (${v.substring(0, 2)}) ${v.substring(2, 7)}-${v.substring(7)}`;
