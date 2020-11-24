@@ -15,56 +15,13 @@ import back from "../../assets/images/back.svg";
 import SucessApplySVG from "../../assets/images/opportunity/sucessApply.svg";
 import ConfirmationSVG from "../../assets/images/opportunity/confirmation.svg";
 import SimpleImage from "../../assets/images/businesswoman-blue.svg";
+import LinkedinLogo from "../../assets/images/linkedin-applicants.svg";
+import GithubLogo from "../../assets/images/github-applicants.svg";
+import WhatsappLogo from "../../assets/images/whats-applicants.svg";
 
 import "./Opportunity.css";
 import { currencyFormatter } from "../../utils/formatters";
 import { skillMap } from "../../utils/skills";
-
-const mockApplicants = [
-  {
-    id: 1,
-    name: "Amanda Abreu",
-    imgSrc:
-      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
-  },
-  {
-    id: 2,
-    name: "teste",
-    imgSrc:
-      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
-  },
-  {
-    id: 3,
-    name: "teste",
-    imgSrc:
-      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
-  },
-  {
-    id: 4,
-    name: "teste",
-    imgSrc:
-      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
-  },
-  { id: 5, name: "Josilaine Bastos Medeiros", location: "São Paulo" },
-  {
-    id: 6,
-    name: "teste",
-    imgSrc:
-      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
-  },
-  {
-    id: 7,
-    name: "teste",
-    imgSrc:
-      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
-  },
-  {
-    id: 8,
-    name: "teste",
-    imgSrc:
-      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
-  }
-];
 
 const ListOpportunity = ({ id }) => {
   const { user } = useContext(StoreContext);
@@ -272,31 +229,59 @@ const ListOpportunity = ({ id }) => {
 
   function renderApplicantCard() {
     return (
-      mockApplicants &&
-      mockApplicants.map((applicant) => {
+      applicants &&
+      applicants.map((applicant) => {
+        const url = `https://api.whatsapp.com/send?phone=${applicant.phoneNumber}&text=Ol%C3%A1%2C%20tudo%20bem%20%3F%20Encontrei%20seu%20perfil%20no%20RecruIT.%20Podemos%20conversar%20%3F`;
+        const urlPerfil = `/profile/applicant/${applicant.id}`;
         return (
           <div key={applicant.id}>
             <Card className="cardApplicants">
               <div>
                 <div className="imgApplicants">
-                  <img
-                    className="srcApplicants"
-                    src={
-                      applicant.imgSrc == null || applicant.imgSrc == ""
-                        ? SimpleImage
-                        : applicant.imgSrc
-                    }
-                  ></img>
+                  <Link to={urlPerfil}>
+                    <img
+                      className="srcApplicants"
+                      src={
+                        applicant.imgSrc == null || applicant.imgSrc == ""
+                          ? SimpleImage
+                          : applicant.imgSrc
+                      }
+                    ></img>
+                  </Link>
                 </div>
                 <div className="informationApplicants">
                   <h6 className="nameApplicants">{applicant.name}</h6>
                   <p className="descriptionApplicants">{applicant.location}</p>
                   <div className="divButtonApplicants">
-                    <a href="" className="footerLink">
-                      <img className="logoFooterPng" src={linkedinLogo} />
+                    <a
+                      href={
+                        applicant.phoneNumber == null ||
+                        applicant.phoneNumber == ""
+                          ? null
+                          : url
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="footerLink"
+                    >
+                      <img className="logoFooterPng" src={WhatsappLogo} />
                     </a>
-                    <button>Oi</button>
-                    <button>Oi</button>
+                    <a
+                      href={applicant.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="footerLink"
+                    >
+                      <img className="logoFooterPng" src={LinkedinLogo} />
+                    </a>
+                    <a
+                      href={applicant.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="footerLink"
+                    >
+                      <img className="logoFooterPng" src={GithubLogo} />
+                    </a>
                   </div>
                 </div>
               </div>
