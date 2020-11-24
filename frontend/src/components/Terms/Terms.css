@@ -1,0 +1,43 @@
+.title-terms {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.card-terms {
+  margin: 20px 0;
+  border: 2px solid var(--color-primary-dark);
+  border-radius: 10px;
+  box-shadow: 4px 8px 4px rgba(39, 24, 126, 0.25);
+  color: var(--color-primary-dark);
+  padding: 5px 5px;
+}
+
+.terms-card {
+  border: none;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.subtitle-terms {
+  font-weight: bold;
+  font-size: 20px;
+  padding-top: 15px;
+}
+
+.terms-list li {
+  margin-top: 10px;
+  margin-left: 40px;
+}
+
+.logo-terms {
+  width: 125px;
+  height: 125px;
+  display: flex;
+  align-self: center;
+}
+
+.principal-terms {
+  font-weight: bold;
+  font-size: 32px;
+  text-align: center;
+}

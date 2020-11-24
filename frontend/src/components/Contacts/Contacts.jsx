@@ -37,7 +37,7 @@ const Contacts = () => {
                   Mande sua dúvida por e-mail!
                 </Card.Text>
                 <Card.Text className="card-text-contacts-content">
-                  <span className="content">recuit@gmail.com </span>
+                  <span className="content">recruit@gmail.com </span>
                 </Card.Text>
               </Card.Body>
             </Card>
