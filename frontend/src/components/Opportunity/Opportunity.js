@@ -4,16 +4,67 @@ import { useHistory, Link } from "react-router-dom";
 import StoreContext from "../../components/Store/Context";
 import Main from "../Template/main/Main";
 import useFetch from "../../Hooks/useFetch";
-import { GET_OPPORTUNITY, POST_APPLY } from "../../APIs/APIs";
+import {
+  GET_OPPORTUNITY,
+  POST_APPLY,
+  GET_APPLICANTS_OPPORTUNITY
+} from "../../APIs/APIs";
 import heart from "../../assets/images/Heart.svg";
 import heartFill from "../../assets/images/FilledHeart.svg";
 import back from "../../assets/images/back.svg";
 import SucessApplySVG from "../../assets/images/opportunity/sucessApply.svg";
 import ConfirmationSVG from "../../assets/images/opportunity/confirmation.svg";
+import SimpleImage from "../../assets/images/businesswoman-blue.svg";
 
 import "./Opportunity.css";
 import { currencyFormatter } from "../../utils/formatters";
 import { skillMap } from "../../utils/skills";
+
+const mockApplicants = [
+  {
+    id: 1,
+    name: "Amanda Abreu",
+    imgSrc:
+      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
+  },
+  {
+    id: 2,
+    name: "teste",
+    imgSrc:
+      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
+  },
+  {
+    id: 3,
+    name: "teste",
+    imgSrc:
+      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
+  },
+  {
+    id: 4,
+    name: "teste",
+    imgSrc:
+      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
+  },
+  { id: 5, name: "Josilaine Bastos Medeiros" },
+  {
+    id: 6,
+    name: "teste",
+    imgSrc:
+      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
+  },
+  {
+    id: 7,
+    name: "teste",
+    imgSrc:
+      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
+  },
+  {
+    id: 8,
+    name: "teste",
+    imgSrc:
+      "https://veja.abril.com.br/wp-content/uploads/2020/06/beyonce-fala-em-dear-class-of-2020-sobre-sexismo-e-black-lives-matter-1591566044680_v2_1600x1474.jpg"
+  }
+];
 
 const ListOpportunity = ({ id }) => {
   const { user } = useContext(StoreContext);
@@ -24,6 +75,7 @@ const ListOpportunity = ({ id }) => {
   const [heartCheck, setHeartCheck] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [typeMessage, setTypeMessage] = useState(false);
+  const [applicants, setApplicants] = useState([]);
 
   useEffect(() => {
     window.scrollTo({
@@ -42,7 +94,16 @@ const ListOpportunity = ({ id }) => {
       }
     }
 
+    async function getApplicantsOpportunity() {
+      const { url, options } = GET_APPLICANTS_OPPORTUNITY(id);
+      const { json, response } = await request(url, options);
+      if (response.ok) {
+        setApplicants(json);
+      }
+    }
+
     getOpportunity();
+    getApplicantsOpportunity();
   }, [request]);
 
   function renderLoading() {
@@ -130,6 +191,7 @@ const ListOpportunity = ({ id }) => {
               </span>
               <Card.Text>{opportunity.text}</Card.Text>
             </Card.Body>
+            {renderApplicants()}
           </Card>
         </CardDeck>
         <div className="buttonsCandidatar">
@@ -196,6 +258,48 @@ const ListOpportunity = ({ id }) => {
       </Container>
     );
   }
+
+  function renderApplicants() {
+    return (
+      <Container id="container-opportunity">
+        <h2 className="applicants-opportunity">Candidatas</h2>
+        <CardDeck className="deck-opportunity">
+          {renderApplicantCard()}
+        </CardDeck>
+      </Container>
+    );
+  }
+
+  function renderApplicantCard() {
+    return (
+      mockApplicants &&
+      mockApplicants.map((applicant) => {
+        return (
+          <div key={applicant.id}>
+            <Card className="cardApplicants">
+              <div>
+                <div className="imgApplicants">
+                  <img
+                    className="srcApplicants"
+                    src={
+                      applicant.imgSrc == null || applicant.imgSrc == ""
+                        ? SimpleImage
+                        : applicant.imgSrc
+                    }
+                  ></img>
+                </div>
+                <div className="informationApplicants">
+                  <h6 className="nameApplicants">{applicant.name}</h6>
+                </div>
+              </div>
+            </Card>
+          </div>
+        );
+      })
+    );
+  }
+
+  console.log(applicants);
 
   return (
     <Main>

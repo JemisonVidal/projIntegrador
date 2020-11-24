@@ -6,6 +6,12 @@ export function GET_OPPORTUNITY(id) {
   });
 }
 
+export function GET_APPLICANTS_OPPORTUNITY(id) {
+  return requestOptions({
+    url: `/opportunity/${id}/applied`
+  });
+}
+
 export function GET_LIST_OPPORTUNITY(page = 0, name = "") {
   let uri = `/opportunity/?page=${page}&size=6`;
   if (name) {
