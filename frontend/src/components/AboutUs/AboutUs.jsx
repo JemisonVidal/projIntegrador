@@ -2,9 +2,6 @@ import React, { useEffect } from "react";
 import { Container, Card } from "react-bootstrap";
 import Main from "../Template/main/Main";
 import logo from "../../assets/images/Logo2RecruIT.svg";
-import missao from "../../assets/images/missao.png";
-import visao from "../../assets/images/visao.png";
-import valores from "../../assets/images/valores.png";
 import "./AboutUs.css";
 
 const AboutUs = () => {
