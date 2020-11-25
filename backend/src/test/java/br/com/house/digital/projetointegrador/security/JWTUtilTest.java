@@ -69,7 +69,7 @@ class JWTUtilTest {
     @Test
     @Order(6)
     void invalidTokenSignatureTest() {
-        Throwable exception = catchThrowable(() -> jwtUtil.validateToken(token.concat("a"), user));
+        Throwable exception = catchThrowable(() -> jwtUtil.validateToken(token.concat("invalidate-token"), user));
         assertThat(exception).isInstanceOf(SignatureException.class);
     }
 

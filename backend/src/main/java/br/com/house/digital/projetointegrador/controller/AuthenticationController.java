@@ -5,6 +5,7 @@ import br.com.house.digital.projetointegrador.dto.authentication.RegisterDTO;
 import br.com.house.digital.projetointegrador.dto.authentication.TokenDTO;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.service.AuthenticationService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
+    @ApiOperation(value = "Registers a new user.")
     public ResponseEntity<Void> save(@RequestBody @Valid RegisterDTO registerDTO) {
         final User user = authenticationService.save(registerDTO);
         final ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentContextPath();
@@ -35,6 +37,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
+    @ApiOperation(value = "Authenticates an user with the given email and password.")
     public ResponseEntity<TokenDTO> authenticate(@RequestBody @Valid LoginDTO loginDTO) throws Exception {
         final TokenDTO tokenDTO = authenticationService.authenticate(loginDTO);
         return ResponseEntity.ok(tokenDTO);

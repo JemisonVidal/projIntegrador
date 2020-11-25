@@ -5,6 +5,7 @@ import br.com.house.digital.projetointegrador.dto.profile.AvatarDTO;
 import br.com.house.digital.projetointegrador.dto.profile.UpdateAvatarDTO;
 import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
 import br.com.house.digital.projetointegrador.service.impl.ApplicantProfileService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,18 +28,21 @@ public class ApplicantProfileController extends BaseController<ApplicantProfile,
     }
 
     @PatchMapping(value = "/{id}")
+    @ApiOperation(value = "Updates the profile with given ID.")
     public ResponseEntity<Void> patch(@RequestBody @Valid ApplicantProfileDTO profileDTO, @PathVariable Long id) {
         service.patch(profileDTO, id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping(value = "/{id}/avatar")
+    @ApiOperation(value = "Updates the avatar fields of the profile with given ID.")
     public ResponseEntity<Void> patchAvatar(@RequestBody @Valid UpdateAvatarDTO avatarDTO, @PathVariable Long id) {
         service.patchAvatar(avatarDTO, id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/{id}/avatar")
+    @ApiOperation(value = "Returns the avatar of the profile with given ID.")
     public ResponseEntity<AvatarDTO> findAvatarById(@PathVariable Long id) {
         final String imgSrc = service.findById(id).getImgSrc();
         return ResponseEntity.ok(new AvatarDTO(imgSrc));

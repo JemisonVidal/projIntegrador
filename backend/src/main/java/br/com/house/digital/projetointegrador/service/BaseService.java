@@ -13,6 +13,8 @@ public interface BaseService<T, PK> {
 
     T findById(PK id);
 
+    void deleteById(PK id);
+
     List<T> findAll();
 
     Page<T> findAll(Pageable pageable);
