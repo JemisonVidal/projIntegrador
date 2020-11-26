@@ -50,6 +50,12 @@ public abstract class BaseServiceImpl<T extends AbstractEntity<PK>, PK extends S
     }
 
     @Override
+    public void deleteById(PK id) {
+        T entity = findById(id);
+        repository.delete(entity);
+    }
+
+    @Override
     public List<T> findAll() {
         return repository.findAll();
     }

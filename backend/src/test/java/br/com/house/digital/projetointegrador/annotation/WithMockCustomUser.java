@@ -1,8 +1,6 @@
 package br.com.house.digital.projetointegrador.annotation;
 
 import br.com.house.digital.projetointegrador.model.enums.UserType;
-import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
-import br.com.house.digital.projetointegrador.model.profile.Profile;
 import org.springframework.security.test.context.support.WithSecurityContext;
 
 import java.lang.annotation.Retention;
@@ -19,5 +17,7 @@ public @interface WithMockCustomUser {
     String password() default "Shield2020";
 
     UserType type() default UserType.APPLICANT;
+
+    long id() default 1L;
 
 }

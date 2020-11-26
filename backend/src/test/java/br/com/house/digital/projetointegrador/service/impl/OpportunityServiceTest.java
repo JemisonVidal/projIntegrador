@@ -1,10 +1,14 @@
 package br.com.house.digital.projetointegrador.service.impl;
 
 import br.com.house.digital.projetointegrador.annotation.WithMockCustomUser;
+import br.com.house.digital.projetointegrador.dto.opportunity.NewOpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.opportunity.OpportunityDTO;
 import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
 import br.com.house.digital.projetointegrador.model.Opportunity;
+import br.com.house.digital.projetointegrador.model.Requirement;
 import br.com.house.digital.projetointegrador.model.User;
+import br.com.house.digital.projetointegrador.model.enums.KnowledgeLevel;
+import br.com.house.digital.projetointegrador.model.enums.UserType;
 import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
 import br.com.house.digital.projetointegrador.model.profile.CompanyProfile;
 import br.com.house.digital.projetointegrador.repository.OpportunityRepository;
@@ -20,16 +24,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles({"test"})
@@ -53,7 +56,37 @@ class OpportunityServiceTest {
             .name("Pod Racing Pilot")
             .company(company)
             .appliedUsers(new ArrayList<>())
+            .requirements(new ArrayList<>())
+            .active(true)
             .build();
+    }
+
+    @Test
+    @DisplayName("Should save new opportunity")
+    void saveOpportunityTest() {
+        NewOpportunityDTO dto = NewOpportunityDTO.builder()
+            .name("Vaga para teste")
+            .location("São Paulo, SP")
+            .description("Descrição da vaga")
+            .requirements(Collections.singletonList(Requirement.builder()
+                .name("Requerimento")
+                .knowledgeLevel(KnowledgeLevel.BASIC)
+                .build()))
+            .build();
+        User user = User.builder()
+            .profile(CompanyProfile.builder().id(1L).build())
+            .build();
+
+        given(opportunityRepository.save(any(Opportunity.class))).willAnswer(invocation -> invocation.getArguments()[0]);
+
+        Opportunity created = opportunityService.save(dto, user);
+
+        assertThat(created.getName()).isEqualTo(dto.getName());
+        assertThat(created.getLocation()).isEqualTo(dto.getLocation());
+        assertThat(created.getDescription()).isEqualTo(dto.getDescription());
+        assertThat(created.getRequirements()).isEqualTo(dto.getRequirements());
+        assertThat(created.getCompanyId()).isEqualTo(user.getProfileId());
+        verify(opportunityRepository).save(any(Opportunity.class));
     }
 
     @Test
@@ -115,23 +148,75 @@ class OpportunityServiceTest {
 
     @Test
     @DisplayName("Should return list of applied user in the opportunity.")
+    @WithMockCustomUser(type = UserType.COMPANY)
     void findAppliedUsersByOpportunityIdTest() {
         opportunity.getAppliedUsers().add(ApplicantProfile.builder().id(1L).build());
         given(opportunityRepository.findById(anyLong())).willReturn(Optional.of(opportunity));
-        List<ApplicantProfileDTO> list = opportunityService.findAppliedUsersByOpportunityId(1L, User.builder()
-            .profile(company)
-            .build());
+        List<ApplicantProfileDTO> list = opportunityService.findAppliedUsersByOpportunityId(1L);
         assertThat(list).isNotNull();
         assertThat(list.size()).isEqualTo(1);
     }
 
     @Test
     @DisplayName("Should throw exception when opportunity does not belong to the user.")
+    @WithMockCustomUser(type = UserType.COMPANY)
     void findAppliedUsersByOpportunityIdForbiddenUserTest() {
         given(opportunityRepository.findById(anyLong())).willReturn(Optional.of(opportunity));
-        Throwable exception = catchThrowable(() -> opportunityService.findAppliedUsersByOpportunityId(1L, User.builder()
-            .profile(CompanyProfile.builder().id(2L).build())
-            .build()));
+        opportunity.getCompany().setId(2L);
+        Throwable exception = catchThrowable(() -> opportunityService.findAppliedUsersByOpportunityId(1L));
         assertThat(exception).isInstanceOf(UserForbiddenException.class);
+    }
+
+    @Test
+    @DisplayName("Should delete opportunity by existing id")
+    void deleteByIdTest() {
+        given(opportunityRepository.findById(anyLong())).willReturn(Optional.of(opportunity));
+        doNothing().when(opportunityRepository).delete(any(Opportunity.class));
+        opportunityService.deleteById(opportunity.getId());
+        verify(opportunityRepository).findById(opportunity.getId());
+        verify(opportunityRepository).delete(opportunity);
+    }
+
+    @Test
+    @DisplayName("Should toggle active state")
+    @WithMockCustomUser(type = UserType.COMPANY)
+    void toggleActiveTest() {
+        given(opportunityRepository.findById(anyLong())).willReturn(Optional.of(opportunity));
+        given(opportunityRepository.save(any(Opportunity.class))).willAnswer(invocation -> invocation.getArguments()[0]);
+        opportunityService.toggleActive(opportunity.getId());
+        assertThat(opportunity.getActive()).isFalse();
+        verify(opportunityRepository).save(opportunity);
+    }
+
+    @Test
+    @DisplayName("Should update opportunity")
+    @WithMockCustomUser(type = UserType.COMPANY)
+    void patchByIdTest() {
+        given(opportunityRepository.findById(anyLong())).willReturn(Optional.of(opportunity));
+        given(opportunityRepository.save(any(Opportunity.class))).willAnswer(invocation -> invocation.getArguments()[0]);
+        NewOpportunityDTO dto = NewOpportunityDTO.builder()
+            .name("Cyberspace Security Analyst")
+            .build();
+        Opportunity updated = opportunityService.patch(this.opportunity.getId(), dto);
+        assertThat(updated.getName()).isEqualTo(dto.getName());
+        verify(opportunityRepository).save(any(Opportunity.class));
+    }
+
+    @Test
+    @DisplayName("Should update opportunity and requirements list")
+    @WithMockCustomUser(type = UserType.COMPANY)
+    void patchByIdWithRequirementsTest() {
+        given(opportunityRepository.findById(anyLong())).willReturn(Optional.of(opportunity));
+        given(opportunityRepository.save(any(Opportunity.class))).willAnswer(invocation -> invocation.getArguments()[0]);
+        NewOpportunityDTO dto = NewOpportunityDTO.builder()
+            .name("Cyberspace Security Analyst")
+            .requirements(Collections.singletonList(Requirement.builder()
+                .name("Requerimento")
+                .knowledgeLevel(KnowledgeLevel.BASIC)
+                .build()))
+            .build();
+        Opportunity updated = opportunityService.patch(this.opportunity.getId(), dto);
+        assertThat(updated.getRequirements()).isEqualTo(dto.getRequirements());
+        verify(opportunityRepository).save(any(Opportunity.class));
     }
 }
