@@ -67,7 +67,7 @@ const Terms = () => {
                   nossas práticas em torno de privacidade e informações
                   pessoais. Se você tiver alguma dúvida sobre como lidamos com
                   dados do usuário e informações pessoais, entre em contacto
-                  connosco.
+                  conosco.
                 </span>
               </Card.Text>
 
@@ -231,7 +231,7 @@ const Terms = () => {
                 <br></br>
                 <span>
                   O usuário se compromete a fazer uso adequado dos conteúdos e
-                  da informação que o recruit oferece no site e com caráter
+                  da informação que o RecruIT oferece no site e com caráter
                   enunciativo, mas não limitativo:
                   <ul className="terms-list">
                     <li>
@@ -245,7 +245,7 @@ const Terms = () => {
                     </li>
                     <li>
                       Não causar danos aos sistemas físicos (hardwares) e
-                      lógicos (softwares) do recruit, de seus fornecedores ou
+                      lógicos (softwares) do RecruIT, de seus fornecedores ou
                       terceiros, para introduzir ou disseminar vírus
                       informáticos ou quaisquer outros sistemas de hardware ou
                       software que sejam capazes de causar danos anteriormente
