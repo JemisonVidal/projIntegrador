@@ -9,7 +9,6 @@
  - Priscila Tiemi
  - Guilherme Gwadera
  - Luis
- - Mirla Karina
   
 # Requisitos do Projeto
  - Tema Livre
