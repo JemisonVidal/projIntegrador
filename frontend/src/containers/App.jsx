@@ -34,7 +34,7 @@ const PagesRoot = () => (
           <RoutesPrivate path="/applicant" component={Applicant} />
           <RoutesPrivate path="/aboutus" component={AboutUs} />
           <RoutesPrivate path="/contacts" component={Contacts} />
-          <RoutesPrivate path="/addOpportunity" component={AddOpportunity} />
+          <RoutesPrivate path="/addOpportunity/" component={AddOpportunity} />
           <RoutesPrivate path="/404" component={Page404} />
           <Redirect to="/404" />
         </Switch>

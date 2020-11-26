@@ -11,6 +11,7 @@ import {
 } from "../../APIs/APIs";
 import heart from "../../assets/images/Heart.svg";
 import heartFill from "../../assets/images/FilledHeart.svg";
+import editSVG from "../../assets/images/opportunity/editar.svg";
 import back from "../../assets/images/back.svg";
 import SucessApplySVG from "../../assets/images/opportunity/sucessApply.svg";
 import ConfirmationSVG from "../../assets/images/opportunity/confirmation.svg";
@@ -99,6 +100,25 @@ const ListOpportunity = ({ id }) => {
     setModalOpen(false);
   }
 
+  function renderEdit() {
+    if (user.pid !== opportunity.companyId) return;
+    return (
+      <Link
+        to={{
+          pathname: `/addOpportunity/`,
+          state: {
+            action: "edit",
+            idOpportunity: opportunity.id
+          }
+        }}
+      >
+        <button className="buttonSelect buttonYes">
+          <img className="heartIco" src={editSVG} alt="Candidatar" />
+        </button>
+      </Link>
+    );
+  }
+
   const linkCompany = `/profile/company/${opportunity.companyId}`;
 
   function renderOpportunity() {
@@ -158,7 +178,7 @@ const ListOpportunity = ({ id }) => {
           >
             <img className="xIco" src={back} alt="Retornar" />
           </button>
-          {user.type === "applicant" && (
+          {user.type === "applicant" ? (
             <button
               onClick={handlerHeartClick}
               className="buttonSelect buttonYes"
@@ -173,6 +193,8 @@ const ListOpportunity = ({ id }) => {
                 />
               )}
             </button>
+          ) : (
+            renderEdit()
           )}
         </div>
         <Modal
