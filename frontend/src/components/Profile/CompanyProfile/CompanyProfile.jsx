@@ -4,7 +4,11 @@ import {
   GET_COMPANY_OPPORTUNITIES,
   PATCH_PROFILE
 } from "../../../APIs/profileAPI";
-import { linkFormatter, locationFormatter } from "../../../utils/formatters";
+import {
+  dateFormatter,
+  linkFormatter,
+  locationFormatter
+} from "../../../utils/formatters";
 import StyledCard from "../../StyledCard/StyledCard";
 import { Button, Col, Row } from "react-bootstrap";
 import ProfileCard from "../ProfileCard/ProfileCard";
@@ -20,6 +24,12 @@ const infoSchema = {
   category: {
     label: "Ramo",
     required: true
+  },
+  startDate: {
+    label: "Data de ínicio",
+    type: "date",
+    required: true,
+    formatter: dateFormatter
   },
   site: {
     label: "Site",
