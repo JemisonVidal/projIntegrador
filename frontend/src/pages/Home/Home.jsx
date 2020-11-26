@@ -3,8 +3,6 @@ import { Card, CardDeck, Button } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import StoreContext from "../../components/Store/Context";
 import Main from "../../components/Template/main/Main";
-import imageMain from "../../assets/images/main-photo.jpg";
-import logo from "../../assets/images/Logo2RecruIT.png";
 import skillSvg from "../../assets/images/home/skills.svg";
 import courseSvg from "../../assets/images/home/course.svg";
 import linkSvg from "../../assets/images/home/link.svg";
@@ -145,19 +143,10 @@ const PagesHome = () => {
   };
 
   return (
-    <Main>
-      <div className="div-banner-home">
-        <img className="image-banner-home" src={imageMain} alt="Banner" />
-        <img className="logo-banner-home" src={logo} alt="Logo RecruIT" />
-        <h1>
-          Recru<span>IT</span>
-        </h1>
-        <p>Descubra e seja descoberto</p>
-      </div>
+    <Main exibirBanner={true}>
       {user?.type === "applicant"
         ? renderProfileUser()
         : renderProfileCompany()}
-      {/* TODO: ADICIONAR O HOME DA EMPRESA COM OS CARDS CRIAR VAGA/BUSCAR CANDIDATA */}
     </Main>
   );
 };
