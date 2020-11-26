@@ -44,3 +44,11 @@ export function CREATE_OPPORTUNITY(body) {
     body
   });
 }
+
+export function PATCH_OPPORTUNITY(id, body) {
+  return requestOptions({
+    url: `/opportunity/${id}`,
+    method: "PATCH",
+    body
+  });
+}
