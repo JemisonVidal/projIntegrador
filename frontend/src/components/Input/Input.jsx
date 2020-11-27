@@ -27,7 +27,7 @@ const Input = ({
           className={`Input ${classes?.input}`}
           id={namelabel}
           name={namelabel}
-          {...(type === "textarea" ? { as: "textarea" } : { type: "text" })}
+          {...(type === "textarea" ? { as: "textarea" } : { type: type })}
           rows={rows}
           value={onChange ? value : valueModal}
           onChange={
