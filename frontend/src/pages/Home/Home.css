@@ -88,6 +88,17 @@
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+.data-profile .card-body {
+  display: flex;
+  align-items: center;
+}
+
+.data-profile .card-body > .card-text {
+  color: #27187e;
+  margin: 5px 0;
+  text-align: center;
+}
+
 @media (min-width: 576px) {
   .div-banner-home h1 {
     font-size: 50px;
