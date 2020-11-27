@@ -7,6 +7,7 @@ import br.com.house.digital.projetointegrador.service.exceptions.ObjectNotFoundE
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
@@ -63,6 +64,11 @@ public abstract class BaseServiceImpl<T extends AbstractEntity<PK>, PK extends S
     @Override
     public Page<T> findAll(Pageable pageable) {
         return repository.findAll(pageable);
+    }
+
+    @Override
+    public Page<T> findAll(Specification<T> specification, Pageable pageable) {
+        return repository.findAll(specification, pageable);
     }
 
     @Override

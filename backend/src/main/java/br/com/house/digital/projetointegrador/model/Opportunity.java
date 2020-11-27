@@ -3,10 +3,7 @@ package br.com.house.digital.projetointegrador.model;
 import br.com.house.digital.projetointegrador.model.profile.Profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -46,6 +43,7 @@ public class Opportunity extends AbstractEntity<Long> {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "opportunity_id")
+    @Builder.Default
     private List<Requirement> requirements = new ArrayList<>();
 
     @CreationTimestamp
@@ -60,6 +58,7 @@ public class Opportunity extends AbstractEntity<Long> {
     private Profile company;
 
     @ManyToMany
+    @Builder.Default
     private List<Profile> appliedUsers = new ArrayList<>();
 
     @JsonValue

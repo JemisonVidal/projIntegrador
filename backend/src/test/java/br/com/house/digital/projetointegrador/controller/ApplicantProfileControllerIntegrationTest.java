@@ -6,6 +6,7 @@ import br.com.house.digital.projetointegrador.dto.profile.UpdateAvatarDTO;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.model.enums.UserType;
 import br.com.house.digital.projetointegrador.model.profile.ApplicantProfile;
+import br.com.house.digital.projetointegrador.model.profile.Course;
 import br.com.house.digital.projetointegrador.model.profile.Skill;
 import br.com.house.digital.projetointegrador.repository.ApplicantProfileRepository;
 import br.com.house.digital.projetointegrador.repository.UserRepository;
@@ -24,7 +25,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,6 +42,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class ApplicantProfileControllerIntegrationTest {
 
+    public static final String AUTHORIZATION = "Authorization";
+    public static final String BEARER = "Bearer ";
     private static final String NAME = "Ada Lovelace";
     private static final String EMAIL = "ada@lovelace.com";
     private static final String PASSWORD = "Lov3Lac3";
@@ -66,7 +68,18 @@ public class ApplicantProfileControllerIntegrationTest {
             .email(EMAIL)
             .password(passwordEncoder.encode(PASSWORD))
             .type(UserType.APPLICANT)
-            .profile(ApplicantProfile.builder().name(NAME).skills(new ArrayList<>()).build())
+            .profile(ApplicantProfile.builder()
+                .name(NAME)
+                .skills(singletonList(Skill.builder()
+                    .name("Java")
+                    .knowledgeLevel(3)
+                    .build()))
+                .courses(singletonList(Course.builder()
+                    .name("Java")
+                    .institution("Java School")
+                    .conclusionYear(2020)
+                    .build()))
+                .build())
             .build());
         token = jwtUtil.generateToken(user);
     }
@@ -75,7 +88,7 @@ public class ApplicantProfileControllerIntegrationTest {
     @DisplayName("Should return status 200 and the profile with the given ID")
     void findByIdTest() throws Exception {
         mvc.perform(get(URL_PREFIX + id)
-            .header("Authorization", "Bearer " + token))
+            .header(AUTHORIZATION, BEARER + token))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(id))
             .andExpect(jsonPath("$.name").value(NAME));
@@ -85,7 +98,7 @@ public class ApplicantProfileControllerIntegrationTest {
     @DisplayName("Should return status 200 and pages with all profiles")
     void findAllTest() throws Exception {
         mvc.perform(get(URL_PREFIX)
-            .header("Authorization", "Bearer " + token))
+            .header(AUTHORIZATION, BEARER + token))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.content", hasSize(1)))
             .andExpect(jsonPath("$.content[0].name").value(NAME))
@@ -97,12 +110,62 @@ public class ApplicantProfileControllerIntegrationTest {
     void findByNameTest() throws Exception {
         repository.save(ApplicantProfile.builder().name("Margaret Hamilton").build());
         mvc.perform(get(URL_PREFIX)
-            .header("Authorization", "Bearer " + token)
+            .header(AUTHORIZATION, BEARER + token)
             .param("name", "ada"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.content", hasSize(1)))
             .andExpect(jsonPath("$.content[0].name").value(NAME))
             .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @DisplayName("Should return status 200 and pages with profiles containing the skill")
+    void findBySkillTest() throws Exception {
+        repository.save(ApplicantProfile.builder().name("Margaret Hamilton")
+            .skills(singletonList(Skill.builder().name("Javascript").knowledgeLevel(3).build()))
+            .build());
+        mvc.perform(get(URL_PREFIX)
+            .header(AUTHORIZATION, BEARER + token)
+            .accept(MediaType.APPLICATION_JSON)
+            .param("skills", "java"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content", hasSize(2)))
+            .andExpect(jsonPath("$.totalElements").value(2));
+    }
+
+    @Test
+    @DisplayName("Should return status 200 and pages with profiles containing the name and skill")
+    void findByNameAndSkillTest() throws Exception {
+        repository.save(ApplicantProfile.builder().name("Margaret Hamilton")
+            .skills(singletonList(Skill.builder().name("Javascript").knowledgeLevel(3).build()))
+            .build());
+        mvc.perform(get(URL_PREFIX)
+            .header(AUTHORIZATION, BEARER + token)
+            .accept(MediaType.APPLICATION_JSON)
+            .param("name", "ada")
+            .param("skills", "java"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content", hasSize(1)))
+            .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @DisplayName("Should return status 200 and pages with profiles containing the course")
+    void findByCourseTest() throws Exception {
+        repository.save(ApplicantProfile.builder().name("Margaret Hamilton")
+            .courses(singletonList(Course.builder()
+                .name("Javascript")
+                .institution("Javascript School")
+                .conclusionYear(2020)
+                .build()))
+            .build());
+        mvc.perform(get(URL_PREFIX)
+            .header(AUTHORIZATION, BEARER + token)
+            .accept(MediaType.APPLICATION_JSON)
+            .param("course", "java"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content", hasSize(2)))
+            .andExpect(jsonPath("$.totalElements").value(2));
     }
 
     @Test
@@ -114,7 +177,7 @@ public class ApplicantProfileControllerIntegrationTest {
             .build();
 
         mvc.perform(patch(URL_PREFIX + id + "/avatar")
-            .header("Authorization", "Bearer " + token)
+            .header(AUTHORIZATION, BEARER + token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(dto)))
             .andExpect(status().isNoContent());
@@ -154,7 +217,7 @@ public class ApplicantProfileControllerIntegrationTest {
         repository.save(profile);
 
         mvc.perform(get(URL_PREFIX + id + "/avatar")
-            .header("Authorization", "Bearer " + token))
+            .header(AUTHORIZATION, BEARER + token))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.imgSrc").value(imgSrc));
     }
@@ -165,12 +228,13 @@ public class ApplicantProfileControllerIntegrationTest {
         ApplicantProfileDTO dto = ApplicantProfileDTO.builder()
             .id(id)
             .location("Londres, UK")
-            .about("Matemática e escritora inglesa, reconhecida principalmente por ter escrito o primeiro algoritmo para ser processado por uma máquina.")
+            .about(
+                "Matemática e escritora inglesa, reconhecida principalmente por ter escrito o primeiro algoritmo para ser processado por uma máquina.")
             .skills(singletonList(Skill.builder().name("Matemática").knowledgeLevel(3).build()))
             .build();
 
         mvc.perform(patch(URL_PREFIX + id)
-            .header("Authorization", "Bearer " + token)
+            .header(AUTHORIZATION, BEARER + token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(dto)))
             .andExpect(status().isNoContent());
@@ -190,7 +254,8 @@ public class ApplicantProfileControllerIntegrationTest {
         ApplicantProfileDTO dto = ApplicantProfileDTO.builder()
             .id(id)
             .location("Londres, UK")
-            .about("Matemática e escritora inglesa, reconhecida principalmente por ter escrito o primeiro algoritmo para ser processado por uma máquina.")
+            .about(
+                "Matemática e escritora inglesa, reconhecida principalmente por ter escrito o primeiro algoritmo para ser processado por uma máquina.")
             .skills(singletonList(Skill.builder().name("Matemática").knowledgeLevel(3).build()))
             .build();
 
@@ -210,7 +275,7 @@ public class ApplicantProfileControllerIntegrationTest {
     @DisplayName("Should return status 401 when token signature is invalid")
     void invalidTokenTest() throws Exception {
         mvc.perform(get(URL_PREFIX)
-            .header("Authorization", "Bearer " + token.concat("invalidate-token")))
+            .header(AUTHORIZATION, BEARER + token.concat("invalidate-token")))
             .andExpect(status().isUnauthorized())
             .andExpect(jsonPath("$.msg").value("Invalid token."));
     }

@@ -2,6 +2,7 @@ package br.com.house.digital.projetointegrador.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface BaseService<T, PK> {
     List<T> findAll();
 
     Page<T> findAll(Pageable pageable);
+
+    Page<T> findAll(Specification<T> specification, Pageable pageable);
 
     Page<T> findAllByName(String name, Pageable pageable);
 

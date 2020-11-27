@@ -1,16 +1,21 @@
 package br.com.house.digital.projetointegrador.controller;
 
-import br.com.house.digital.projetointegrador.configuration.ApiPageable;
 import br.com.house.digital.projetointegrador.model.AbstractEntity;
 import br.com.house.digital.projetointegrador.service.BaseService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/api")
@@ -19,14 +24,14 @@ public abstract class BaseController<T extends AbstractEntity<Long>, S extends B
 
     protected final S service;
 
-    @GetMapping
-    @ApiPageable
-    @ApiOperation(value = "Returns a pageable list of all the entities.")
-    public ResponseEntity<Page<DTO>> findAll(@RequestParam Optional<String> name, Pageable pageable) {
-        final Page<DTO> page = name.map(s -> service.findAllByName(s, pageable))
-            .orElse(service.findAll(pageable)).map(this::mapDTO);
-        return ResponseEntity.ok(page);
-    }
+//    @GetMapping
+//    @ApiPageable
+//    @ApiOperation(value = "Returns a pageable list of all the entities.")
+//    public ResponseEntity<Page<DTO>> findAll(@RequestParam Optional<String> name, Pageable pageable) {
+//        final Page<DTO> page = name.map(s -> service.findAllByName(s, pageable))
+//            .orElse(service.findAll(pageable)).map(this::mapDTO);
+//        return ResponseEntity.ok(page);
+//    }
 
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "Returns the entity with given ID.")
@@ -37,4 +42,19 @@ public abstract class BaseController<T extends AbstractEntity<Long>, S extends B
 
     abstract DTO mapDTO(T entity);
 
+    protected Page<T> doSearch(List<Specification<T>> specifications, Pageable pageable) {
+        if (specifications.isEmpty()) {
+            return service.findAll(pageable);
+        }
+        Specification<T> specification = specifications.get(0);
+        for (int i = 1; i < specifications.size(); i++) {
+            specification = Specification.where(specification).and(specifications.get(i));
+        }
+        return service.findAll(specification, pageable);
+    }
+
+    protected List<Specification<T>> getSpecificationsFromList(List<String> list,
+                                                               Function<String, Specification<T>> specification) {
+        return list.stream().map(specification).collect(Collectors.toList());
+    }
 }

@@ -6,8 +6,12 @@ import br.com.house.digital.projetointegrador.dto.profile.ApplicantProfileDTO;
 import br.com.house.digital.projetointegrador.model.Opportunity;
 import br.com.house.digital.projetointegrador.model.User;
 import br.com.house.digital.projetointegrador.service.impl.OpportunityService;
+import br.com.house.digital.projetointegrador.service.specification.OpportunitySpecification;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,7 +20,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/v1/api/opportunity", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -27,10 +33,34 @@ public class OpportunityController extends BaseController<Opportunity, Opportuni
         super(service);
     }
 
+    @GetMapping
+    public ResponseEntity<Page<OpportunityDTO>> findAll(
+        @RequestParam Optional<String> name,
+        @RequestParam Optional<String> location,
+        @RequestParam Optional<String> benefits,
+        @RequestParam Optional<List<String>> requirements,
+        @RequestParam Optional<Boolean> active,
+        Pageable pageable
+    ) {
+        List<Specification<Opportunity>> specifications = new ArrayList<>();
+        name.ifPresent(s -> specifications.add(OpportunitySpecification.nameContains(s)));
+        location.ifPresent(s -> specifications.add(OpportunitySpecification.locationContains(s)));
+        benefits.ifPresent(s -> specifications.add(OpportunitySpecification.benefitsContains(s)));
+        requirements.ifPresent(l -> specifications.addAll(getSpecificationsFromList(l, OpportunitySpecification::requirementContains)));
+        if (active.isPresent()) {
+            specifications.add(OpportunitySpecification.isActive(active.get()));
+        } else {
+            specifications.add(OpportunitySpecification.isActive(true));
+        }
+        return ResponseEntity.ok(doSearch(specifications, pageable).map(this::mapDTO));
+    }
+
     @PostMapping
     @ApiOperation(value = "Create a new opportunity with the authenticated company.")
-    public ResponseEntity<Void> create(@Valid @RequestBody NewOpportunityDTO newOpportunityDTO,
-                                       @AuthenticationPrincipal User user) {
+    public ResponseEntity<Void> create(
+        @Valid @RequestBody NewOpportunityDTO newOpportunityDTO,
+        @AuthenticationPrincipal User user
+    ) {
         final Opportunity created = this.service.save(newOpportunityDTO, user);
         URI uri = ServletUriComponentsBuilder
             .fromCurrentRequest()
@@ -81,7 +111,10 @@ public class OpportunityController extends BaseController<Opportunity, Opportuni
 
     @PatchMapping("/{id}")
     @ApiOperation(value = "Updates the opportunity with given ID.")
-    public ResponseEntity<OpportunityDTO> patchOpportunityById(@PathVariable Long id, @Valid @RequestBody NewOpportunityDTO dto) {
+    public ResponseEntity<OpportunityDTO> patchOpportunityById(
+        @PathVariable Long id,
+        @Valid @RequestBody NewOpportunityDTO dto
+    ) {
         Opportunity opportunity = service.patch(id, dto);
         return ResponseEntity.ok(this.mapDTO(opportunity));
     }
