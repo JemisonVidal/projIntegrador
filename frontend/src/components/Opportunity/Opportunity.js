@@ -104,6 +104,7 @@ const ListOpportunity = ({ id }) => {
     if (user.pid !== opportunity.companyId) return;
     return (
       <Link
+        className="buttonSelect buttonYes"
         to={{
           pathname: `/addOpportunity/`,
           state: {
@@ -112,7 +113,7 @@ const ListOpportunity = ({ id }) => {
           }
         }}
       >
-        <button className="buttonSelect buttonYes">
+        <button className="buttonRemove">
           <img className="heartIco" src={editSVG} alt="Candidatar" />
         </button>
       </Link>
