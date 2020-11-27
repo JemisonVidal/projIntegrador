@@ -12,6 +12,7 @@ import {
   CardDeck,
   Spinner
 } from "react-bootstrap";
+import Checkbox from "../../components/Checkbox/Checkbox";
 import ModalForm from "../../components/Modal/ModalForm";
 import Input from "../../components/Input/Input";
 import { skillMap, skillOptions } from "../../utils/skills";
@@ -58,6 +59,7 @@ const AddOpportunity = (props) => {
   const [editIndex, setEditIndex] = useState(undefined);
   const { loading, request } = useFetch();
   const [messageSucess, setMessageSucess] = useState(false);
+  const [active, setActive] = useState(true);
 
   const titulo = useForm(false);
   const localizacao = useForm(false);
@@ -83,6 +85,7 @@ const AddOpportunity = (props) => {
           beneficios.setValue(json.benefits);
           salario.setValue(json.salary);
           observacao.setValue(json.text);
+          setActive(json.active);
           setRequirements(json.requirements);
         }
       }
@@ -93,7 +96,7 @@ const AddOpportunity = (props) => {
 
   function buildBody() {
     return {
-      active: true,
+      active,
       benefits: beneficios.value,
       description: descricao.value,
       location: localizacao.value,
@@ -367,6 +370,13 @@ const AddOpportunity = (props) => {
                     {...observacao}
                   />
                 </Form.Group>
+                <Checkbox
+                  className="CheckBoxMin"
+                  type="checkbox"
+                  checked={active}
+                  onClick={() => setActive(!active)}
+                  label="Ativo"
+                />
                 <Button className="buttonSave" type="submit" variant="primary">
                   Salvar
                 </Button>

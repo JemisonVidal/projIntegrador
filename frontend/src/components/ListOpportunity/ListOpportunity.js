@@ -92,7 +92,6 @@ const ListOpportunity = ({ type }) => {
       arrayOpportunity.map((opportunity) => {
         if (typeSearch === MY_OPPORTUNITYS && !opportunity.isApplied)
           return null;
-
         return (
           <div key={opportunity.id}>
             <Card className="card h-100">
@@ -130,15 +129,33 @@ const ListOpportunity = ({ type }) => {
                 </Card.Text>
               </Card.Body>
               <Link className="linkVaga" to={`/opportunity/${opportunity.id}`}>
-                <Button
-                  // onClick={handlerCandidatar}
-                  id={opportunity.isApplied ? "buttonGreen" : "buttonBlue"}
-                  className="buttonVaga"
-                  variant="primary"
-                  type="button"
-                >
-                  {opportunity.isApplied ? "Candidatada" : "Ver Oportunidade"}
-                </Button>
+                {user?.type === "applicant" ? (
+                  <Button
+                    // onClick={handlerCandidatar}
+                    id={opportunity.isApplied ? "buttonGreen" : "buttonBlue"}
+                    className="buttonVaga"
+                    variant="primary"
+                    type="button"
+                  >
+                    {opportunity.isApplied ? "Candidatada" : "Ver Oportunidade"}
+                  </Button>
+                ) : (
+                  <Button
+                    // onClick={handlerCandidatar}
+                    id={
+                      user.pid === opportunity.companyId
+                        ? "buttonGreen"
+                        : "buttonBlue"
+                    }
+                    className="buttonVaga"
+                    variant="primary"
+                    type="button"
+                  >
+                    {user.pid === opportunity.companyId
+                      ? "Ver Minha Vaga"
+                      : "Ver Oportunidade"}
+                  </Button>
+                )}
               </Link>
             </Card>
           </div>
