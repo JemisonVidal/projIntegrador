@@ -15,6 +15,7 @@ import br.com.house.digital.projetointegrador.security.JWTRequestFilter;
 import br.com.house.digital.projetointegrador.security.JWTUtil;
 import br.com.house.digital.projetointegrador.security.WebSecurityConfig;
 import br.com.house.digital.projetointegrador.service.exceptions.ObjectNotFoundException;
+import br.com.house.digital.projetointegrador.service.exceptions.UserForbiddenException;
 import br.com.house.digital.projetointegrador.service.impl.OpportunityService;
 import br.com.house.digital.projetointegrador.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,8 +48,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,6 +66,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     ControllerExceptionHandler.class
 })
 public class OpportunityControllerTest {
+
+    private static final String URL_PREFIX = "/v1/api/opportunity";
 
     @Autowired
     MockMvc mvc;
@@ -99,10 +101,9 @@ public class OpportunityControllerTest {
             .id(1L)
             .build();
 
-        when(opportunityService.convertToEntity(any(NewOpportunityDTO.class))).thenReturn(opportunity);
-        when(opportunityService.save(any(Opportunity.class))).thenReturn(opportunity);
+        when(opportunityService.save(any(NewOpportunityDTO.class), any(User.class))).thenReturn(opportunity);
 
-        RequestBuilder request = post("/v1/api/opportunity")
+        RequestBuilder request = post(URL_PREFIX)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(dto));
@@ -112,8 +113,8 @@ public class OpportunityControllerTest {
             .andReturn()
             .getResponse();
 
-        verify(opportunityService, times(1)).save(opportunity);
-        assertThat(response.getHeader("Location")).isEqualTo("http://localhost/v1/api/opportunity/1");
+        verify(opportunityService, times(1)).save(any(NewOpportunityDTO.class), any(User.class));
+        assertThat(response.getHeader("Location")).isEqualTo("http://localhost" + URL_PREFIX + "/1");
     }
 
     @ParameterizedTest
@@ -126,7 +127,7 @@ public class OpportunityControllerTest {
             .requirements(null)
             .build();
 
-        RequestBuilder request = post("/v1/api/opportunity")
+        RequestBuilder request = post(URL_PREFIX)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(dto));
@@ -150,7 +151,7 @@ public class OpportunityControllerTest {
                 .build()))
             .build();
 
-        RequestBuilder request = post("/v1/api/opportunity")
+        RequestBuilder request = post(URL_PREFIX)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(dto));
@@ -165,7 +166,7 @@ public class OpportunityControllerTest {
     @DisplayName("Should apply user to opportunity and return status 204")
     @WithMockCustomUser
     void applyToOpportunityTest() throws Exception {
-        mvc.perform(post("/v1/api/opportunity/1/apply"))
+        mvc.perform(post(URL_PREFIX + "/1/apply"))
             .andExpect(status().isNoContent());
         doNothing().when(opportunityService).apply(anyLong(), any(User.class));
         verify(opportunityService, times(1)).apply(anyLong(), any(User.class));
@@ -175,7 +176,7 @@ public class OpportunityControllerTest {
     @DisplayName("Should not apply company to opportunity and return status 403")
     @WithMockCustomUser(type = UserType.COMPANY)
     void applyCompanyToOpportunityTest() throws Exception {
-        mvc.perform(post("/v1/api/opportunity/1/apply"))
+        mvc.perform(post(URL_PREFIX + "/1/apply"))
             .andExpect(status().isForbidden());
         verify(opportunityService, never()).apply(anyLong(), any(User.class));
     }
@@ -187,7 +188,7 @@ public class OpportunityControllerTest {
         Opportunity opportunity = Opportunity.builder().id(id).build();
         when(opportunityService.findById(id)).thenReturn(opportunity);
         when(opportunityService.mapDTO(opportunity)).thenReturn(OpportunityDTO.builder().id(id).build());
-        RequestBuilder request = get("/v1/api/opportunity/1")
+        RequestBuilder request = get(URL_PREFIX + "/1")
             .accept(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)
@@ -199,7 +200,7 @@ public class OpportunityControllerTest {
     @DisplayName("Should return 404 on id not found")
     void findById404Test() throws Exception {
         when(opportunityService.findById(anyLong())).thenThrow(new ObjectNotFoundException("Object not found with id: 1"));
-        RequestBuilder request = get("/v1/api/opportunity/1")
+        RequestBuilder request = get(URL_PREFIX + "/1")
             .accept(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)
@@ -215,7 +216,7 @@ public class OpportunityControllerTest {
         when(opportunityService.findAll(any(Pageable.class))).thenReturn(opportunities);
         when(opportunityService.mapDTO(any(Opportunity.class))).thenReturn(opportunityDTO);
 
-        RequestBuilder request = get("/v1/api/opportunity/")
+        RequestBuilder request = get(URL_PREFIX + "/")
             .accept(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)
@@ -230,7 +231,7 @@ public class OpportunityControllerTest {
         List<OpportunityDTO> opportunities = Arrays.asList(opportunityDTO, opportunityDTO);
         when(opportunityService.findAllByCompanyId(anyLong())).thenReturn(opportunities);
 
-        RequestBuilder request = get("/v1/api/opportunity/company/1")
+        RequestBuilder request = get(URL_PREFIX + "/company/1")
             .accept(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)
@@ -242,8 +243,8 @@ public class OpportunityControllerTest {
     @DisplayName("Should return list of applied users in opportunity")
     void findAppliedUsersByOpportunityIdTest() throws Exception {
         ApplicantProfileDTO dto = ApplicantProfileDTO.builder().id(1L).name("Boba Fett").build();
-        when(opportunityService.findAppliedUsersByOpportunityId(anyLong(), any(User.class))).thenReturn(Arrays.asList(dto, dto));
-        mvc.perform(get("/v1/api/opportunity/1/applied").accept(MediaType.APPLICATION_JSON))
+        when(opportunityService.findAppliedUsersByOpportunityId(anyLong())).thenReturn(Arrays.asList(dto, dto));
+        mvc.perform(get(URL_PREFIX + "/1/applied").accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(2)));
     }
@@ -253,15 +254,66 @@ public class OpportunityControllerTest {
     void findAppliedOpportunitiesByProfileIdTest() throws Exception {
         final OpportunityDTO dto = OpportunityDTO.builder().id(1L).name("Pod Racer").build();
         when(opportunityService.findAppliedOpportunitiesByProfileId(anyLong())).thenReturn(Arrays.asList(dto, dto));
-        mvc.perform(get("/v1/api/opportunity/applied?id=1").accept(MediaType.APPLICATION_JSON))
+        mvc.perform(get(URL_PREFIX + "/applied?id=1").accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test
-    @DisplayName("Should return bad request when id param is missing")
-    void findAppliedOpportunitiesByProfileIdNoParamTest() throws Exception {
-        mvc.perform(get("/v1/api/opportunity/applied"))
-            .andExpect(status().isBadRequest());
+    @DisplayName("Should return status 204 when delete is successful")
+    void deleteOpportunityByIdTest() throws Exception {
+        doNothing().when(opportunityService).deleteById(anyLong());
+        mvc.perform(delete(URL_PREFIX + "/1"))
+            .andExpect(status().isNoContent());
+        verify(opportunityService).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("Should return status 204 when toggle active is successful")
+    void toggleActiveTest() throws Exception {
+        doNothing().when(opportunityService).toggleActive(anyLong());
+        mvc.perform(patch(URL_PREFIX + "/1/active"))
+            .andExpect(status().isNoContent());
+        verify(opportunityService).toggleActive(1L);
+    }
+
+    @Test
+    @DisplayName("Should return forbidden when user does not own the opportunity")
+    void userForbiddenTest() throws Exception {
+        doThrow(UserForbiddenException.class).when(opportunityService).toggleActive(anyLong());
+        mvc.perform(patch(URL_PREFIX + "/1/active"))
+            .andExpect(status().isForbidden());
+        verify(opportunityService).toggleActive(1L);
+    }
+
+    @Test
+    @DisplayName("Should patch and return status 200")
+    void patchByIdTest() throws Exception {
+        NewOpportunityDTO dto = NewOpportunityDTO.builder()
+            .name("Vaga para teste")
+            .location("São Paulo, SP")
+            .description("Descrição da vaga")
+            .requirements(Collections.singletonList(Requirement.builder()
+                .name("Requerimento")
+                .knowledgeLevel(KnowledgeLevel.BASIC)
+                .build()))
+            .build();
+
+        Opportunity opportunity = Opportunity.builder()
+            .name(dto.getName())
+            .location(dto.getLocation())
+            .description(dto.getDescription())
+            .requirements(dto.getRequirements())
+            .id(1L)
+            .build();
+
+        when(opportunityService.patch(anyLong(), any(NewOpportunityDTO.class))).thenReturn(opportunity);
+
+        mvc.perform(patch(URL_PREFIX + "/1")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isOk());
+
     }
 }

@@ -4,11 +4,11 @@ import Footer from "../footer/Footer";
 import Nav from "../nav/Nav";
 import { Container } from "react-bootstrap";
 
-const Main = (props) => (
+const Main = ({ exibirBanner = false, children }) => (
   <React.Fragment>
-    <Nav />
+    <Nav exibirBanner={exibirBanner} />
     <Container fluid="md" as="main">
-      {props.children}
+      {children}
     </Container>
     <Footer />
   </React.Fragment>

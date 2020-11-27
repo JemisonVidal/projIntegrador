@@ -11,6 +11,7 @@ import {
 } from "../../APIs/APIs";
 import heart from "../../assets/images/Heart.svg";
 import heartFill from "../../assets/images/FilledHeart.svg";
+import editSVG from "../../assets/images/opportunity/editar.svg";
 import back from "../../assets/images/back.svg";
 import SucessApplySVG from "../../assets/images/opportunity/sucessApply.svg";
 import ConfirmationSVG from "../../assets/images/opportunity/confirmation.svg";
@@ -99,6 +100,25 @@ const ListOpportunity = ({ id }) => {
     setModalOpen(false);
   }
 
+  function renderEdit() {
+    if (user.pid !== opportunity.companyId) return;
+    return (
+      <Link
+        to={{
+          pathname: `/addOpportunity/`,
+          state: {
+            action: "edit",
+            idOpportunity: opportunity.id
+          }
+        }}
+      >
+        <button className="buttonSelect buttonYes">
+          <img className="heartIco" src={editSVG} alt="Candidatar" />
+        </button>
+      </Link>
+    );
+  }
+
   const linkCompany = `/profile/company/${opportunity.companyId}`;
 
   function renderOpportunity() {
@@ -158,7 +178,7 @@ const ListOpportunity = ({ id }) => {
           >
             <img className="xIco" src={back} alt="Retornar" />
           </button>
-          {user.type === "applicant" && (
+          {user.type === "applicant" ? (
             <button
               onClick={handlerHeartClick}
               className="buttonSelect buttonYes"
@@ -173,6 +193,8 @@ const ListOpportunity = ({ id }) => {
                 />
               )}
             </button>
+          ) : (
+            renderEdit()
           )}
         </div>
         <Modal
@@ -231,7 +253,7 @@ const ListOpportunity = ({ id }) => {
     return (
       applicants &&
       applicants.map((applicant) => {
-        const url = `https://api.whatsapp.com/send?phone=${applicant.phoneNumber}&text=Ol%C3%A1%2C%20tudo%20bem%20%3F%20Encontrei%20seu%20perfil%20no%20RecruIT.%20Podemos%20conversar%20%3F`;
+        const url = `https://api.whatsapp.com/send?phone=55${applicant.phoneNumber}&text=Ol%C3%A1%2C%20tudo%20bem%20%3F%20Encontrei%20seu%20perfil%20no%20RecruIT.%20Podemos%20conversar%20%3F`;
         const urlPerfil = `/profile/applicant/${applicant.id}`;
         return (
           <div key={applicant.id}>
@@ -241,11 +263,8 @@ const ListOpportunity = ({ id }) => {
                   <Link to={urlPerfil}>
                     <img
                       className="srcApplicants"
-                      src={
-                        applicant.imgSrc == null || applicant.imgSrc == ""
-                          ? SimpleImage
-                          : applicant.imgSrc
-                      }
+                      src={applicant.imgSrc || SimpleImage}
+                      alt="Foto do perfil"
                     ></img>
                   </Link>
                 </div>
@@ -254,17 +273,16 @@ const ListOpportunity = ({ id }) => {
                   <p className="descriptionApplicants">{applicant.location}</p>
                   <div className="divButtonApplicants">
                     <a
-                      href={
-                        applicant.phoneNumber == null ||
-                        applicant.phoneNumber == ""
-                          ? null
-                          : url
-                      }
+                      href={applicant.phoneNumber && url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="footerLink"
                     >
-                      <img className="logoFooterPng" src={WhatsappLogo} />
+                      <img
+                        className="logoFooterPng"
+                        src={WhatsappLogo}
+                        alt="WhatsApp"
+                      />
                     </a>
                     <a
                       href={applicant.linkedin}
@@ -272,7 +290,11 @@ const ListOpportunity = ({ id }) => {
                       rel="noopener noreferrer"
                       className="footerLink"
                     >
-                      <img className="logoFooterPng" src={LinkedinLogo} />
+                      <img
+                        className="logoFooterPng"
+                        src={LinkedinLogo}
+                        alt="LinkedIn"
+                      />
                     </a>
                     <a
                       href={applicant.github}
@@ -280,7 +302,11 @@ const ListOpportunity = ({ id }) => {
                       rel="noopener noreferrer"
                       className="footerLink"
                     >
-                      <img className="logoFooterPng" src={GithubLogo} />
+                      <img
+                        className="logoFooterPng"
+                        src={GithubLogo}
+                        alt="GitHub"
+                      />
                     </a>
                   </div>
                 </div>

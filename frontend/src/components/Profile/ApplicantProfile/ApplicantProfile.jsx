@@ -6,7 +6,11 @@ import { PATCH_PROFILE } from "../../../APIs/profileAPI";
 import ApplicantExperiences from "./ApplicantExperiences";
 import ApplicantSkills from "./ApplicantSkills";
 import ApplicantCourses from "./ApplicantCourses";
-import { currencyFormatter, linkFormatter } from "../../../utils/formatters";
+import {
+  currencyFormatter,
+  linkFormatter,
+  phoneFormatter
+} from "../../../utils/formatters";
 import ProfileCard from "../ProfileCard/ProfileCard";
 
 const infoSchema = {
@@ -34,6 +38,15 @@ const infoSchema = {
     formatter: linkFormatter,
     placeholder: "https://linkedin.com/in/usuaria",
     feedback: "Por favor digite uma URL válida."
+  },
+  phoneNumber: {
+    hidden: true,
+    label: "WhatsApp",
+    type: "tel",
+    feedback: "Por favor digite um número de celular válido.",
+    placeholder: "11912345678",
+    pattern: "^[1-9]{2}9[0-9]{8}$",
+    formatter: phoneFormatter
   }
 };
 

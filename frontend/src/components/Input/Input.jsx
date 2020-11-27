@@ -4,6 +4,7 @@ import "./Input.css";
 
 const Input = ({
   namelabel,
+  classes,
   type,
   as,
   value,
@@ -12,20 +13,22 @@ const Input = ({
   options,
   error,
   required,
+  rows
 }) => {
   const [valueModal, setValueModal] = React.useState(value);
 
   return (
     <>
-      <Form.Label className="label" htmlFor={namelabel}>
-        {namelabel}
+      <Form.Label className={`label ${classes?.label}`} htmlFor={namelabel}>
+        {namelabel} {required && <span className="text-danger">*</span>}
       </Form.Label>
-      {type ? (
+      {type || type === "textarea" ? (
         <Form.Control
-          className="Input"
+          className={`Input ${classes?.input}`}
           id={namelabel}
           name={namelabel}
-          type={type}
+          {...(type === "textarea" ? { as: "textarea" } : { type: type })}
+          rows={rows}
           value={onChange ? value : valueModal}
           onChange={
             onChange

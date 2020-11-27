@@ -3,8 +3,6 @@ import { Card, CardDeck, Button } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import StoreContext from "../../components/Store/Context";
 import Main from "../../components/Template/main/Main";
-import imageMain from "../../assets/images/main-photo.jpg";
-import logo from "../../assets/images/Logo2RecruIT.png";
 import skillSvg from "../../assets/images/home/skills.svg";
 import courseSvg from "../../assets/images/home/course.svg";
 import linkSvg from "../../assets/images/home/link.svg";
@@ -36,7 +34,9 @@ const PagesHome = () => {
             <Card.Img variant="top" src={skillSvg} />
             <Card.Body>
               <Card.Text>
-                Acessar minhas habilidades
+                Adicione novas habilidades e mostre a todos quais são seus
+                pontos fortes que te tornam ainda mais relevante para diversas
+                vagas !
               </Card.Text>
             </Card.Body>
             <Link to={`/profile/applicant/${user.pid}#skills`}>
@@ -47,7 +47,10 @@ const PagesHome = () => {
             <Card.Title>Cursos</Card.Title>
             <Card.Img variant="top" src={courseSvg} />
             <Card.Body>
-              <Card.Text>Acessar meus cursos</Card.Text>
+              <Card.Text>
+                Conhecimento é tudo, acrescente novos cursos para mostrar que
+                você está sempre atualizada e pronta para novas vagas !
+              </Card.Text>
             </Card.Body>
             <Link to={`/profile/applicant/${user.pid}#courses`}>
               <Button variant="primary">Adicionar um curso</Button>
@@ -60,7 +63,8 @@ const PagesHome = () => {
             <Card.Img variant="top" src={linkSvg} />
             <Card.Body>
               <Card.Text>
-                Acessar meus links externos
+                Edite ou preencha seu cartão de visitas para que mais empresas
+                te encontrem !
               </Card.Text>
             </Card.Body>
             <Link to={`/profile/applicant/${user.pid}#info`}>
@@ -72,7 +76,8 @@ const PagesHome = () => {
             <Card.Img variant="top" src={workSvg} />
             <Card.Body>
               <Card.Text>
-                Acessar minhas Experiências
+                Acrescente experiências e mostre onde você trabalhou para que
+                seu perfil fique ainda mais bonito !
               </Card.Text>
             </Card.Body>
             <Link to={`/profile/applicant/${user.pid}#experiences`}>
@@ -96,21 +101,26 @@ const PagesHome = () => {
             <Card.Title>Adicionar Vaga</Card.Title>
             <Card.Img variant="top" src={opportunitySvg} />
             <Card.Body>
-              <Card.Text>Adicionar vaga</Card.Text>
+              <Card.Text>
+                Adicione uma vaga para encontrar profissionais e garantir um
+                time de sucesso !
+              </Card.Text>
             </Card.Body>
-            <Button variant="primary" onClick={handleOnClick}>
-              Adicionar Vaga
-            </Button>
+            <Link to={`/addOpportunity`}>
+              <Button variant="primary">Adicionar Vaga</Button>
+            </Link>
           </Card>
           <Card>
             <Card.Title>Procurar candidata</Card.Title>
             <Card.Img variant="top" src={searchSvg} />
             <Card.Body>
-              <Card.Text>Procurar candidata</Card.Text>
+              <Card.Text>
+                Procure candidatas que irão compor o time da sua empresa !
+              </Card.Text>
             </Card.Body>
-            <Button variant="primary" onClick={handleOnClick}>
-              Procurar Candidata
-            </Button>
+            <Link to={`/applicant`}>
+              <Button variant="primary">Procurar Candidata</Button>
+            </Link>
           </Card>
         </CardDeck>
         <CardDeck>
@@ -118,7 +128,10 @@ const PagesHome = () => {
             <Card.Title>Sobre</Card.Title>
             <Card.Img variant="top" src={aboutSvg} />
             <Card.Body>
-              <Card.Text>Acessar sobre</Card.Text>
+              <Card.Text>
+                Altere ou acrescente coisas em seu perfil e se transforme em uma
+                empresa ainda mais atrativa no mercado de trabalho !
+              </Card.Text>
             </Card.Body>
             <Button variant="primary" onClick={handleOnClick}>
               Sobre
@@ -130,19 +143,10 @@ const PagesHome = () => {
   };
 
   return (
-    <Main>
-      <div className="div-banner-home">
-        <img className="image-banner-home" src={imageMain} alt="Banner" />
-        <img className="logo-banner-home" src={logo} alt="Logo RecruIT" />
-        <h1>
-          Recru<span>IT</span>
-        </h1>
-        <p>Descubra e seja descoberto</p>
-      </div>
+    <Main exibirBanner={true}>
       {user?.type === "applicant"
         ? renderProfileUser()
         : renderProfileCompany()}
-      {/* TODO: ADICIONAR O HOME DA EMPRESA COM OS CARDS CRIAR VAGA/BUSCAR CANDIDATA */}
     </Main>
   );
 };

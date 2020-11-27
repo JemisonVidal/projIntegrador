@@ -22,18 +22,18 @@ const Footer = () => (
     </div>
     <div className="col-footer-redesSociais">
       <span className="titulo-redesSociais">Redes Sociais</span>
-      <a href="" className="footerFacebookLink">
-        <img className="logoFooterPng" src={facebookLogo} />
+      <a href="https://facebook.com" className="footerFacebookLink">
+        <img className="logoFooterPng" src={facebookLogo} alt="Facebook" />
       </a>
-      <a href="" className="footerLink">
-        <img className="logoFooterPng" src={linkedinLogo} />
+      <a href="https://linkedin.com" className="footerLink">
+        <img className="logoFooterPng" src={linkedinLogo} alt="LinkedIn" />
       </a>
-      <a href="" className="footerLink">
-        <img className="logoFooterPng" src={twitterLogo} />
+      <a href="https://twitter.com" className="footerLink">
+        <img className="logoFooterPng" src={twitterLogo} alt="Twitter" />
       </a>
     </div>
     <div className="col-footer-logo">
-      <img className="logo-footer" src={logo} />
+      <img className="logo-footer" src={logo} alt="RecruIT" />
     </div>
     <div className="col-footer-direitos">
       <p className="texto-footer">RecruIT © 2020</p>

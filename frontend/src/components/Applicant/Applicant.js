@@ -85,11 +85,10 @@ const Applicant = () => {
             <Card>
               <Card.Body>
                 <div className="container-card-perfil">
-                  {(applicant.imgSrc == null) | (applicant.imgSrc == "") ? (
-                    <img src={womanLogo} />
-                  ) : (
-                    <img src={applicant.imgSrc} />
-                  )}
+                  <img
+                    src={applicant.imgSrc || womanLogo}
+                    alt="Foto do perfil"
+                  />
                   <Card.Title className="title-applicant-search">
                     {applicant.name}
                   </Card.Title>
@@ -151,7 +150,7 @@ const Applicant = () => {
             ref={searchInput}
             type="text"
             placeholder="Pesquisar"
-            className=" form-control"
+            className=" form-search"
           />
           <Button className="btn-search ml-2" onClick={handleSearchClick}>
             <i className="fa fa-search" aria-hidden="true"></i>

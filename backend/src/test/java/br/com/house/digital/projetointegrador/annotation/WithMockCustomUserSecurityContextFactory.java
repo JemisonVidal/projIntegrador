@@ -18,7 +18,7 @@ public class WithMockCustomUserSecurityContextFactory
     public SecurityContext createSecurityContext(WithMockCustomUser customUser) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Profile profile = generateEmptyProfile(customUser.type());
-        profile.setId(1L);
+        profile.setId(customUser.id());
         User principal = User.builder()
                 .email(customUser.username())
                 .password(customUser.password())

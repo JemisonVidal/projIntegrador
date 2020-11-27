@@ -127,14 +127,17 @@ const Info = ({
       <StyledCard.Title title={title}>
         {canEdit && renderIcon()}
       </StyledCard.Title>
-      {Object.entries(schema).map(([k, v]) => (
-        <ProfileCard.Item
-          key={k}
-          title={v.label}
-          value={data[k]}
-          formatter={v.formatter}
-        />
-      ))}
+      {Object.entries(schema).map(
+        ([k, v]) =>
+          (!v.hidden || canEdit) && (
+            <ProfileCard.Item
+              key={k}
+              title={v.label}
+              value={data[k]}
+              formatter={v.formatter}
+            />
+          )
+      )}
       {canEdit && renderModal()}
     </StyledCard>
   );

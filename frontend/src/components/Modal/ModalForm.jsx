@@ -15,7 +15,8 @@ const ModalForm = ({
   values,
   error,
   list,
-  setList
+  setList,
+  indexRequirement
 }) => {
   const [validated, setValidated] = useState(false);
   const [data, setData] = useState({});
@@ -41,7 +42,13 @@ const ModalForm = ({
     if (onSubmit) {
       onSubmit(data);
     } else {
-      setList([...list, data]);
+      if (indexRequirement >= 0) {
+        const newList = [...list];
+        newList[indexRequirement] = data;
+        setList([...newList]);
+      } else {
+        setList([...list, data]);
+      }
       handleOnHide();
     }
   };

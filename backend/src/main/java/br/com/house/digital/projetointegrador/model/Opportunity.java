@@ -44,7 +44,7 @@ public class Opportunity extends AbstractEntity<Long> {
     @Column(nullable = false)
     private Boolean active;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "opportunity_id")
     private List<Requirement> requirements = new ArrayList<>();
 

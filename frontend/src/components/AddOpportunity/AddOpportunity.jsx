@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import {
   Card,
   Col,
@@ -9,12 +9,19 @@ import {
   Modal,
   ListGroup,
   Container,
-  CardDeck
+  CardDeck,
+  Spinner
 } from "react-bootstrap";
 import ModalForm from "../../components/Modal/ModalForm";
+import Input from "../../components/Input/Input";
 import { skillMap, skillOptions } from "../../utils/skills";
 import useFetch from "../../Hooks/useFetch";
-import { CREATE_OPPORTUNITY } from "../../APIs/APIs";
+import useForm from "../../Hooks/useForm";
+import {
+  CREATE_OPPORTUNITY,
+  GET_OPPORTUNITY,
+  PATCH_OPPORTUNITY
+} from "../../APIs/APIs";
 import Error from "../../components/Helper/Error";
 import SucessSVG from "../../assets/images/register/sucessRegister.svg";
 
@@ -41,6 +48,7 @@ const schema = {
 
 const AddOpportunity = (props) => {
   const history = useHistory();
+  const location = useLocation();
   const [validated, setValidated] = useState(false);
   const [data, setData] = useState({ active: true });
   const [showModal, setShowModal] = useState(false);
@@ -50,6 +58,51 @@ const AddOpportunity = (props) => {
   const [editIndex, setEditIndex] = useState(undefined);
   const { loading, request } = useFetch();
   const [messageSucess, setMessageSucess] = useState(false);
+
+  const titulo = useForm(false);
+  const localizacao = useForm(false);
+  const descricao = useForm(false);
+  const beneficios = useForm(false);
+  const salario = useForm(false);
+  const observacao = useForm(false);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
+    async function getOpportunity() {
+      if (location.state?.action === "edit") {
+        const { url, options } = GET_OPPORTUNITY(location.state.idOpportunity);
+        const { json, response } = await request(url, options);
+        if (response.ok) {
+          titulo.setValue(json.name);
+          localizacao.setValue(json.location);
+          descricao.setValue(json.description);
+          beneficios.setValue(json.benefits);
+          salario.setValue(json.salary);
+          observacao.setValue(json.text);
+          setRequirements(json.requirements);
+        }
+      }
+    }
+
+    getOpportunity();
+  }, []);
+
+  function buildBody() {
+    return {
+      active: true,
+      benefits: beneficios.value,
+      description: descricao.value,
+      location: localizacao.value,
+      name: titulo.value,
+      requirements,
+      salary: salario.value,
+      text: observacao.value
+    };
+  }
 
   const replaceHash = (history) => {
     if (history.location?.hash) history.replace(history.location.pathname);
@@ -68,14 +121,32 @@ const AddOpportunity = (props) => {
     const body = { ...data };
     body.requirements = [...requirements];
 
-    const { url, options } = CREATE_OPPORTUNITY(body);
+    let url,
+      options = "";
+    if (location.state?.action === "edit") {
+      const response = PATCH_OPPORTUNITY(
+        location.state.idOpportunity,
+        buildBody()
+      );
+      url = response.url;
+      options = response.options;
+    } else {
+      const response = CREATE_OPPORTUNITY(buildBody());
+      url = response.url;
+      options = response.options;
+    }
+
     const { response, json } = await request(url, options);
     if (response?.ok) {
       setMessageSucess(true);
       setData({ active: true });
-      const location = response.headers.get("Location");
-      const codigoVaga = location.substring(42, location.length);
-      history.push(`/opportunity/${codigoVaga}`);
+      if (location.state?.action === "edit") {
+        history.push(`/opportunity/${location.state?.idOpportunity}`);
+      } else {
+        const location = response.headers.get("Location");
+        const codigoVaga = location.substring(42, location.length);
+        history.push(`/opportunity/${codigoVaga}`);
+      }
     } else {
       setError(json);
     }
@@ -112,6 +183,7 @@ const AddOpportunity = (props) => {
         schema={schema}
         title={editIndex ? "Editar item" : "Adicionar item"}
         values={editIndex >= 0 ? requirements[editIndex] : undefined}
+        indexRequirement={editIndex}
         error={error}
         list={requirements}
         setList={setRequirements}
@@ -119,14 +191,6 @@ const AddOpportunity = (props) => {
       />
     );
   };
-
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
-    });
-  }, []);
 
   const handleRemove = async (i) => {
     if (!window.confirm("Deseja realmente apagar este item?")) return;
@@ -140,6 +204,15 @@ const AddOpportunity = (props) => {
     setShowModal(true);
   };
 
+  if (loading) {
+    return (
+      <div className="spinner-load">
+        <Spinner animation="border" />
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
+
   return (
     <>
       <Container id="container-opportunity">
@@ -152,18 +225,18 @@ const AddOpportunity = (props) => {
               <Form noValidate validated={validated} onSubmit={onHandleSubmit}>
                 <Row>
                   <Col>
-                    <Form.Group
-                      className="groupAddOpportunity"
-                      controlId="name"
-                    >
-                      <Form.Label className="titleGroup">
-                        Nome<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        className="inputAddOpportunity"
-                        placeholder="Título"
+                    <Form.Group className="groupAddOpportunity">
+                      <Input
+                        namelabel="Nome"
+                        classes={{
+                          label: "titleGroup",
+                          input: "inputAddOpportunity"
+                        }}
+                        feedback="O nome da vaga é obrigatório"
+                        type="text"
+                        placeholder="Nome"
                         required
-                        onChange={(e) => handleOnChange("name", e.target.value)}
+                        {...titulo}
                       />
                       <Form.Control.Feedback type="invalid">
                         O nome da vaga é obrigatório
@@ -171,20 +244,18 @@ const AddOpportunity = (props) => {
                     </Form.Group>
                   </Col>
                   <Col>
-                    <Form.Group
-                      className="groupAddOpportunity"
-                      controlId="location"
-                    >
-                      <Form.Label className="titleGroup">
-                        Localização<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        className="inputAddOpportunity"
+                    <Form.Group className="groupAddOpportunity">
+                      <Input
+                        namelabel="Localização"
+                        classes={{
+                          label: "titleGroup",
+                          input: "inputAddOpportunity"
+                        }}
+                        feedback="A localização da vaga é obrigatório"
+                        type="text"
                         placeholder="Cidade"
                         required
-                        onChange={(e) =>
-                          handleOnChange("location", e.target.value)
-                        }
+                        {...localizacao}
                       />
                       <Form.Control.Feedback type="invalid">
                         A localização da vaga é obrigatório
@@ -192,22 +263,19 @@ const AddOpportunity = (props) => {
                     </Form.Group>
                   </Col>
                 </Row>
-                <Form.Group
-                  className="groupAddOpportunity"
-                  controlId="description"
-                >
-                  <Form.Label className="titleGroup">
-                    Descrição<span className="text-danger">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    className="inputAddOpportunity"
-                    placeholder="Descrição Completa"
-                    as="textarea"
+                <Form.Group className="groupAddOpportunity">
+                  <Input
+                    namelabel="Descrição"
+                    classes={{
+                      label: "titleGroup",
+                      input: "inputAddOpportunity"
+                    }}
+                    feedback="A descrição da vaga é obrigatório"
+                    type="textarea"
                     rows={5}
+                    placeholder="Descrição Completa"
                     required
-                    onChange={(e) =>
-                      handleOnChange("description", e.target.value)
-                    }
+                    {...descricao}
                   />
                   <Card.Title className="d-flex justify-content-between align-items-center divRequisitos">
                     <span className="tituloRequisitos">Requisitos</span>{" "}
@@ -257,46 +325,46 @@ const AddOpportunity = (props) => {
                       })}
                   </ListGroup>
                   {renderModal()}
-                  <Form.Control.Feedback type="invalid">
-                    É necessário fornecer uma descrição para a vaga
-                  </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group
-                  className="groupAddOpportunity"
-                  controlId="benefits"
-                >
-                  <Form.Label className="titleGroup">Benefícios</Form.Label>
-                  <Form.Control
-                    className="inputAddOpportunity"
-                    as="textarea"
+                <Form.Group className="groupAddOpportunity">
+                  <Input
+                    namelabel="Benefícios"
+                    classes={{
+                      label: "titleGroup",
+                      input: "inputAddOpportunity"
+                    }}
+                    placeholder="Benefícios"
+                    required
+                    type="textarea"
                     rows={5}
-                    placeholder="Benefícios da oportunidade"
-                    onChange={(e) =>
-                      handleOnChange("benefits", e.target.value || null)
-                    }
+                    {...beneficios}
                   />
                 </Form.Group>
-                <Form.Group className="groupAddOpportunity" controlId="salary">
-                  <Form.Label className="titleGroup">Salário</Form.Label>
-                  <Form.Control
-                    className="inputAddOpportunity"
-                    type="number"
-                    placeholder="Salário da oportunidade"
-                    onChange={(e) =>
-                      handleOnChange("salary", Number(e.target.value || 0))
-                    }
+                <Form.Group className="groupAddOpportunity">
+                  <Input
+                    namelabel="Salário"
+                    classes={{
+                      label: "titleGroup",
+                      input: "inputAddOpportunity"
+                    }}
+                    type="text"
+                    placeholder="Salário"
+                    required
+                    {...salario}
                   />
                 </Form.Group>
-                <Form.Group className="groupAddOpportunity" controlId="text">
-                  <Form.Label className="titleGroup">
-                    Observações (Texto livre)
-                  </Form.Label>
-                  <Form.Control
-                    className="inputAddOpportunity"
+                <Form.Group className="groupAddOpportunity">
+                  <Input
+                    namelabel="Observações (Texto livre)"
+                    classes={{
+                      label: "titleGroup",
+                      input: "inputAddOpportunity"
+                    }}
                     placeholder="Texto livre da oportunidade"
-                    as="textarea"
+                    required
+                    type="textarea"
                     rows={5}
-                    onChange={(e) => handleOnChange("text", e.target.value)}
+                    {...observacao}
                   />
                 </Form.Group>
                 <Button className="buttonSave" type="submit" variant="primary">
