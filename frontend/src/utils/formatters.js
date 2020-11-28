@@ -28,3 +28,5 @@ export const dateFormatter = (v) =>
   new Date(v).toLocaleDateString("pt-BR", {
     timeZone: "GMT"
   });
+
+export const removeWhitespace = (v) => v.replaceAll(/\s/g, "");

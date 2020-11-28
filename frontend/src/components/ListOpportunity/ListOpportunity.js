@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import {
-  CardDeck,
-  Card,
-  Button,
-  Spinner,
-  Form,
-  FormControl
-} from "react-bootstrap";
+import { CardDeck, Card, Button, Spinner, Form, Col } from "react-bootstrap";
 import useFetch from "../../Hooks/useFetch";
 import PaginationPage from "../Pagination/Pagination";
 import { GET_LIST_OPPORTUNITY, GET_MY_OPPORTUNITY } from "../../APIs/APIs";
@@ -24,6 +17,7 @@ const ListOpportunity = ({ type }) => {
   const { request, loading } = useFetch();
   const [arrayOpportunity, setArrayOpportunity] = useState([]);
   const searchInput = useRef(null);
+  const requirementsInput = useRef(null);
   const { user } = useContext(StoreContext);
 
   async function getOpportunity() {
@@ -36,7 +30,8 @@ const ListOpportunity = ({ type }) => {
     } else {
       const payloadAllOpportunity = GET_LIST_OPPORTUNITY(
         pageCurrent,
-        searchInput.current.value
+        searchInput.current.value,
+        requirementsInput.current.value
       );
       url = payloadAllOpportunity.url;
       options = payloadAllOpportunity.options;
@@ -64,6 +59,7 @@ const ListOpportunity = ({ type }) => {
   }, [pageCurrent]);
 
   async function handleSearchClick(event) {
+    event.preventDefault();
     await getOpportunity();
   }
 
@@ -149,16 +145,29 @@ const ListOpportunity = ({ type }) => {
 
   return (
     <>
-      <Form className="search" inline>
-        <FormControl
-          ref={searchInput}
-          type="text"
-          placeholder="Pesquisar"
-          className="form-control"
-        />
-        <Button className="btn-search ml-2" onClick={handleSearchClick}>
-          <i className="fa fa-search" aria-hidden="true"></i>
-        </Button>
+      <Form className="mt-2" onSubmit={handleSearchClick}>
+        <Form.Row className="align-items-center justify-content-around">
+          <Col xs={12} sm={5} className="mb-2 mb-sm-0">
+            <Form.Control
+              ref={searchInput}
+              type="text"
+              placeholder="Pesquisar por nome"
+            />
+          </Col>
+          <Col xs={12} sm={5} className="mb-2 mb-sm-0">
+            <Form.Control
+              ref={requirementsInput}
+              type="text"
+              placeholder="Pesquisar por requisitos"
+            />
+          </Col>
+          <Col xs={12} sm={1}>
+            <Button type="submit" className="w-100">
+              <i className="fa fa-search" aria-hidden="true"></i>
+              <span className="d-sm-none ml-2">Buscar</span>
+            </Button>
+          </Col>
+        </Form.Row>
       </Form>
       {loading ? (
         renderLoading()

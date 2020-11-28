@@ -6,7 +6,8 @@ import {
   Button,
   Form,
   FormControl,
-  Spinner
+  Spinner,
+  Col
 } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import Main from "../../components/Template/main/Main";
@@ -22,13 +23,15 @@ const Applicant = () => {
   const [pageCurrent, setPageCurrent] = useState(0);
   const [applicants, setApplicants] = useState(null);
   const searchInput = useRef(null);
+  const skillsInput = useRef(null);
 
   const { request, loading } = useFetch();
 
-  async function getCompany() {
+  async function getApplicants() {
     const { url, options } = GET_ALL_APPLICANT(
       pageCurrent,
-      searchInput.current.value
+      searchInput.current.value,
+      skillsInput.current.value
     );
     const { json, response } = await request(url, options);
     if (response.ok) {
@@ -38,15 +41,13 @@ const Applicant = () => {
     }
   }
 
-  console.log(applicants);
-
   useEffect(() => {
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: "smooth"
     });
-    getCompany();
+    getApplicants();
   }, [pageCurrent]);
 
   function handleVerPerfilClick(event) {
@@ -54,7 +55,8 @@ const Applicant = () => {
   }
 
   async function handleSearchClick(event) {
-    await getCompany();
+    event.preventDefault();
+    await getApplicants();
   }
 
   function renderLoading() {
@@ -66,7 +68,7 @@ const Applicant = () => {
     );
   }
 
-  function renderCompanys() {
+  function renderApplicants() {
     if (applicants && applicants.length <= 0) {
       return (
         <p className="messageOps">
@@ -145,18 +147,31 @@ const Applicant = () => {
   return (
     <Main>
       <Container fluid="md" className="py-2">
-        <Form className="search" inline>
-          <FormControl
-            ref={searchInput}
-            type="text"
-            placeholder="Pesquisar"
-            className=" form-search"
-          />
-          <Button className="btn-search ml-2" onClick={handleSearchClick}>
-            <i className="fa fa-search" aria-hidden="true"></i>
-          </Button>
+        <Form className="mt-2" onSubmit={handleSearchClick}>
+          <Form.Row className="align-items-center justify-content-around">
+            <Col xs={12} sm={5} className="mb-2 mb-sm-0">
+              <Form.Control
+                ref={searchInput}
+                type="text"
+                placeholder="Pesquisar por nome"
+              />
+            </Col>
+            <Col xs={12} sm={5} className="mb-2 mb-sm-0">
+              <Form.Control
+                ref={skillsInput}
+                type="text"
+                placeholder="Pesquisar por habilidades"
+              />
+            </Col>
+            <Col xs={12} sm={1}>
+              <Button type="submit" className="w-100">
+                <i className="fa fa-search" aria-hidden="true"></i>
+                <span className="d-sm-none ml-2">Buscar</span>
+              </Button>
+            </Col>
+          </Form.Row>
         </Form>
-        {loading ? renderLoading() : renderCompanys()}
+        {loading ? renderLoading() : renderApplicants()}
         {
           <PaginationPage
             pageCurrent={pageCurrent}

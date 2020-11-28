@@ -1,3 +1,4 @@
+import { removeWhitespace } from "../utils/formatters";
 import { requestOptions } from "./configAPI";
 
 export function GET_OPPORTUNITY(id) {
@@ -12,12 +13,14 @@ export function GET_APPLICANTS_OPPORTUNITY(id) {
   });
 }
 
-export function GET_LIST_OPPORTUNITY(page = 0, name = "") {
+export function GET_LIST_OPPORTUNITY(page = 0, name, requirements) {
   let uri = `/opportunity/?page=${page}&size=6`;
   if (name) {
     uri += `&name=${name}`;
   }
-
+  if (requirements) {
+    uri += `&requirements=${removeWhitespace(requirements)}`;
+  }
   return requestOptions({
     url: uri
   });

@@ -6,13 +6,14 @@ import {
   Button,
   Form,
   FormControl,
-  Spinner
+  Spinner,
+  Col
 } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import Main from "../../components/Template/main/Main";
 import useFetch from "../../Hooks/useFetch";
 import PaginationPage from "../Pagination/Pagination";
-import { GET_COMPANYS } from "../../APIs/companyAPI";
+import { GET_COMPANIES } from "../../APIs/companyAPI";
 import "./Company.css";
 
 const Company = () => {
@@ -21,11 +22,12 @@ const Company = () => {
   const [pageCurrent, setPageCurrent] = useState(0);
   const [companys, setCompanys] = useState(null);
   const searchInput = useRef(null);
+  const categoryInput = useRef(null);
 
   const { request, loading } = useFetch();
 
   async function getCompany() {
-    const { url, options } = GET_COMPANYS(
+    const { url, options } = GET_COMPANIES(
       pageCurrent,
       searchInput.current.value
     );
@@ -51,6 +53,7 @@ const Company = () => {
   }
 
   async function handleSearchClick(event) {
+    event.preventDefault();
     await getCompany();
   }
 
@@ -129,16 +132,29 @@ const Company = () => {
   return (
     <Main>
       <Container fluid="md" className="py-2">
-        <Form className="search" inline>
-          <FormControl
-            ref={searchInput}
-            type="text"
-            placeholder="Pesquisar"
-            className="form-search"
-          />
-          <Button className="btn-search ml-2" onClick={handleSearchClick}>
-            <i className="fa fa-search" aria-hidden="true"></i>
-          </Button>
+        <Form className="mt-2" onSubmit={handleSearchClick}>
+          <Form.Row className="align-items-center justify-content-around">
+            <Col xs={12} sm={5} className="mb-2 mb-sm-0">
+              <Form.Control
+                ref={searchInput}
+                type="text"
+                placeholder="Pesquisar por nome"
+              />
+            </Col>
+            <Col xs={12} sm={5} className="mb-2 mb-sm-0">
+              <Form.Control
+                ref={categoryInput}
+                type="text"
+                placeholder="Pesquisar por categoria"
+              />
+            </Col>
+            <Col xs={12} sm={1}>
+              <Button type="submit" className="w-100">
+                <i className="fa fa-search" aria-hidden="true"></i>
+                <span className="d-sm-none ml-2">Buscar</span>
+              </Button>
+            </Col>
+          </Form.Row>
         </Form>
         {loading ? renderLoading() : renderCompanys()}
         {

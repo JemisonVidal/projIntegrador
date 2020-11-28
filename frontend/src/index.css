@@ -28,3 +28,13 @@ code {
 #root {
   background-image: linear-gradient(#27187e, #758bfd);
 }
+
+.btn-primary {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-darker);
+  border-color: var(--color-primary-darker);
+}

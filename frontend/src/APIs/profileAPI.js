@@ -1,3 +1,4 @@
+import { removeWhitespace } from "../utils/formatters";
 import { requestOptions } from "./configAPI";
 
 export function GET_PROFILE(type, id) {
@@ -35,10 +36,13 @@ export function GET_COMPANY_OPPORTUNITIES(id) {
   });
 }
 
-export function GET_ALL_APPLICANT(page = 0, name = "") {
+export function GET_ALL_APPLICANT(page = 0, name, skills) {
   let uri = `/profile/applicant/?page=${page}&size=6`;
   if (name) {
     uri += `&name=${name}`;
+  }
+  if (skills) {
+    uri += `&skills=${removeWhitespace(skills)}`;
   }
   return requestOptions({
     url: uri
