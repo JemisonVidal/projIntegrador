@@ -85,10 +85,12 @@ const Applicant = () => {
             <Card>
               <Card.Body>
                 <div className="container-card-perfil">
-                  <img
-                    src={applicant.imgSrc || womanLogo}
-                    alt="Foto do perfil"
-                  />
+                  <div className="image-applicant">
+                    <img
+                      src={applicant.imgSrc || womanLogo}
+                      alt="Foto do perfil"
+                    />
+                  </div>
                   <Card.Title className="title-applicant-search">
                     {applicant.name}
                   </Card.Title>
