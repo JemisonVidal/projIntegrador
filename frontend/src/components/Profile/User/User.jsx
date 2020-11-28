@@ -57,9 +57,9 @@ const User = ({ type, id, imgSrc, name, title, canEdit }) => {
 
   return (
     <Container className="user text-center mb-3">
-      <ResponsiveEmbed aspectRatio="1by1" id="user-picture">
+      <div id="user-picture">
         <img src={imgSrc ? imgSrc : logo} alt={name} />
-      </ResponsiveEmbed>
+      </div>
       <h4 id="user-name" className="font-weight-bold">
         {name}
       </h4>
