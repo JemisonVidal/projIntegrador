@@ -38,8 +38,6 @@ const Applicant = () => {
     }
   }
 
-  console.log(applicants);
-
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -54,7 +52,8 @@ const Applicant = () => {
   }
 
   async function handleSearchClick(event) {
-    await getCompany();
+    if (pageCurrent !== 0) setPageCurrent(0);
+    else await getCompany();
   }
 
   function renderLoading() {

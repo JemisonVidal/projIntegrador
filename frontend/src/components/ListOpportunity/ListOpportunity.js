@@ -64,7 +64,8 @@ const ListOpportunity = ({ type }) => {
   }, [pageCurrent]);
 
   async function handleSearchClick(event) {
-    await getOpportunity();
+    if (pageCurrent !== 0) setPageCurrent(0);
+    else await getOpportunity();
   }
 
   function renderLoading() {
