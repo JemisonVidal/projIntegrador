@@ -105,6 +105,9 @@
 }
 
 @media (max-width: 600px) {
+  .groupAddOpportunity > .titleGroup {
+    color: #27187e;
+  }
   .buttonSave {
     margin: 0 39% !important;
   }

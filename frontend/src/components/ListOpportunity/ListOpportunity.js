@@ -171,7 +171,7 @@ const ListOpportunity = ({ type }) => {
           ref={searchInput}
           type="text"
           placeholder="Pesquisar"
-          className="form-control"
+          className=" form-search"
         />
         <Button className="btn-search ml-2" onClick={handleSearchClick}>
           <i className="fa fa-search" aria-hidden="true"></i>

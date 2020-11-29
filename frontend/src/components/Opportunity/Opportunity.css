@@ -137,8 +137,10 @@
 }
 
 .srcApplicants {
-  width: 100%;
   border-radius: 100%;
+  object-fit: cover;
+  width: 65px;
+  height: 65px;
 }
 
 #container-opportunity .deck-opportunity {
