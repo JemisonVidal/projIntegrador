@@ -13,6 +13,7 @@ import Main from "../../components/Template/main/Main";
 import useFetch from "../../Hooks/useFetch";
 import PaginationPage from "../Pagination/Pagination";
 import { GET_COMPANYS } from "../../APIs/companyAPI";
+import companyLogo from "../../assets/images/company.svg";
 import "./Company.css";
 
 const Company = () => {
@@ -81,9 +82,17 @@ const Company = () => {
           <CardDeck key={index}>
             <Card>
               <Card.Body>
-                <Card.Title className="title-company-search">
-                  {company.name}
-                </Card.Title>
+                <div className="container-card-perfil">
+                  <div className="image-applicant">
+                    <img
+                      src={company.imgSrc || companyLogo}
+                      alt="Foto do perfil"
+                    />
+                  </div>
+                  <Card.Title className="title-applicant-search">
+                    {company.name}
+                  </Card.Title>
+                </div>
                 <Card.Text>
                   <strong>Visão Geral:</strong> {company.about}
                 </Card.Text>
